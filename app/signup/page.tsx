@@ -1,11 +1,11 @@
 'use client'
-import {useState} from 'react';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useForm} from "react-hook-form";
 import {Card, CardTitle} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import '../globals.css';
+import  {Alert,AlertTitle,AlertDescription} from "@/components/ui/alert";
 import {
   Form,
   FormControl,
@@ -16,11 +16,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import axios from 'axios';
 
 const formSchema = z.object({
-  email: z.string().email(),
-  password:z.string().min(8,"Password must be 8 characters long.")
+  email: z.string().email({message:"Invalid email address"}), 
+  password:z.string().min(8,{
+    message:"Password need to be at least 8 characters long"
+  })
 });
+
+
 
 export default function ProfileForm(){
   const form = useForm<z.infer<typeof formSchema>>({
@@ -31,17 +36,23 @@ export default function ProfileForm(){
     },
   })
 
+
+
   function onSubmit(values: z.infer<typeof formSchema>) {
+   
+ 
+ } 
+    
+ 
+
   
-    console.log(values)
-  }
 
     return (
       <div className="flex justify-center items-center" style={{backgroundColor: 'black', height: '100vh'}}>
       <Card className="w-96 p-5 ">
         <CardTitle className="text-white mb-4">Sign Up</CardTitle>
        <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form  onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField 
           control={form.control} 
           name="email" 
@@ -63,6 +74,8 @@ export default function ProfileForm(){
               <FormControl className="text-white">
                 <Input type="password" placeholder="Password" {...field} />
               </FormControl>
+            
+              <FormMessage />
             </FormItem>
           )}
           />
@@ -70,6 +83,7 @@ export default function ProfileForm(){
         </form>
        </Form>
        </Card>
+
        </div>
      );
     
