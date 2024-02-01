@@ -39,8 +39,8 @@ export default function ProfileForm(){
 
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-   
- 
+    
+    
  } 
     
  
@@ -75,11 +75,15 @@ export default function ProfileForm(){
                 <Input type="password" placeholder="Password" {...field} />
               </FormControl>
             
-              <FormMessage />
+              <FormMessage className="text-white"/>
             </FormItem>
           )}
           />
+          
+          <div className="flex justify-between">
           <Button className="bg-white hover:bg-gray-500"  type="submit">Sign Up</Button>
+          <a href="/login" className='text-white cursor-pointer justify-end'  type="submit">I already have an account</a>
+          </div>
         </form>
        </Form>
        </Card>
