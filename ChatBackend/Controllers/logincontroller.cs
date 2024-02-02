@@ -7,7 +7,7 @@ namespace Login.Controllers
     [HttpPost]
     public class LoginController : ApiController{
         public IHttpActionResult Login(LoginModel model){
-            var user =
+           
 
             if(user==null){
                 return NotFound();

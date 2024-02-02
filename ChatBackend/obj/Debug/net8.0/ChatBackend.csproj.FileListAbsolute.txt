@@ -1,0 +1,8 @@
+H:\Chat App\chat-app\ChatBackend\obj\Debug\net8.0\ChatBackend.csproj.AssemblyReference.cache
+H:\Chat App\chat-app\ChatBackend\obj\Debug\net8.0\ChatBackend.GeneratedMSBuildEditorConfig.editorconfig
+H:\Chat App\chat-app\ChatBackend\obj\Debug\net8.0\ChatBackend.AssemblyInfoInputs.cache
+H:\Chat App\chat-app\ChatBackend\obj\Debug\net8.0\ChatBackend.AssemblyInfo.cs
+H:\Chat App\chat-app\ChatBackend\obj\Debug\net8.0\ChatBackend.csproj.CoreCompileInputs.cache
+H:\Chat App\chat-app\ChatBackend\obj\Debug\net8.0\ChatBackend.MvcApplicationPartsAssemblyInfo.cs
+H:\Chat App\chat-app\ChatBackend\obj\Debug\net8.0\ChatBackend.MvcApplicationPartsAssemblyInfo.cache
+H:\Chat App\chat-app\ChatBackend\obj\Debug\net8.0\ChatBackend.sourcelink.json
