@@ -1,5 +1,5 @@
 namespace Login.Models;
-public class SignUpModel{
+public class LoginModel{
     
     public string Email{get;set;}
     
