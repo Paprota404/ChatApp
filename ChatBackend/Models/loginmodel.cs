@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Login.Models;
 public class LoginModel{
     

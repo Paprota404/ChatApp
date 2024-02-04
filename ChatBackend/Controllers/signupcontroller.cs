@@ -1,12 +1,22 @@
 using System.Web.Http;
+using System.Net.Http;
 using SignUp.Models;
 using BCrypt.Net;
+using Microsoft.EntityFrameworkCore;
 
 namespace SignUp.Controllers
 {
-    [HttpPost]
+   [Route("[controller]")]
     public class SignUpController : ApiController{
-        public async IHttpActionResult SignUp(SignUpModel model){
+
+        private readonly AppDbContext _context;
+
+        public SignUpController(AppDbContext context){
+            _context = context;
+        }
+
+        [HttpPost]
+        public async Task<IHttpActionResult> SignUp(SignUpModel model){
             if(!ModelState.IsValid){
                 return BadRequest(ModelState);
             }
@@ -17,6 +27,8 @@ namespace SignUp.Controllers
             var user = new SignUpModel { Email = model.Email, Password = model.Password }; 
             _context.Users.Add(user); 
             await _context.SaveChangesAsync();
+
+            return Ok();
 
         }
     }

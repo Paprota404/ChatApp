@@ -1,4 +1,7 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace SignUp.Models;
+
 public class SignUpModel{
     [Required]
     [EmailAddress]

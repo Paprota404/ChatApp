@@ -1,13 +1,24 @@
 using System.Web.Http;
+using System.Net.Http;
 using Login.Models;
 using BCrypt.Net;
+using Microsoft.EntityFrameworkCore;
 
 namespace Login.Controllers
 {
-    [HttpPost]
+   
+    [Route("[controller]")]
     public class LoginController : ApiController{
-        public IHttpActionResult Login(LoginModel model){
-           
+        
+        private readonly AppDbContext _context;
+
+        public LoginController(AppDbContext context){
+            _context = context;
+        }
+
+        [HttpGet]
+        public async Task<IHttpActionResult> Login(LoginModel model){
+           var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
 
             if(user==null){
                 return NotFound();
@@ -18,6 +29,8 @@ namespace Login.Controllers
             if(!isValidPassword){
                 return Unauthorized();
             }
+
+            return Ok();
         }
     }
 }
