@@ -1,7 +1,10 @@
 using System.Web.Http;
 using System.Net.Http;
 using SignUp.Models;
+using Login.Controllers;
+
 using BCrypt.Net;
+using Chat.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace SignUp.Controllers

@@ -3,6 +3,7 @@ using System.Net.Http;
 using Login.Models;
 using BCrypt.Net;
 using Microsoft.EntityFrameworkCore;
+using Chat.Database;
 
 namespace Login.Controllers
 {
