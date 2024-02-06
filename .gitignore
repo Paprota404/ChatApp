@@ -40,3 +40,4 @@ next-env.d.ts
 
 #Backend
 /ChatBackend/appsettings.json
+/ChatBackend/appsettings.Development.json

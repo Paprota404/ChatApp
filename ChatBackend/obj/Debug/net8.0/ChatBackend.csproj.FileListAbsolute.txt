@@ -62,3 +62,5 @@ H:\Chat App\chat-app\ChatBackend\obj\Debug\net8.0\refint\ChatBackend.dll
 H:\Chat App\chat-app\ChatBackend\obj\Debug\net8.0\ChatBackend.pdb
 H:\Chat App\chat-app\ChatBackend\obj\Debug\net8.0\ChatBackend.genruntimeconfig.cache
 H:\Chat App\chat-app\ChatBackend\obj\Debug\net8.0\ref\ChatBackend.dll
+H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\ChatBackend.xml
+H:\Chat App\chat-app\ChatBackend\obj\Debug\net8.0\ChatBackend.xml

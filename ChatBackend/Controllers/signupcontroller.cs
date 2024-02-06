@@ -1,25 +1,23 @@
-using System.Web.Http;
-using System.Net.Http;
 using SignUp.Models;
 using Login.Controllers;
-
 using BCrypt.Net;
 using Chat.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SignUp.Controllers
 {
-   [Route("[controller]")]
-    public class SignUpController : ApiController{
-
+    [Route("api/signup")]
+    public class SignUpController : Controller{
+        
         private readonly AppDbContext _context;
 
         public SignUpController(AppDbContext context){
             _context = context;
         }
-
+        
         [HttpPost]
-        public async Task<IHttpActionResult> SignUp(SignUpModel model){
+        public async Task<IActionResult> SignUp(SignUpModel model){
             if(!ModelState.IsValid){
                 return BadRequest(ModelState);
             }

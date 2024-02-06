@@ -1,5 +1,4 @@
-using System.Web.Http;
-using System.Net.Http;
+using Microsoft.AspNetCore.Mvc;
 using Login.Models;
 using BCrypt.Net;
 using Microsoft.EntityFrameworkCore;
@@ -8,8 +7,8 @@ using Chat.Database;
 namespace Login.Controllers
 {
    
-    [Route("[controller]")]
-    public class LoginController : ApiController{
+    [Route("api/login")]
+    public class LoginController : Controller{
         
         private readonly AppDbContext _context;
 
@@ -18,7 +17,7 @@ namespace Login.Controllers
         }
 
         [HttpGet]
-        public async Task<IHttpActionResult> Login(LoginModel model){
+        public async Task<IActionResult> Login(LoginModel model){
            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
 
             if(user==null){
