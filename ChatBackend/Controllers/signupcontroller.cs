@@ -23,10 +23,10 @@ namespace SignUp.Controllers
             }
             
 
-            model.Password = BCrypt.Net.BCrypt.HashPassword(model.Password);
+            model.password = BCrypt.Net.BCrypt.HashPassword(model.password);
 
-            var user = new SignUpModel { Email = model.Email, Password = model.Password }; 
-            _context.Users.Add(user); 
+            var user = new SignUpModel { email = model.email, password = model.password }; 
+            _context.users.Add(user); 
             await _context.SaveChangesAsync();
 
             return Ok();

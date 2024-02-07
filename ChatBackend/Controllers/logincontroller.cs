@@ -18,13 +18,13 @@ namespace Login.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Login(LoginModel model){
-           var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+           var user = await _context.users.FirstOrDefaultAsync(u => u.email == model.email);
 
             if(user==null){
                 return NotFound();
             }
 
-            bool isValidPassword = BCrypt.Net.BCrypt.Verify(model.Password,user.Password);
+            bool isValidPassword = BCrypt.Net.BCrypt.Verify(model.password,user.password);
 
             if(!isValidPassword){
                 return Unauthorized();

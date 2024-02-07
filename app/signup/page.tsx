@@ -5,18 +5,19 @@ import { useForm } from "react-hook-form";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import "../globals.css";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import axios from "axios";
+import {useRouter} from 'next/navigation';
+import {useState} from "react";
+
+
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -25,8 +26,10 @@ const formSchema = z.object({
   }),
 });
 
+
 //Defining schema
 export default function ProfileForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,19 +38,56 @@ export default function ProfileForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    
-  }
 
+ 
+
+  
+  const [errorMessage,setError] = useState("");
+
+  async function OnSubmit(values: z.infer<typeof formSchema>) {
+      const apiEndpoint =  'http://localhost:5108/api/signup';
+
+      try {
+        const response = await fetch(apiEndpoint, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(values)
+        });
+    
+        // Check if the response contains JSON before trying to parse it
+        const contentType = response.headers.get('content-type');
+        const isJson = contentType && contentType.includes('application/json');
+    
+        if (!response.ok) {
+          let errorData;
+          if (isJson) {
+            errorData = await response.json(); // Parse JSON error data
+          } else {
+            errorData = { message: 'An error occurred during signup.' };
+          }
+          throw new Error(errorData.message || 'An unknown error occurred.');
+        }
+    
+        // If the response is ok, navigate to the chat page
+        router.push("/chat");
+      } catch (error) {
+        let errorMessage = "An unexpected error occurred.";
+        if (error instanceof Error) {
+          errorMessage = error.message;
+        }
+        console.log(errorMessage);
+      }
+  }
+  
   return (
     <div
       className="flex justify-center items-center"
       style={{ backgroundColor: "black", height: "100vh" }}
     >
-      <Card className="w-96 p-5 ">
+      <Card className="w-96 p-5">
         <CardTitle className="text-white mb-4">Sign Up</CardTitle>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(OnSubmit)} className="space-y-8">
             <FormField
               control={form.control}
               name="email"
@@ -88,7 +128,9 @@ export default function ProfileForm() {
               >
                 I already have an account
               </a>
+              
             </div>
+            {errorMessage != "" && <h1>{errorMessage}</h1> }
           </form>
         </Form>
       </Card>
