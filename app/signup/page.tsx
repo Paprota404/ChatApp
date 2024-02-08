@@ -43,40 +43,46 @@ export default function ProfileForm() {
 
   
   const [errorMessage,setError] = useState("");
+  const [isSigning,setSigning] = useState(false);
 
   async function OnSubmit(values: z.infer<typeof formSchema>) {
-      const apiEndpoint =  'http://localhost:5108/api/signup';
+    const apiEndpoint = 'http://localhost:5108/api/signup';
 
-      try {
-        const response = await fetch(apiEndpoint, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(values)
-        });
-    
-        // Check if the response contains JSON before trying to parse it
-        const contentType = response.headers.get('content-type');
-        const isJson = contentType && contentType.includes('application/json');
-    
-        if (!response.ok) {
-          let errorData;
-          if (isJson) {
-            errorData = await response.json(); // Parse JSON error data
-          } else {
-            errorData = { message: 'An error occurred during signup.' };
-          }
-          throw new Error(errorData.message || 'An unknown error occurred.');
-        }
-    
-        // If the response is ok, navigate to the chat page
-        router.push("/chat");
-      } catch (error) {
-        let errorMessage = "An unexpected error occurred.";
-        if (error instanceof Error) {
-          errorMessage = error.message;
-        }
-        console.log(errorMessage);
+    setSigning(true);
+  
+    try {
+      const response = await fetch(apiEndpoint, {
+        mode: "cors",
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'email=' + encodeURIComponent(values.email ) + '&password=' + encodeURIComponent(values.password )
+      });
+  
+      if (response.status ===  200) {
+        // Successful request, navigate to the chat page
+        
+        setTimeout(()=>{
+          router.push("/chat");
+        },1000);
+        
+      } else if (response.status ===  400) {
+        // Bad Request, handle accordingly
+        let errorData = await response.json();
+        throw new Error(errorData.message || 'Bad Request');
+      } else if(response.status === 409){
+        setError("User with this email already exists");
+        setSigning(false);
       }
+      else {
+        // Other status codes, handle accordingly
+        setSigning(false)
+        throw new Error(`Request failed with status ${response.status}`);
+        
+      }
+    } catch (error) {
+      setSigning(false)
+      setError("An unexpected error occurred:" + (error as Error).message);
+    }
   }
   
   return (
@@ -85,7 +91,8 @@ export default function ProfileForm() {
       style={{ backgroundColor: "black", height: "100vh" }}
     >
       <Card className="w-96 p-5">
-        <CardTitle className="text-white mb-4">Sign Up</CardTitle>
+        <CardTitle className="text-white flex justify-between mb-4">Sign Up
+        {isSigning && <div>Signing up...</div> }</CardTitle>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(OnSubmit)} className="space-y-8">
             <FormField

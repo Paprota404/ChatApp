@@ -4,6 +4,8 @@ using BCrypt.Net;
 using Microsoft.EntityFrameworkCore;
 using Chat.Database;
 
+//if user already exist and password is incorrect return error
+
 namespace Login.Controllers
 {
    
@@ -16,7 +18,7 @@ namespace Login.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Login(LoginModel model){
            var user = await _context.users.FirstOrDefaultAsync(u => u.email == model.email);
 

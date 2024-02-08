@@ -6,6 +6,8 @@ import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import "../globals.css";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -16,14 +18,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import axios from "axios";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
-  password: z.string().min(8),
+  password: z.string(),
 });
 
 export default function ProfileForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,7 +34,61 @@ export default function ProfileForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {}
+  const [errorMessage, setError] = useState("");
+  const [isSigning, setSigning] = useState(false);
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if(values.email.length==0 || values.password.length==0){
+      setError("Password field is empty");
+      return;
+    }
+    const apiEndpoint = "http://localhost:5108/api/login";
+
+    setSigning(true);
+
+    try {
+      const response = await fetch(apiEndpoint, {
+        mode: "cors",
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body:
+          "email=" +
+          encodeURIComponent(values.email) +
+          "&password=" +
+          encodeURIComponent(values.password),
+      });
+
+      if (response.status === 200) {
+        // Successful request, navigate to the chat page
+
+        setTimeout(() => {
+          router.push("/chat");
+        }, 1000);
+      } else if (response.status === 400) {
+        // Bad Request, handle accordingly
+        let errorData = await response.json();
+        throw new Error(errorData.message || "Bad Request");
+      } else if (response.status === 401) {
+        setTimeout(() => {
+          setError("Bad password");
+          setSigning(false);
+        }, 1000);
+      }
+        else if (response.status === 404) {
+          setTimeout(() => {
+            setError("User doesn't exist");
+            setSigning(false);
+          }, 1000);
+      } else {
+        // Other status codes, handle accordingly
+        setSigning(false);
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+    } catch (error) {
+      setSigning(false);
+      setError("An unexpected error occurred:" + (error as Error).message);
+    }
+  }
 
   return (
     <div
@@ -40,7 +96,10 @@ export default function ProfileForm() {
       style={{ backgroundColor: "black", height: "100vh" }}
     >
       <Card className="w-96 p-5 ">
-        <CardTitle className="text-white mb-4">Log In</CardTitle>
+        <CardTitle className="text-white flex justify-between mb-4">
+          Log In
+          {isSigning && <div>Logging in...</div>}
+        </CardTitle>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -82,6 +141,7 @@ export default function ProfileForm() {
                 I don&apos;t have an account yet
               </a>
             </div>
+            {errorMessage != "" && <h1>{errorMessage}</h1>}
           </form>
         </Form>
       </Card>

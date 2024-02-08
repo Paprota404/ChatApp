@@ -22,6 +22,11 @@ namespace SignUp.Controllers
                 return BadRequest(ModelState);
             }
             
+            bool userExists = await _context.users.AnyAsync(u => u.email == model.email);
+
+            if(userExists){
+                return Conflict(new {Message="A user with this email already exists."});
+            }
 
             model.password = BCrypt.Net.BCrypt.HashPassword(model.password);
 
@@ -30,7 +35,6 @@ namespace SignUp.Controllers
             await _context.SaveChangesAsync();
 
             return Ok();
-
         }
     }
 }
