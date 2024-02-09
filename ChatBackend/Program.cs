@@ -21,6 +21,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext")));
 

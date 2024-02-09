@@ -64,3 +64,11 @@ H:\Chat App\chat-app\ChatBackend\obj\Debug\net8.0\ChatBackend.genruntimeconfig.c
 H:\Chat App\chat-app\ChatBackend\obj\Debug\net8.0\ref\ChatBackend.dll
 H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\ChatBackend.xml
 H:\Chat App\chat-app\ChatBackend\obj\Debug\net8.0\ChatBackend.xml
+H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll

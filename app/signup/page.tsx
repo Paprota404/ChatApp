@@ -62,7 +62,7 @@ export default function ProfileForm() {
         // Successful request, navigate to the chat page
         
         setTimeout(()=>{
-          router.push("/chat");
+          router.push("/login");
         },1000);
         
       } else if (response.status ===  400) {
@@ -137,7 +137,7 @@ export default function ProfileForm() {
               </a>
               
             </div>
-            {errorMessage != "" && <h1>{errorMessage}</h1> }
+            {errorMessage != "" && <h1 className="text-white">{errorMessage}</h1> }
           </form>
         </Form>
       </Card>

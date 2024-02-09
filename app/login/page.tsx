@@ -141,7 +141,7 @@ export default function ProfileForm() {
                 I don&apos;t have an account yet
               </a>
             </div>
-            {errorMessage != "" && <h1>{errorMessage}</h1>}
+            {errorMessage != "" && <h1 className="text-white">{errorMessage}</h1>}
           </form>
         </Form>
       </Card>

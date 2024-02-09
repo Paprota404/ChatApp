@@ -1,10 +1,17 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 using Login.Models;
 using BCrypt.Net;
 using Microsoft.EntityFrameworkCore;
 using Chat.Database;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
-//if user already exist and password is incorrect return error
+
+
 
 namespace Login.Controllers
 {
@@ -13,9 +20,11 @@ namespace Login.Controllers
     public class LoginController : Controller{
         
         private readonly AppDbContext _context;
+        private readonly IOptionsSnapshot<JWT> _jwtSettings;
 
-        public LoginController(AppDbContext context){
+        public LoginController(AppDbContext context, IOptionsSnapshot<JWT> jwtSettings){
             _context = context;
+            _jwtSettings = jwtSettings;
         }
 
         [HttpPost]
@@ -31,6 +40,29 @@ namespace Login.Controllers
             if(!isValidPassword){
                 return Unauthorized();
             }
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_jwtSettings.Value.Key);
+            
+            var tokenDescriptor = new SecurityTokenDescriptor{
+                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.email) }),
+                Expires = DateTime.UtcNow.AddDays(1),
+                Issuer = _jwtSettings.Value.Issuer,
+                Audience = _jwtSettings.Value.Audience,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var jwtToken = tokenHandler.WriteToken(token);
+
+           Response.Cookies.Append("jwtToken", jwtToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true, // Only transmit the cookie over HTTPS
+                SameSite = SameSiteMode.Strict // Prevent CSRF attacks
+            });
+
+
 
             return Ok();
         }
