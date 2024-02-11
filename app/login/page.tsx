@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
-  FormDescription,
+ 
   FormField,
   FormItem,
   FormLabel,
@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
+  username: z.string(),
   password: z.string(),
 });
 
@@ -29,7 +29,7 @@ export default function ProfileForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
@@ -38,7 +38,7 @@ export default function ProfileForm() {
   const [isSigning, setSigning] = useState(false);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if(values.email.length==0 || values.password.length==0){
+    if(values.username.length==0 || values.password.length==0){
       setError("Password field is empty");
       return;
     }
@@ -52,8 +52,8 @@ export default function ProfileForm() {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body:
-          "email=" +
-          encodeURIComponent(values.email) +
+          "username=" +
+          encodeURIComponent(values.username) +
           "&password=" +
           encodeURIComponent(values.password),
       });
@@ -104,12 +104,12 @@ export default function ProfileForm() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="email"
+              name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-white">Enter your email</FormLabel>
+                  <FormLabel className="text-white">Enter your username</FormLabel>
                   <FormControl className="text-white">
-                    <Input type="email" placeholder="Email" {...field} />
+                    <Input type="username" placeholder="Username" {...field} />
                   </FormControl>
                 </FormItem>
               )}

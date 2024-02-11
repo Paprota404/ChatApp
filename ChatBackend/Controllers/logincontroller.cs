@@ -29,7 +29,7 @@ namespace Login.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model){
-           var user = await _context.users.FirstOrDefaultAsync(u => u.email == model.email);
+           var user = await _context.users.FirstOrDefaultAsync(u => u.username == model.username);
 
             if(user==null){
                 return NotFound();
@@ -45,7 +45,7 @@ namespace Login.Controllers
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Value.Key);
             
             var tokenDescriptor = new SecurityTokenDescriptor{
-                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.email) }),
+                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.username) }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 Issuer = _jwtSettings.Value.Issuer,
                 Audience = _jwtSettings.Value.Audience,

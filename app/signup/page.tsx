@@ -20,7 +20,7 @@ import {useState} from "react";
 
 
 const formSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
+  username: z.string(),
   password: z.string().min(8, {
     message: "Password need to be at least 8 characters long",
   }),
@@ -33,7 +33,7 @@ export default function ProfileForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
@@ -55,7 +55,7 @@ export default function ProfileForm() {
         mode: "cors",
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'email=' + encodeURIComponent(values.email ) + '&password=' + encodeURIComponent(values.password )
+        body: 'username=' + encodeURIComponent(values.username ) + '&password=' + encodeURIComponent(values.password )
       });
   
       if (response.status ===  200) {
@@ -97,12 +97,12 @@ export default function ProfileForm() {
           <form onSubmit={form.handleSubmit(OnSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="email"
+              name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-white">Enter your email</FormLabel>
+                  <FormLabel className="text-white">Enter your username</FormLabel>
                   <FormControl className="text-white">
-                    <Input type="email" placeholder="Email" {...field} />
+                    <Input type="username" placeholder="Username" {...field} />
                   </FormControl>
                 </FormItem>
               )}

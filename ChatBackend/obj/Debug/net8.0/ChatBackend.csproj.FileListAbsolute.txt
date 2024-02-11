@@ -72,3 +72,4 @@ H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Microsoft.IdentityModel.Protoc
 H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll
