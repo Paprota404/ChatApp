@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 
-namespace Requests.Models;
+
+
+namespace Requests.Models{
 
 public class FriendRequestModel{
     public int id {get; set;}
@@ -15,4 +18,16 @@ public class FriendRequestModel{
 
 public enum FriendRequestStatus{
     Pending,Accepted,Rejected
+}
+}
+
+namespace Requests.Data{
+    public class AppDbContext : DbContext{
+        public DbSet<FriendRequestModel> friend_requests {get;set;}
+
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+            : base(options)
+        {
+        }
+    }
 }
