@@ -1,8 +1,18 @@
 using Requests.Models;
 using System.Collections.Generic;
+using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Requests.Data;
+
+namespace Requests.Services;
+
+ public interface IFriendRequestService
+    {
+        void SendFriendRequest(int senderId, int receiverId);
+        void AcceptFriendRequests(int requestId);
+        List<FriendRequestModel> GetFriendRequests(int userId);
+    }
 
 public class FriendRequestService{
      private readonly AppDbContext _dbContext;
