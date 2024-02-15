@@ -1,9 +1,10 @@
 using Requests.Models;
+using Friends.Models;
 using System.Collections.Generic;
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Requests.Data;
+
 
 namespace Requests.Services;
 
@@ -14,7 +15,7 @@ namespace Requests.Services;
         List<FriendRequestModel> GetFriendRequests(int userId);
     }
 
-public class FriendRequestService{
+public class FriendRequestService : IFriendRequestService{
      private readonly AppDbContext _dbContext;
 
      public FriendRequestService(AppDbContext dbContext){
@@ -45,7 +46,14 @@ public class FriendRequestService{
     {
         //Accepting friend request
         //Adding eachother to friends
+
         friendRequest.status = FriendRequestStatus.Accepted;
+
+        var newFriendship = new FriendsModel{
+            user1_id = friendRequest.request_sender_id,
+            user2_id = friendRequest.request_receiver_id
+        };
+        _dbContext.friends.Add(newFriendship);
         _dbContext.SaveChanges();
     };
      }

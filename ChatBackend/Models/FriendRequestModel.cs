@@ -19,9 +19,9 @@ public class FriendRequestModel{
 public enum FriendRequestStatus{
     Pending,Accepted,Rejected
 }
-}
 
-namespace Requests.Data{
+
+
     public class AppDbContext : DbContext{
         public DbSet<FriendRequestModel> friend_requests {get;set;}
 
@@ -30,4 +30,5 @@ namespace Requests.Data{
         {
         }
     }
+
 }
