@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 
 
@@ -13,7 +14,7 @@ public class FriendRequestModel{
 
     public FriendRequestStatus status {get;set;} = FriendRequestStatus.Pending;
 
-    public DateTime CreatedAt {get; set;} = DateTime.UtcNow;
+    public DateTime createdAt {get; set;} = DateTime.UtcNow;
 }
 
 public enum FriendRequestStatus{
@@ -22,13 +23,5 @@ public enum FriendRequestStatus{
 
 
 
-    public class AppDbContext : DbContext{
-        public DbSet<FriendRequestModel> friend_requests {get;set;}
-
-        public AppDbContext(DbContextOptions<AppDbContext> options)
-            : base(options)
-        {
-        }
-    }
 
 }

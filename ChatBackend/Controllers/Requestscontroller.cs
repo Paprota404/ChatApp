@@ -2,20 +2,24 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using Requests.Models;
 using Requests.Services;
 
 namespace Requests.Controllers{
    
-    [Authorize] // Add this attribute if authentication is required
+    
     [Route("api/[controller]")]
     public class FriendRequestController : Controller
     {
         private readonly IFriendRequestService _friendRequestService;
 
-        public FriendRequestController(IFriendRequestService friendRequestService)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public FriendRequestController(IFriendRequestService friendRequestService, IHttpContextAccessor httpContextAccessor)
         {
             _friendRequestService = friendRequestService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost("send")]
@@ -51,7 +55,7 @@ namespace Requests.Controllers{
             {
                 int receiverId = GetAuthenticatedUserId();
 
-                _friendRequestService.AcceptFriendRequests(receiverId, requestId);
+                _friendRequestService.AcceptFriendRequests(requestId);
 
                 return Ok("Friend request accepted successfully");
             }
@@ -76,15 +80,14 @@ namespace Requests.Controllers{
             }
             catch (Exception ex)
             {
-                
-                return (500, "An error occurred while processing the request");
+                 return StatusCode(500, new { Number = 500, Error = "An error occurred while processing the request" });
             }
         }
 
         // Helper method to get the currently authenticated user's ID 
        private int GetAuthenticatedUserId(){
-                    var httpContext = new HttpContextAccessor();
-                    var userIdClaim = httpContextAccessor.HttpContext?.User.FindFirst   (ClaimTypes.NameIdentifier);
+                    var httpContext = _httpContextAccessor.HttpContext;
+                    var userIdClaim = httpContext?.User.FindFirst(ClaimTypes.Name);
 
                     if(userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId)){
                         return userId;

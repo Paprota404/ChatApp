@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-
+using Chat.Database;
 
 namespace Requests.Services;
 
@@ -31,13 +31,13 @@ public class FriendRequestService : IFriendRequestService{
         var friendRequest = new FriendRequestModel{
             request_sender_id = senderId,
             request_receiver_id = receiverId,
-            Status = FriendRequestStatus.Pending,
-            CreatedAt = DateTime.UtcNow
+            status = FriendRequestStatus.Pending,
+            createdAt = DateTime.UtcNow
         };
 
         _dbContext.friend_requests.Add(friendRequest);
         _dbContext.SaveChanges();
-     }
+    }
 
      public void AcceptFriendRequests(int requestId){
         var friendRequest = _dbContext.friend_requests.Find(requestId);
