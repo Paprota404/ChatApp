@@ -59,7 +59,7 @@ namespace Login.Controllers
             {
                 HttpOnly = true,
                 Secure = true, // Only transmit the cookie over HTTPS
-                SameSite = SameSiteMode.Strict // Prevent CSRF attacks
+                SameSite = SameSiteMode.None // Prevent CSRF attacks
             });
 
 

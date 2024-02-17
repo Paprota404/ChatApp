@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Chat.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.OpenApi.Models;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,10 +21,19 @@ builder.Services.AddCors(options =>
                .AllowAnyMethod();
     });
 });
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
-        options => builder.Configuration.Bind("JWT", options));
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    builder.Configuration.Bind("JWT", options);
+})
+.AddCookie(options =>
+{
+    builder.Configuration.Bind("CookieSettings", options);
+});
    
 
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
