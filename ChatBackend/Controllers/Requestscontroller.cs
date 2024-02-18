@@ -6,6 +6,7 @@ using System.Security.Claims;
 using Requests.Models;
 using Requests.Services;
 
+
 namespace Requests.Controllers{
    
     
@@ -36,15 +37,18 @@ namespace Requests.Controllers{
                
                 
                 int senderId = GetAuthenticatedUserId();
+                //User enters username
+                //Find userId by username
+                
 
-                _friendRequestService.SendFriendRequest(senderId, requestModel.request_receiver_id);
+                _friendRequestService.SendFriendRequest(senderId, requestModel.receiver_username);
 
                 return Ok("Friend request sent successfully");
             }
             catch (Exception ex)
             {
                 
-                return StatusCode(500, "An error occurred while processing the request");
+                return StatusCode(500, ex.Message);
             }
         }
 

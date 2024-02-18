@@ -6,11 +6,11 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Chat.Database;
 
-namespace Requests.Services;
+namespace Requests.Services{
 
  public interface IFriendRequestService
     {
-        void SendFriendRequest(int senderId, int receiverId);
+        void SendFriendRequest(int senderId, string receiverUsername);
         void AcceptFriendRequests(int requestId);
         List<FriendRequestModel> GetFriendRequests(int userId);
     }
@@ -22,17 +22,30 @@ public class FriendRequestService : IFriendRequestService{
         _dbContext = dbContext;
      }
 
-     public void SendFriendRequest(int senderId, int receiverId){
+     public void SendFriendRequest(int senderId, string receiverUsername){
+        int? receiverId = _dbContext.users
+        .Where(u => u.username == receiverUsername)
+        .Select(u => (int?)u.id)
+        .FirstOrDefault();
+
+        if(receiverId == null){
+            throw new Exception("User was not found");
+        }
+
+        if(senderId==receiverId.GetValueOrDefault()){
+            throw new Exception("Can't send friend request to yourself");
+        }
         
         if(_dbContext.friend_requests.Any(r => r.request_sender_id == senderId && r.request_receiver_id == receiverId)){
-            return;
+            var errorMessage = "Friend request already sent.";
+            throw new Exception(errorMessage);
         }
 
         var friendRequest = new FriendRequestModel{
             request_sender_id = senderId,
             request_receiver_id = receiverId,
             status = FriendRequestStatus.Pending,
-            createdAt = DateTime.UtcNow
+            created_at = DateTime.UtcNow
         };
 
         _dbContext.friend_requests.Add(friendRequest);
@@ -51,8 +64,9 @@ public class FriendRequestService : IFriendRequestService{
 
         var newFriendship = new FriendsModel{
             user1_id = friendRequest.request_sender_id,
-            user2_id = friendRequest.request_receiver_id
+            user2_id = friendRequest.request_receiver_id ?? 0
         };
+
         _dbContext.friends.Add(newFriendship);
         _dbContext.SaveChanges();
     };
@@ -62,4 +76,5 @@ public class FriendRequestService : IFriendRequestService{
     {
         return _dbContext.friend_requests.Where(fr => fr.request_receiver_id == userId && fr.status == FriendRequestStatus.Pending).ToList();
     }
+}
 }

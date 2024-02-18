@@ -3,6 +3,9 @@ using Chat.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Requests.Services;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -34,7 +37,10 @@ builder.Services.AddAuthentication(options =>
 {
     builder.Configuration.Bind("CookieSettings", options);
 });
+
+builder.Services.AddHttpContextAccessor();
    
+builder.Services.AddScoped<IFriendRequestService, FriendRequestService>();
 
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
 
