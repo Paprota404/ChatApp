@@ -45,7 +45,7 @@ namespace Login.Controllers
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Value.Key);
             
             var tokenDescriptor = new SecurityTokenDescriptor{
-                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.username) }),
+                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, user.id.ToString()) }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 Issuer = _jwtSettings.Value.Issuer,
                 Audience = _jwtSettings.Value.Audience,
@@ -58,8 +58,8 @@ namespace Login.Controllers
            Response.Cookies.Append("jwtToken", jwtToken, new CookieOptions
             {
                 HttpOnly = true,
-                Secure = true, // Only transmit the cookie over HTTPS
-                SameSite = SameSiteMode.None // Prevent CSRF attacks
+                Secure = false, // Only transmit the cookie over HTTPS
+                SameSite = SameSiteMode.Lax // Prevent CSRF attacks
             });
 
 

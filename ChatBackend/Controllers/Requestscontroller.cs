@@ -32,14 +32,10 @@ namespace Requests.Controllers{
                 {
                     return BadRequest("Invalid friend request data");
                 }
-
-                // Get the currently authenticated user's ID (assuming it's stored in the claims)
-               
-                
+   
                 int senderId = GetAuthenticatedUserId();
                 //User enters username
                 //Find userId by username
-                
 
                 _friendRequestService.SendFriendRequest(senderId, requestModel.receiver_username);
 
@@ -57,9 +53,15 @@ namespace Requests.Controllers{
         {
             try
             {
-                int receiverId = GetAuthenticatedUserId();
+                int? receiverId = GetAuthenticatedUserId();
 
-                _friendRequestService.AcceptFriendRequests(requestId);
+                 if (!receiverId.HasValue)
+                {
+                    // Handle the case where receiverId is null (or not a valid integer)
+                    return BadRequest("Invalid or missing receiverId");
+                }
+
+                _friendRequestService.AcceptFriendRequests(requestId,receiverId.Value);
 
                 return Ok("Friend request accepted successfully");
             }
@@ -89,15 +91,15 @@ namespace Requests.Controllers{
         }
 
         // Helper method to get the currently authenticated user's ID 
-       private int GetAuthenticatedUserId(){
-                    var httpContext = _httpContextAccessor.HttpContext;
-                    var userIdClaim = httpContext?.User.FindFirst(ClaimTypes.Name);
+        private int GetAuthenticatedUserId(){
+            var httpContext = _httpContextAccessor.HttpContext;
+            var userIdClaim = httpContext?.User.FindFirst(ClaimTypes.NameIdentifier);
 
-                    if(userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId)){
-                        return userId;
-                    }
+            if(userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId)){
+                return userId;
+            }
 
-                   return 0;
-                }
+            return 0;
+        }
     }
 }

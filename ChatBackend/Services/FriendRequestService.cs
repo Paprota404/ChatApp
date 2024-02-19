@@ -11,7 +11,7 @@ namespace Requests.Services{
  public interface IFriendRequestService
     {
         void SendFriendRequest(int senderId, string receiverUsername);
-        void AcceptFriendRequests(int requestId);
+        void AcceptFriendRequests(int requestId, int receiverId);
         List<FriendRequestModel> GetFriendRequests(int userId);
     }
 
@@ -52,11 +52,15 @@ public class FriendRequestService : IFriendRequestService{
         _dbContext.SaveChanges();
     }
 
-     public void AcceptFriendRequests(int requestId){
+     public void AcceptFriendRequests(int requestId, int receiverId){
         var friendRequest = _dbContext.friend_requests.Find(requestId);
 
-         if (friendRequest != null)
-    {
+        if(friendRequest.request_receiver_id!=receiverId){
+            return;
+        }
+
+        if (friendRequest != null)
+        {
         //Accepting friend request
         //Adding eachother to friends
 
@@ -69,8 +73,8 @@ public class FriendRequestService : IFriendRequestService{
 
         _dbContext.friends.Add(newFriendship);
         _dbContext.SaveChanges();
-    };
-     }
+        };
+    }
 
     public List<FriendRequestModel> GetFriendRequests(int userId)
     {
