@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace SignUp.Controllers
 {
     [Route("api/signup")]
-    public class SignUpController : Controller{
+    [ApiController]
+    public class SignUpController : ControllerBase{
         
         private readonly AppDbContext _context;
 

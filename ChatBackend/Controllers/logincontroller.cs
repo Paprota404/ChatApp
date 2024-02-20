@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 
 
@@ -17,19 +18,20 @@ namespace Login.Controllers
 {
    
     [Route("api/login")]
-    public class LoginController : Controller{
+   
+    public class LoginController : ControllerBase{
         
         private readonly AppDbContext _context;
-        private readonly IOptionsSnapshot<JWT> _jwtSettings;
+        private IConfiguration _config;
 
-        public LoginController(AppDbContext context, IOptionsSnapshot<JWT> jwtSettings){
+        public LoginController(AppDbContext context, IConfiguration config){
             _context = context;
-            _jwtSettings = jwtSettings;
+            _config = config;
         }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model){
-           var user = await _context.users.FirstOrDefaultAsync(u => u.username == model.username);
+            var user = await _context.users.FirstOrDefaultAsync(u => u.username == model.username);
 
             if(user==null){
                 return NotFound();
@@ -41,30 +43,22 @@ namespace Login.Controllers
                 return Unauthorized();
             }
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtSettings.Value.Key);
-            
-            var tokenDescriptor = new SecurityTokenDescriptor{
-                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, user.id.ToString()) }),
-                Expires = DateTime.UtcNow.AddDays(1),
-                Issuer = _jwtSettings.Value.Issuer,
-                Audience = _jwtSettings.Value.Audience,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:key"]));
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var jwtToken = tokenHandler.WriteToken(token);
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-           Response.Cookies.Append("jwtToken", jwtToken, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = false, // Only transmit the cookie over HTTPS
-                SameSite = SameSiteMode.Lax // Prevent CSRF attacks
-            });
+            var Sectoken = new JwtSecurityToken(_config["JWT:Issuer"], _config["JWT:Issuer"],
+            null,
+            expires:DateTime.Now.AddMinutes(180),
+            signingCredentials:credentials);
+
+            var token  = new JwtSecurityTokenHandler().WriteToken(Sectoken);
+
+           
 
 
 
-            return Ok();
+            return Ok(token);
         }
     }
 }

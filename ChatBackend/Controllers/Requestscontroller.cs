@@ -5,22 +5,25 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using Requests.Models;
 using Requests.Services;
+using Microsoft.Extensions.Logging;
 
 
 namespace Requests.Controllers{
    
-    
+    [Authorize]
     [Route("api/[controller]")]
-    public class FriendRequestController : Controller
+    [ApiController]
+    public class FriendRequestController : ControllerBase
     {
         private readonly IFriendRequestService _friendRequestService;
-
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ILogger<FriendRequestController> _logger;
 
-        public FriendRequestController(IFriendRequestService friendRequestService, IHttpContextAccessor httpContextAccessor)
+        public FriendRequestController(IFriendRequestService friendRequestService, IHttpContextAccessor httpContextAccessor, ILogger<FriendRequestController> logger)
         {
             _friendRequestService = friendRequestService;
             _httpContextAccessor = httpContextAccessor;
+            _logger = logger;
         }
 
         [HttpPost("send")]
@@ -36,6 +39,7 @@ namespace Requests.Controllers{
                 int senderId = GetAuthenticatedUserId();
                 //User enters username
                 //Find userId by username
+                _logger.LogInformation($"Authenticated user ID: {senderId}");
 
                 _friendRequestService.SendFriendRequest(senderId, requestModel.receiver_username);
 
