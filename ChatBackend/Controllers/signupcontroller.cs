@@ -4,6 +4,7 @@ using BCrypt.Net;
 using Chat.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 
 namespace SignUp.Controllers
 {
@@ -11,10 +12,10 @@ namespace SignUp.Controllers
     [ApiController]
     public class SignUpController : ControllerBase{
         
-        private readonly AppDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public SignUpController(AppDbContext context){
-            _context = context;
+        public SignUpController(UserManager<IdentityUser> userManager){
+            _userManager = userManager;
         }
         
         [HttpPost]
@@ -23,19 +24,25 @@ namespace SignUp.Controllers
                 return BadRequest(ModelState);
             }
             
-            bool userExists = await _context.users.AnyAsync(u => u.username == model.username);
+            var existingUser = await _userManager.FindByNameAsync(model.username);
 
-            if(userExists){
+            if(existingUser != null){
                 return Conflict(new {Message="A user with this email already exists."});
             }
 
-            model.password = BCrypt.Net.BCrypt.HashPassword(model.password);
+            var user = new IdentityUser { UserName = model.username };
+            var result = await _userManager.CreateAsync(user, model.password);
 
-            var user = new SignUpModel { username = model.username, password = model.password }; 
-            _context.users.Add(user); 
-            await _context.SaveChangesAsync();
-
+            if (result.Succeeded)
+        {
+            // User creation succeeded
             return Ok();
+        }
+            else
+            {
+                // User creation failed, return the errors
+                return BadRequest(result.Errors);
+            }
         }
     }
 }

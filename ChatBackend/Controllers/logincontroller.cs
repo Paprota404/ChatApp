@@ -54,11 +54,17 @@ namespace Login.Controllers
 
             var token  = new JwtSecurityTokenHandler().WriteToken(Sectoken);
 
-           
+           Response.Cookies.Append("jwtToken", token, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false, // Only transmit the cookie over HTTPS
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddHours(3)
+            });
 
 
 
-            return Ok(token);
+            return Ok();
         }
     }
 }
