@@ -1,4 +1,4 @@
-using SignUp.Models;
+using AuthDTO;
 using Login.Controllers;
 using BCrypt.Net;
 using Chat.Database;
@@ -19,19 +19,20 @@ namespace SignUp.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> SignUp(SignUpModel model){
+        public async Task<IActionResult> SignUp([FromBody] AuthDto model){
+
             if(!ModelState.IsValid){
                 return BadRequest(ModelState);
             }
             
-            var existingUser = await _userManager.FindByNameAsync(model.username);
+            var existingUser = await _userManager.FindByNameAsync(model.UserName);
 
             if(existingUser != null){
                 return Conflict(new {Message="A user with this email already exists."});
             }
 
-            var user = new IdentityUser { UserName = model.username };
-            var result = await _userManager.CreateAsync(user, model.password);
+            var user = new IdentityUser {UserName = model.UserName};
+            var result = await _userManager.CreateAsync(user,model.Password);
 
             if (result.Succeeded)
         {

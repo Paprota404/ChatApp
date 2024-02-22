@@ -1,18 +1,14 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
-using Login.Models;
-using BCrypt.Net;
 using Microsoft.EntityFrameworkCore;
-using Chat.Database;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-
-
-
+using Microsoft.AspNetCore.Identity;
+using AuthDTO;
+using Microsoft.Extensions.Configuration;
 
 namespace Login.Controllers
 {
@@ -21,50 +17,62 @@ namespace Login.Controllers
    
     public class LoginController : ControllerBase{
         
-        private readonly AppDbContext _context;
-        private IConfiguration _config;
-
-        public LoginController(AppDbContext context, IConfiguration config){
-            _context = context;
-            _config = config;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IConfiguration _configuration; 
+        public LoginController(UserManager<IdentityUser> userManager, IConfiguration configuration){
+            _userManager = userManager;
+            _configuration = configuration;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginModel model){
-            var user = await _context.users.FirstOrDefaultAsync(u => u.username == model.username);
+        public async Task<IActionResult> Login([FromBody] AuthDto model){
+            
+
+            //Check if user exits if exist check if password is correct
+            var user = await _userManager.FindByNameAsync(model.UserName);
 
             if(user==null){
-                return NotFound();
+                return NotFound(new {Message="A user doesn't exist."});
             }
 
-            bool isValidPassword = BCrypt.Net.BCrypt.Verify(model.password,user.password);
+            var CorrectPassword = await _userManager.CheckPasswordAsync(user,model.Password);
 
-            if(!isValidPassword){
-                return Unauthorized();
+            if(!CorrectPassword){
+                return Unauthorized(new {Message="Invalid password"});
             }
 
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:key"]));
+            var claims = new List<Claim>
+            {
+            new Claim(ClaimTypes.NameIdentifier,user.Id),
+            new Claim(ClaimTypes.Name,user.UserName),
+            };
 
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var Sectoken = new JwtSecurityToken(_config["JWT:Issuer"], _config["JWT:Issuer"],
-            null,
-            expires:DateTime.Now.AddMinutes(180),
-            signingCredentials:credentials);
+            var token = new JwtSecurityToken(_configuration["JWT:Issuer"],
+            _configuration["JWT:Audience"],
+            claims,
+            expires: DateTime.Now.AddHours(2), // Set token expiration
+            signingCredentials: creds);
 
-            var token  = new JwtSecurityTokenHandler().WriteToken(Sectoken);
+            var tokenHandler = new JwtSecurityTokenHandler(); 
+            var tokenString = tokenHandler.WriteToken(token);
 
-           Response.Cookies.Append("jwtToken", token, new CookieOptions
+           
+
+            Response.Cookies.Append("JwtToken", tokenString, new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false, // Only transmit the cookie over HTTPS
+                Secure = false,
                 SameSite = SameSiteMode.None,
-                Expires = DateTime.UtcNow.AddHours(3)
+                Expires = DateTime.UtcNow.AddMinutes(120) // Set your desired expiration time
             });
-
-
 
             return Ok();
         }
+
     }
+
+    
 }

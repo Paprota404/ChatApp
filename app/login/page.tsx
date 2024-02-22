@@ -50,12 +50,8 @@ export default function ProfileForm() {
       const response = await fetch(apiEndpoint, {
         mode: "cors",
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body:
-          "username=" +
-          encodeURIComponent(values.username) +
-          "&password=" +
-          encodeURIComponent(values.password),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ UserName: values.username, Password: values.password }),
       });
 
       if (response.status === 200) {

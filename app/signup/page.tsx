@@ -54,8 +54,8 @@ export default function ProfileForm() {
       const response = await fetch(apiEndpoint, {
         mode: "cors",
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'username=' + encodeURIComponent(values.username ) + '&password=' + encodeURIComponent(values.password )
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ UserName: values.username, Password: values.password }), 
       });
   
       if (response.status ===  200) {
@@ -70,7 +70,7 @@ export default function ProfileForm() {
         let errorData = await response.json();
         throw new Error(errorData.message || 'Bad Request');
       } else if(response.status === 409){
-        setError("User with this email already exists");
+        setError("User with this usernam already exists");
         setSigning(false);
       }
       else {

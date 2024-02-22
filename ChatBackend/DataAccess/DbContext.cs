@@ -1,23 +1,19 @@
 using Microsoft.EntityFrameworkCore;
-using SignUp.Models;
 using Requests.Models;
 using Friends.Models;
-
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Chat.Database{
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<IdentityUser>
 {
-    public DbSet<SignUpModel> users {get; set;}
     public DbSet<FriendRequestModel> friend_requests {get; set;}
     public DbSet<FriendsModel> friends {get;set;}
      public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
         }
-    
-   
-
-     
+ 
 }
 
 }

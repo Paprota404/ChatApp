@@ -5,6 +5,8 @@ using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Chat.Database;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Requests.Services{
 
@@ -16,23 +18,24 @@ namespace Requests.Services{
     }
 
 public class FriendRequestService : IFriendRequestService{
-     private readonly AppDbContext _dbContext;
-
-     public FriendRequestService(AppDbContext dbContext){
+    private readonly AppDbContext _dbContext;
+    private readonly UserManager<IdentityUser> _userManager;       
+     public FriendRequestService(AppDbContext dbContext,UserManager<IdentityUser> userManager){
         _dbContext = dbContext;
+        _userManager = userManager;
      }
 
      public void SendFriendRequest(int senderId, string receiverUsername){
-        int? receiverId = _dbContext.users
-        .Where(u => u.username == receiverUsername)
-        .Select(u => (int?)u.id)
-        .FirstOrDefault();
+
+        int receiverId = int.Parse(_userManager.FindByNameAsync(receiverUsername).Result.Id);
+
+        
 
         if(receiverId == null){
             throw new Exception("User was not found");
         }
 
-        if(senderId==receiverId.GetValueOrDefault()){
+        if(senderId==receiverId){
             throw new Exception("Can't send friend request to yourself");
         }
         
