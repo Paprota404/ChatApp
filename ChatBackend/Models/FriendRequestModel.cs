@@ -10,11 +10,11 @@ namespace Requests.Models{
 public class FriendRequestModel{
     public int id {get; set;}
 
-    public int request_sender_id {get;set;}
+    public string request_sender_id {get;set;}
     [NotMapped]
     public string receiver_username {get;set;}
 
-    public int? request_receiver_id {get;set;}
+    public string request_receiver_id {get;set;}
 
     public FriendRequestStatus status {get;set;} = FriendRequestStatus.Pending;
 

@@ -27,7 +27,7 @@ namespace Requests.Controllers{
         }
 
         [HttpPost("send")]
-        public IActionResult SendFriendRequest([FromBody] FriendRequestModel requestModel)
+        public IActionResult SendFriendRequest([FromBody] string receiver_username)
         {
             try
             {   
@@ -36,12 +36,12 @@ namespace Requests.Controllers{
                     return BadRequest("Invalid friend request data");
                 }
    
-                int senderId = GetAuthenticatedUserId();
+                string senderId = GetAuthenticatedUserId();
                 //User enters username
                 //Find userId by username
                 _logger.LogInformation($"Authenticated user ID: {senderId}");
 
-                _friendRequestService.SendFriendRequest(senderId, requestModel.receiver_username);
+                _friendRequestService.SendFriendRequest(senderId, receiver_username);
 
                 return Ok("Friend request sent successfully");
             }
@@ -57,15 +57,10 @@ namespace Requests.Controllers{
         {
             try
             {
-                int? receiverId = GetAuthenticatedUserId();
+                string receiverId = GetAuthenticatedUserId();
+        
 
-                 if (!receiverId.HasValue)
-                {
-                    // Handle the case where receiverId is null (or not a valid integer)
-                    return BadRequest("Invalid or missing receiverId");
-                }
-
-                _friendRequestService.AcceptFriendRequests(requestId,receiverId.Value);
+                _friendRequestService.AcceptFriendRequests(requestId,receiverId);
 
                 return Ok("Friend request accepted successfully");
             }
@@ -82,7 +77,7 @@ namespace Requests.Controllers{
             try
             {
                 // Get the currently authenticated user's ID (assuming it's stored in the claims)
-                int userId = GetAuthenticatedUserId();
+                string userId = GetAuthenticatedUserId();
 
                 List<FriendRequestModel> pendingRequests = _friendRequestService.GetFriendRequests(userId);
 
@@ -95,15 +90,12 @@ namespace Requests.Controllers{
         }
 
         // Helper method to get the currently authenticated user's ID 
-        private int GetAuthenticatedUserId(){
+        private string GetAuthenticatedUserId(){
             var httpContext = _httpContextAccessor.HttpContext;
             var userIdClaim = httpContext?.User.FindFirst(ClaimTypes.NameIdentifier);
 
-            if(userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId)){
-                return userId;
-            }
 
-            return 0;
+            return userIdClaim?.Value;
         }
     }
 }
