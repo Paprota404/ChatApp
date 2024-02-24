@@ -16,7 +16,7 @@ const AddingContacts = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   async function sendRequest() {
-    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjljNTQyYmVkLWVlOGEtNGZmZi05NjAwLTAxYTdjNmNlNTg3ZSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJQYXByb3RhIiwiZXhwIjoxNzA4NjQwMjAyLCJpc3MiOiJEaXJlY3RNZSIsImF1ZCI6IkRpcmVjdGVycyJ9.z712esJbddUlLHwTe8Qod5vpeLXi0FUgC8Qr1FkuLhw";
+    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjljNTQyYmVkLWVlOGEtNGZmZi05NjAwLTAxYTdjNmNlNTg3ZSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJQYXByb3RhIiwiZXhwIjoxNzA4NzcxOTE3LCJpc3MiOiJEaXJlY3RNZSIsImF1ZCI6IkRpcmVjdGVycyJ9.pGZrAnjf0-wirWF4o0VPawrs-SguKphoSQt4xavHG2c";
     try {
       const response = await fetch(
         "http://localhost:5108/api/FriendRequest/send",
@@ -24,11 +24,10 @@ const AddingContacts = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, 
           },
           credentials: 'include',
-          body: JSON.stringify({
-            receiver_username: username,
-          }),
+          body: JSON.stringify(username),
         }
       );
 
