@@ -27,7 +27,7 @@ namespace Requests.Controllers{
         }
 
         [HttpPost("send")]
-        public IActionResult SendFriendRequest([FromBody] string receiver_username)
+        public async Task<IActionResult> SendFriendRequest([FromBody] string receiver_username)
         {
             try
             {   
@@ -41,7 +41,7 @@ namespace Requests.Controllers{
                 //Find userId by username
                 _logger.LogInformation($"Authenticated user ID: {senderId}");
 
-                _friendRequestService.SendFriendRequest(senderId, receiver_username);
+                await _friendRequestService.SendFriendRequest(senderId, receiver_username);
 
                 return Ok("Friend request sent successfully");
             }
@@ -53,14 +53,14 @@ namespace Requests.Controllers{
         }
 
         [HttpPost("accept/{requestId}")]
-        public IActionResult AcceptFriendRequest(int requestId)
+        public async Task<IActionResult> AcceptFriendRequest(int requestId)
         {
             try
             {
                 string receiverId = GetAuthenticatedUserId();
         
 
-                _friendRequestService.AcceptFriendRequests(requestId,receiverId);
+                await _friendRequestService.AcceptFriendRequests(requestId,receiverId);
 
                 return Ok("Friend request accepted successfully");
             }

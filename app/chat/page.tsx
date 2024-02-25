@@ -2,6 +2,7 @@ import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import MessageRoom from "./MessageRoom";
 import AddingContacts from "./AddingContacts";
+import PendingRequests from "./PendingRequests";
 
 const Chat = () => {
   return (
@@ -44,6 +45,7 @@ const Chat = () => {
         </div>
         <hr className="bg-white w-5/6 mx-auto"></hr>
         <AddingContacts />
+        <PendingRequests />
       </div>
 
       <div
