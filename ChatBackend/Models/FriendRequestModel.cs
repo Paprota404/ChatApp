@@ -13,6 +13,7 @@ public class FriendRequestModel{
     public string request_sender_id {get;set;}
     [NotMapped]
     public string receiver_username {get;set;}
+    public string sender_username {get;set;}
 
     public string request_receiver_id {get;set;}
 

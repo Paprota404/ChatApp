@@ -27,8 +27,7 @@ public class FriendRequestService : IFriendRequestService{
      }
 
      public async Task SendFriendRequest(string senderId, string receiverUsername){
-        try
-        {
+        
         IdentityUser receiver = await _userManager.FindByNameAsync(receiverUsername);
 
         if (receiver == null)
@@ -46,33 +45,27 @@ public class FriendRequestService : IFriendRequestService{
             var errorMessage = "Friend request already sent.";
             throw new Exception(errorMessage);
         }
+        IdentityUser sender = await  _userManager.FindByIdAsync(senderId);
 
         var friendRequest = new FriendRequestModel
         {
             request_sender_id = senderId,
             request_receiver_id = receiver.Id,
             status = FriendRequestStatus.Pending,
-            created_at = DateTime.UtcNow
+            created_at = DateTime.UtcNow,
+            sender_username = sender.UserName
         };
 
         _dbContext.friend_requests.Add(friendRequest);
         _dbContext.SaveChanges();
 
-        // Additional code for successful operation if needed
-        }
-        catch (Exception ex)
-        {
-            // Handle the exception here, you might log it or take appropriate action
-            // For example, log the exception: _logger.LogError(ex, "Error in SendFriendRequest");
-            throw; // Re-throw the exception if needed
-        }
     }
 
      public async Task AcceptFriendRequests(int requestId, string receiverId){
         var friendRequest = await _dbContext.friend_requests.FindAsync(requestId);
 
         if(friendRequest.request_receiver_id!=receiverId){
-            return;
+            throw new Exception("Friend request is not intended for this user");
         }
 
         if (friendRequest != null)

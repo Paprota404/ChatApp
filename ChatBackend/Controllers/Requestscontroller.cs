@@ -66,8 +66,7 @@ namespace Requests.Controllers{
             }
             catch (Exception ex)
             {
-                
-                 return  StatusCode(500, "An error occurred while processing the request");
+                 return StatusCode(500,ex.Message);
             }
         }
 
@@ -85,7 +84,7 @@ namespace Requests.Controllers{
             }
             catch (Exception ex)
             {
-                 return StatusCode(500, new { Number = 500, Error = "An error occurred while processing the request" });
+                 return StatusCode(500, ex.Message);
             }
         }
 

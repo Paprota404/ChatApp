@@ -64,9 +64,10 @@ namespace Login.Controllers
             Response.Cookies.Append("JwtToken", tokenString, new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false,
+                Secure = true,
                 SameSite = SameSiteMode.None,
-                Expires = DateTime.UtcNow.AddMinutes(120) // Set your desired expiration time
+                Expires = DateTime.UtcNow.AddMinutes(120)
+                // Set your desired expiration time
             });
 
             return Ok();
