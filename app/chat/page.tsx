@@ -1,11 +1,16 @@
+'use client'
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import MessageRoom from "./MessageRoom";
 import AddingContacts from "./AddingContacts";
 import PendingRequests from "./PendingRequests";
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const Chat = () => {
+  const queryClient = new QueryClient();
+
   return (
+    <QueryClientProvider client={queryClient}>
     <>
       <div className="w-1/4 h-full flex flex-col absolute  border-r-2 bg-black">
         <div className="border-white   flex justify-center h-32 items-center w-full">
@@ -64,6 +69,7 @@ const Chat = () => {
         <MessageRoom></MessageRoom>
       </div>
     </>
+    </QueryClientProvider>
   );
 };
 
