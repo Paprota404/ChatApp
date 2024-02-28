@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Chat.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Requests.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -30,8 +29,9 @@ builder.Services.AddCors(options =>
     {
         builder.WithOrigins("http://localhost:3000")
                .AllowAnyHeader()
-               .AllowAnyMethod()
-               .AllowCredentials();
+               .AllowAnyMethod();
+
+        builder.AllowCredentials();
     });
 });
 
@@ -53,33 +53,17 @@ builder.Services.Configure<IdentityOptions>(options =>
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 });
 
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    // Cookie settings
-    options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
-
-    options.LoginPath = "/Login";
-    options.SlidingExpiration = true;
-});
-
-builder.Services.AddAuthentication(options =>
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
     {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["JWT:Issuer"],
-            ValidAudience = builder.Configuration["JWT:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
-        };
+        options.Cookie.Name = "DirectMe";
+        options.Cookie.HttpOnly = true; // Make the cookie HttpOnly for added security
+        options.Cookie.SameSite = SameSiteMode.None; // Adjust as needed
+        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; 
+        options.Cookie.MaxAge = TimeSpan.FromHours(1); // Set the expiration time of the cookie
+        options.LoginPath = "/Login"; 
+        options.ExpireTimeSpan = TimeSpan.FromDays(30);
+
     });
 
 builder.Services.AddAuthorization();
@@ -102,9 +86,10 @@ if (app.Environment.IsDevelopment())
 if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
+    app.UseHttpsRedirection();
 }
 
-app.UseHttpsRedirection();
+
 app.UseCors("MyCorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();

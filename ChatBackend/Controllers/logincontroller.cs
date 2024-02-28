@@ -43,32 +43,14 @@ namespace Login.Controllers
 
             var claims = new List<Claim>
             {
-            new Claim(ClaimTypes.NameIdentifier,user.Id),
-            new Claim(ClaimTypes.Name,user.UserName),
+                new Claim(ClaimTypes.NameIdentifier,user.Id),
+                new Claim(ClaimTypes.Name,user.UserName),
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var identity = new ClaimsIdentity(claims,CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
 
-            var token = new JwtSecurityToken(_configuration["JWT:Issuer"],
-            _configuration["JWT:Audience"],
-            claims,
-            expires: DateTime.Now.AddHours(2), // Set token expiration
-            signingCredentials: creds);
-
-            var tokenHandler = new JwtSecurityTokenHandler(); 
-            var tokenString = tokenHandler.WriteToken(token);
-
-           
-
-            Response.Cookies.Append("JwtToken", tokenString, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.None,
-                Expires = DateTime.UtcNow.AddMinutes(120)
-                // Set your desired expiration time
-            });
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,principal)
 
             return Ok();
         }

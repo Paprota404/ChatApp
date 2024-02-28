@@ -71,6 +71,10 @@
               "target": "Package",
               "version": "[1.1.0, )"
             },
+            "Microsoft.AspNetcore.Authentication.Cookies": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.2, )"
