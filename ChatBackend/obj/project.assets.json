@@ -7000,6 +7000,7 @@
       "BCrypt.Net-Next >= 4.0.3",
       "EntityFramework >= 6.4.4",
       "Microsoft.AspNet.WebApi.Core >= 5.3.0",
+      "Microsoft.AspNetCore.Authentication >= 2.2.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.2",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.2",
       "Microsoft.AspNetCore.OpenApi >= 8.0.1",
@@ -7067,6 +7068,10 @@
           "Microsoft.AspNet.WebApi.Core": {
             "target": "Package",
             "version": "[5.3.0, )"
+          },
+          "Microsoft.AspNetCore.Authentication": {
+            "target": "Package",
+            "version": "[2.2.0, )"
           },
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",

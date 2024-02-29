@@ -50,7 +50,7 @@ const Chat = () => {
         </div>
         <hr className="bg-white w-5/6 mx-auto"></hr>
         <AddingContacts />
-        <PendingRequests />
+       
       </div>
 
       <div

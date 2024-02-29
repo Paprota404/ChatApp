@@ -19,7 +19,7 @@ const AddingContacts = () => {
    
     try {
       const response = await fetch(
-        "http://localhost:5108/api/FriendRequest/send",
+        "https://localhost:7161/api/FriendRequest/send",
         {
           method: "POST",
           headers: {
@@ -36,7 +36,7 @@ const AddingContacts = () => {
        
       }
 
-      console.log('Friend request sent successfully');
+      
     } catch (error) {
       console.error('Error sending friend request:', (error as Error).message);
       setErrorMessage((error as Error).message);

@@ -9,6 +9,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
 using AuthDTO;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Login.Controllers
 {
@@ -50,9 +52,10 @@ namespace Login.Controllers
             var identity = new ClaimsIdentity(claims,CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,principal)
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,principal);
 
-            return Ok();
+
+            return Ok(new { Message = "Login successful"});
         }
 
     }

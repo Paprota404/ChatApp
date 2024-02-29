@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,8 +58,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.Cookie.Name = "DirectMe";
         options.Cookie.HttpOnly = true; // Make the cookie HttpOnly for added security
-        options.Cookie.SameSite = SameSiteMode.None; // Adjust as needed
-        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; 
+        options.Cookie.SameSite = SameSiteMode.Lax; // Adjust as needed
+        options.Cookie.SecurePolicy = CookieSecurePolicy.None; 
         options.Cookie.MaxAge = TimeSpan.FromHours(1); // Set the expiration time of the cookie
         options.LoginPath = "/Login"; 
         options.ExpireTimeSpan = TimeSpan.FromDays(30);
@@ -86,10 +86,10 @@ if (app.Environment.IsDevelopment())
 if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
-    app.UseHttpsRedirection();
+    
 }
 
-
+app.UseHttpsRedirection();
 app.UseCors("MyCorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
