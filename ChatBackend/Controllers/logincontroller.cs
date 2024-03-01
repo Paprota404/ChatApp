@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
 using AuthDTO;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication;
 
 namespace Login.Controllers
@@ -43,19 +43,24 @@ namespace Login.Controllers
                 return Unauthorized(new {Message="Invalid password"});
             }
 
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier,user.Id),
-                new Claim(ClaimTypes.Name,user.UserName),
+            var claims = new List<Claim>{
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
             };
 
-            var identity = new ClaimsIdentity(claims,CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new ClaimsPrincipal(identity);
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,principal);
+            var SecToken = new JwtSecurityToken(
+                _configuration["JWT:Issuer"],
+                _configuration["JWT:Issuer"],
+                claims,
+                expires: DateTime.Now.AddMinutes(120),
+                signingCredentials:credentials
+            );
 
+            var token = new JwtSecurityTokenHandler().WriteToken(SecToken);
 
-            return Ok(new { Message = "Login successful"});
+            return Ok(new {token=token});
         }
 
     }

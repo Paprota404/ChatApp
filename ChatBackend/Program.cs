@@ -8,7 +8,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,18 +55,22 @@ builder.Services.Configure<IdentityOptions>(options =>
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 });
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.Cookie.Name = "DirectMe";
-        options.Cookie.HttpOnly = true; // Make the cookie HttpOnly for added security
-        options.Cookie.SameSite = SameSiteMode.Lax; // Adjust as needed
-        options.Cookie.SecurePolicy = CookieSecurePolicy.None; 
-        options.Cookie.MaxAge = TimeSpan.FromHours(1); // Set the expiration time of the cookie
-        options.LoginPath = "/Login"; 
-        options.ExpireTimeSpan = TimeSpan.FromDays(30);
+var jwtIssuer = builder.Configuration.GetSection("JWT:Issuer").Get<string>();
+var jwtKey = builder.Configuration.GetSection("JWT:Key").Get<string>();
 
-    });
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(options=>{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtIssuer,
+        ValidAudience = jwtIssuer,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+    };
+});
 
 builder.Services.AddAuthorization();
 
@@ -95,9 +101,14 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
+app.Use(async(context,next)=>{
+    if(!context.User.Identity.IsAuthenticated){
+        context.Response.Redirect("/login");
+        return;
+    }
 
-
-
+    await next();
+});
 
 app.Run();
 

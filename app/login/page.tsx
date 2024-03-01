@@ -11,11 +11,9 @@ import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
- 
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
@@ -42,7 +40,7 @@ export default function ProfileForm() {
       setError("Password field is empty");
       return;
     }
-    const apiEndpoint = "http://localhost:5108/api/login";
+    const apiEndpoint = "https://localhost:7161/api/login";
 
     setSigning(true);
 
@@ -56,7 +54,11 @@ export default function ProfileForm() {
 
       if (response.status === 200) {
         // Successful request, navigate to the chat page
+        const data = await response.json();
+        const token = data.token;
+        
 
+        localStorage.setItem("jwtToken",token);
         setTimeout(() => {
           router.push("/chat");
         }, 1000);
