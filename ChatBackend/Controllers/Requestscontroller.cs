@@ -58,8 +58,9 @@ namespace Requests.Controllers{
             try
             {
                 string receiverId = GetAuthenticatedUserId();
-        
 
+                _logger.LogInformation($"Authenticated user ID: {receiverId}");
+        
                 await _friendRequestService.AcceptFriendRequests(requestId,receiverId);
 
                 return Ok("Friend request accepted successfully");
@@ -84,7 +85,7 @@ namespace Requests.Controllers{
             }
             catch (Exception ex)
             {
-                 return StatusCode(500, ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 

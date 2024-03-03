@@ -32,7 +32,7 @@ const PendingRequests = () => {
     Error
   >("pendingRequests", async () => {
     const response = await fetch(
-      "http://localhost:5108/api/FriendRequest/pending",
+      "http://localhost:7161/api/FriendRequest/pending",
       {
         method: "GET",
         headers: {

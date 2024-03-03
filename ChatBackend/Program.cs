@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
-
+using Friends.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,7 +77,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddHttpContextAccessor();
    
 builder.Services.AddScoped<IFriendRequestService, FriendRequestService>();
-
+builder.Services.AddScoped<IFriendsService, FriendsService>();
 
 
 var app = builder.Build();
@@ -92,7 +92,6 @@ if (app.Environment.IsDevelopment())
 if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
-    
 }
 
 app.UseHttpsRedirection();
@@ -101,14 +100,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-app.Use(async(context,next)=>{
-    if(!context.User.Identity.IsAuthenticated){
-        context.Response.Redirect("/login");
-        return;
-    }
-
-    await next();
-});
 
 app.Run();
 
