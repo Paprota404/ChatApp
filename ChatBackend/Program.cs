@@ -94,7 +94,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+
 app.UseCors("MyCorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();

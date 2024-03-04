@@ -18,14 +18,18 @@ const AddingContacts = () => {
   async function sendRequest() {
    
     try {
+
+      const jwtToken = localStorage.getItem("jwtToken");
+
       const response = await fetch(
-        "https://localhost:7161/api/FriendRequest/send",
+        "http://localhost:5108/api/FriendRequest/send",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${jwtToken}`
           },
-          credentials: 'include',
+          
           body: JSON.stringify(username),
         }
       );
