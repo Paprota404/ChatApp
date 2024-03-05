@@ -40,7 +40,7 @@ export default function ProfileForm() {
       setError("Password field is empty");
       return;
     }
-    const apiEndpoint = "https://localhost:7161/api/login";
+    const apiEndpoint = "http://localhost:5108/api/login";
 
     setSigning(true);
 
@@ -54,11 +54,11 @@ export default function ProfileForm() {
 
       if (response.status === 200) {
         // Successful request, navigate to the chat page
-        const data = await response.json();
-        const token = data.token;
+        // const data = await response.json();
+        // const token = data.token;
         
 
-        localStorage.setItem("jwtToken",token);
+        // localStorage.setItem("jwtToken",token);
         setTimeout(() => {
           router.push("/chat");
         }, 1000);

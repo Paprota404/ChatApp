@@ -19,7 +19,7 @@ const AddingContacts = () => {
    
     try {
 
-      const jwtToken = localStorage.getItem("jwtToken");
+      const jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjljNTQyYmVkLWVlOGEtNGZmZi05NjAwLTAxYTdjNmNlNTg3ZSIsImV4cCI6MTcwOTY2NzIwNywiaXNzIjoiRGlyZWN0TWUiLCJhdWQiOiJDb3Jlc3BvbmRlcnMifQ.gU48TYvgdeJKnmBLo2Y93QteoL-iAPvbMlhim2SyKMo";
 
       const response = await fetch(
         "http://localhost:5108/api/FriendRequest/send",
@@ -29,7 +29,7 @@ const AddingContacts = () => {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${jwtToken}`
           },
-          
+          credentials:'include',
           body: JSON.stringify(username),
         }
       );

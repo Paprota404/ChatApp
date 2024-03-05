@@ -14,7 +14,7 @@ const Contacts: React.FC = () => {
   const getContacts = async (): Promise<Contact[]> => {
     try {
       // Retrieve JWT token from local storage
-      const jwtToken = localStorage.getItem("jwt_token");
+      const jwtToken = localStorage.getItem("jwtToken");
 
       console.log(jwtToken);
 

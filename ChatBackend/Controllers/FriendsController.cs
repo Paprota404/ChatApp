@@ -32,6 +32,11 @@ namespace Friends.Controllers{
 
         public async Task<IActionResult> GetFriends(){
             try{
+                var jwtToken = Request.Headers["Authorization"];
+
+            // Log the received JWT token
+                _logger.LogInformation($"Received JWT Token: {jwtToken}");
+
                 string userId = GetAuthenticatedUserId();
 
                 _logger.LogInformation($"Authenticated user ID: {userId}");
@@ -47,10 +52,27 @@ namespace Friends.Controllers{
 
         private string GetAuthenticatedUserId(){
             var httpContext = _httpContextAccessor.HttpContext;
-            var userIdClaim = httpContext?.User.FindFirst(ClaimTypes.NameIdentifier);
+            var authenticatedUser = httpContext.User.Identity.Name;
+_logger.LogInformation($"Authenticated User: {authenticatedUser}");
+            _logger.LogInformation($"Request Method: {httpContext?.Request.Method}");
+            _logger.LogInformation($"Request Path: {httpContext?.Request.Path}");
+            var userIdClaim = httpContext?.User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
 
+            if (userIdClaim != null)
+            {
+                // Log specific claim information
+                _logger.LogInformation($"Claim Type: {userIdClaim.Type}, Claim Value: {userIdClaim.Value}");
+                
+                // Or log the entire claim object as a string
+                _logger.LogInformation($"UserIdClaim: {userIdClaim}");
+                
+                return userIdClaim.Value;
+            }
+    
+    // Log if the claim is not found
+            _logger.LogInformation("UserIdClaim not found");
 
-            return userIdClaim?.Value;
+            return null;
         }
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.OpenApi.Models;
 using Requests.Services;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
@@ -31,9 +32,8 @@ builder.Services.AddCors(options =>
     {
         builder.WithOrigins("http://localhost:3000")
                .AllowAnyHeader()
-               .AllowAnyMethod();
-
-        builder.AllowCredentials();
+               .AllowAnyMethod()
+               .AllowCredentials();
     });
 });
 
@@ -55,19 +55,20 @@ builder.Services.Configure<IdentityOptions>(options =>
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 });
 
-var jwtIssuer = builder.Configuration.GetSection("JWT:Issuer").Get<string>();
-var jwtKey = builder.Configuration.GetSection("JWT:Key").Get<string>();
+var jwtIssuer = builder.Configuration["JWT:Issuer"];
+var jwtKey = builder.Configuration["JWT:Key"];
+var jwtAudience = builder.Configuration["JWT:Audience"];
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options=>{
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
-        ValidateAudience = true,
         ValidateLifetime = true,
+        ValidateAudience = true,
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtIssuer,
-        ValidAudience = jwtIssuer,
+        ValidAudience = jwtAudience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
     };
 });

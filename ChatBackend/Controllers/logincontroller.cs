@@ -41,23 +41,24 @@ namespace Login.Controllers
             }
 
             var claims = new List<Claim>{
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var SecToken = new JwtSecurityToken(
-                _configuration["JWT:Issuer"],
-                _configuration["JWT:Issuer"],
-                claims,
-                expires: DateTime.Now.AddMinutes(120),
-                signingCredentials:credentials
-            );
+                issuer: _configuration["JWT:Issuer"],
+                audience: _configuration["JWT:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(30), // Token expiration
+                signingCredentials: credentials);
+            
 
             var token = new JwtSecurityTokenHandler().WriteToken(SecToken);
 
-            return Ok(new {token=token});
+            Response.Headers.Add("Authorization", $"Bearer {token}");
+            return Ok();
         }
 
     }
