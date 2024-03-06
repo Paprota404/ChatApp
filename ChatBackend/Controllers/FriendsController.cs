@@ -10,7 +10,7 @@ namespace Friends.Controllers{
     //Get users contacts
     //Look in friends table and retrieve second user id then go to users table and get user data
 
-  
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
@@ -29,7 +29,6 @@ namespace Friends.Controllers{
         }
 
         [HttpGet("GetFriends")]
-
         public async Task<IActionResult> GetFriends(){
             try{
                 var jwtToken = Request.Headers["Authorization"];

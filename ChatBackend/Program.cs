@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Friends.Services;
+using DirectMe.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,23 +56,27 @@ builder.Services.Configure<IdentityOptions>(options =>
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 });
 
-var jwtIssuer = builder.Configuration["JWT:Issuer"];
-var jwtKey = builder.Configuration["JWT:Key"];
-var jwtAudience = builder.Configuration["JWT:Audience"];
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(options=>{
-    options.TokenValidationParameters = new TokenValidationParameters
+builder.Services.AddAuthentication(options =>
     {
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(o =>
+{
+    o.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = builder.Configuration["JWT:Issuer"],
+        ValidAudience = builder.Configuration["JWT:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey
+        (Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
         ValidateIssuer = true,
-        ValidateLifetime = true,
         ValidateAudience = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtIssuer,
-        ValidAudience = jwtAudience,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+        ValidateLifetime = false,
+        ValidateIssuerSigningKey = true
     };
 });
+
+
 
 builder.Services.AddAuthorization();
 
