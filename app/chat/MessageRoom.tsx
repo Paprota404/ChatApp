@@ -17,8 +17,8 @@ const MessageRoom = () => {
             className="place-self-start"
             style={{ maxWidth: "25ch", wordWrap: "break-word" }}
           >
-            Karolina
-            <div className="border-2 px-10 text-white py-2">Dobrze posprzątam</div>
+            Ziomal
+            <div className="border-2 px-10 text-white py-2">Git</div>
           </div>
 
           <div
@@ -27,7 +27,7 @@ const MessageRoom = () => {
           >
             Ja
             <div className="border-2 text-white px-10 py-2">
-              Dobrze posprzątamdwwddwawdawddwaaaaaaaaadwaaaaaaaaaaaaaa
+              Ok
             </div>
           </div>
         </div>

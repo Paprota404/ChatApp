@@ -52,18 +52,14 @@ namespace Friends.Controllers{
         private string GetAuthenticatedUserId(){
             var httpContext = _httpContextAccessor.HttpContext;
             var authenticatedUser = httpContext.User.Identity.Name;
-_logger.LogInformation($"Authenticated User: {authenticatedUser}");
-            _logger.LogInformation($"Request Method: {httpContext?.Request.Method}");
-            _logger.LogInformation($"Request Path: {httpContext?.Request.Path}");
+            _logger.LogInformation($"Authenticated User: {authenticatedUser}");
+            
             var userIdClaim = httpContext?.User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
 
             if (userIdClaim != null)
             {
                 // Log specific claim information
-                _logger.LogInformation($"Claim Type: {userIdClaim.Type}, Claim Value: {userIdClaim.Value}");
                 
-                // Or log the entire claim object as a string
-                _logger.LogInformation($"UserIdClaim: {userIdClaim}");
                 
                 return userIdClaim.Value;
             }

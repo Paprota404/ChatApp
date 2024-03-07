@@ -26,7 +26,7 @@ namespace Friends.Services{
             var friendsDetails = new List<UserDetailsModel>();
 
             foreach (var friend in friends){
-                var oppositeUserId = (friend.user1_id == userId) ? friend.user1_id : friend.user2_id;
+                var oppositeUserId = (friend.user1_id == userId) ? friend.user2_id : friend.user1_id;
 
                 var userDetails = await _userManager.FindByIdAsync(oppositeUserId);
 

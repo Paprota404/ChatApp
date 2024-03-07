@@ -29,33 +29,20 @@ const Chat = () => {
             </div>
 
             <div>
-              <div className="text-white text-2xl">Karolina</div>
+              <div className="text-white text-2xl">Ziomal</div>
               <div className="text-gray-400">Tak</div>
             </div>
           </div>
         </div>
         <hr className="bg-white w-5/6 mx-auto"></hr>
-        <div className="border-white  flex justify-start h-32 items-center w-full">
-          <div className="flex relative items-center left-10 gap-4">
-            <div>
-              <Avatar>
-                <AvatarImage src="https://historia.org.pl/wp-content/uploads/2011/12/facebookavatar.jpg"></AvatarImage>
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-            </div>
-
-            <div>
-              <div className="text-white text-2xl">Karolina</div>
-              <div className="text-gray-400">Tak</div>
-            </div>
-          </div>
+      
         </div>
         <hr className="bg-white w-5/6 mx-auto"></hr>
 
         <Contacts />
         <AddingContacts />
         
-      </div>
+     
 
       <div
         className="bg-black w-3/4 flex flex-col h-full"
@@ -67,7 +54,7 @@ const Chat = () => {
               <AvatarImage src="https://historia.org.pl/wp-content/uploads/2011/12/facebookavatar.jpg"></AvatarImage>
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-            Karolina
+            
           </h1>
         </div>
         <MessageRoom></MessageRoom>
