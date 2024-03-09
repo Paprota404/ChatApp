@@ -1,5 +1,6 @@
 using Friends.Controllers;
 using Friends.Services;
+using Friends.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -7,34 +8,48 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Xunit;
+using Microsoft.AspNetCore.Http;
+using UserDetails.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.InMemory;
+using Chat.Database;
+using Microsoft.AspNetCore.Identity;
 
 namespace Friends.Tests
 {
-    public class FriendsControllerTests
+  // Assuming you are using xUnit for testing
+ public class FriendsServiceTests
+{
+    [Fact]
+    public async Task GetFriends_ReturnsCorrectUserDetails()
     {
-        [Fact]
-        public async Task GetFriends_ReturnsOkResult_WithFriendsInfo()
+        // Arrange
+        var options = new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase(databaseName: "TestDatabase")
+            .Options;
+
+        using (var dbContext = new AppDbContext(options))
         {
-            var mockFriendService = new Mock<IFirendService>();
-            var mockLogger = new Mock<ILogger<FriendsController>>();
-            var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+            // Add test data to the in-memory database
+            dbContext.friends.AddRange(
+                new FriendsModel { user1_id = "user1", user2_id = "user2" },
+                new FriendsModel { user1_id = "user1", user2_id = "user3" }
+            );
+            dbContext.SaveChanges();
+        
 
-            var userId = "testUserId";
-            var friendsInfo = new List<UserDetailsModel> { new UserDetailsModel { Id = 1, Username = "Friend 1" } };
+        var userManager = UserManager<IdentityUser>;
+        var service = new FriendsService(dbContext, userManager);
 
-            mockFriendService.Setup(service => service.GetFriends(userId)).ReturnsAsync(friendsInfo);
-            mockHttpContextAccessor.Setup(accessor => accessor.HttpContext.User.Identity.Us ername).Returns(userId);
-            mockHttpContextAccessor.Setup(accessor => accessor.HttpContext.User.FindFirst(It.IsAny<string>())).Returns(new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", userId));
+        // Act
+        var friends = await service.GetFriends("user1");
 
-            var controller = new FriendsController(mockFriendService.Object,mockHttpContextAccessor.Object,mockLogger.Object);
-
-            //Act
-            var result = await controller.GetFriends();
-
-            //Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            var model = Assert.IsAssignableFrom<List<UserDetailsModel>>(okResult);
-            Assert.Equal(friendsInfo,model);
-        }
+        // Assert
+        Assert.Equal(2, friends.Count);
+        Assert.Contains(friends, f => f.UserId == "user2" && f.Username == "user2_username");
+        Assert.Contains(friends, f => f.UserId == "user3" && f.Username == "user3_username");
     }
+    }
+  
+}
 }
