@@ -32,10 +32,16 @@ namespace Friends.Tests
 
         _dbContext = new AppDbContext(options);
 
-       var userManagerMock = new Mock<UserManager<IdentityUser>>(
-    Mock.Of<IUserStore<IdentityUser>>(),
-    null, null, null, null, null, null, null, null
-);
+        var userStoreMock = new Mock<IUserStore<IdentityUser>>();
+        var userManagerMock = new Mock<UserManager<IdentityUser>>(
+        userStoreMock.Object, null, null, null, null, null, null, null, null);
+
+    // Setup the UserManager mock to return specific users when FindByIdAsync is called
+        userManagerMock.Setup(um => um.FindByIdAsync(It.IsAny<string>()))
+        .ReturnsAsync((string userId) => new IdentityUser { Id = userId, UserName = $"{userId}_username" });
+
+        _userManager = userManagerMock.Object;
+
     }
 
     [Fact]

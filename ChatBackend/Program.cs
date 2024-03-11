@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Friends.Services;
 using DirectMe.Authentication;
+using ChatHubNamespace;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -86,6 +87,7 @@ builder.Services.AddScoped<IFriendRequestService, FriendRequestService>();
 builder.Services.AddScoped<IFriendsService, FriendsService>();
 
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -100,6 +102,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseEndpoints(endpoints =>{
+    endpoints.MapHub<ChatHub>("/ChatHub");
+});
 
 app.UseCors("MyCorsPolicy");
 app.UseAuthentication();

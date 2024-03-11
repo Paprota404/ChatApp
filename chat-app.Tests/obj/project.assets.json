@@ -11788,6 +11788,7 @@
     "net8.0": [
       "ChatBackend >= 1.0.0",
       "Microsoft.AspNetCore.Mvc.Testing >= 8.0.2",
+      "Microsoft.AspNetCore.SignalR >= 1.1.0",
       "Microsoft.EntityFrameworkCore.InMemory >= 8.0.2",
       "Microsoft.NET.Test.Sdk >= 17.8.0",
       "Moq >= 4.20.70",
@@ -11845,6 +11846,10 @@
           "Microsoft.AspNetCore.Mvc.Testing": {
             "target": "Package",
             "version": "[8.0.2, )"
+          },
+          "Microsoft.AspNetCore.SignalR": {
+            "target": "Package",
+            "version": "[1.1.0, )"
           },
           "Microsoft.EntityFrameworkCore.InMemory": {
             "target": "Package",
