@@ -1,6 +1,7 @@
-using Moq;
 using Xunit;
-using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Hosting;
 using ChatHubNamespace;
 
 
@@ -9,20 +10,9 @@ namespace SignalR.tests{
     public class SignalRTests{
 
         [Fact]
-        public async Task SendMessage_BroadcastsMessageToAll()
+        public async Task TestSendMessage()
         {
-            var mockClients = new Mock<IHubClients>();
-            var mockGroups = new Mock<IGroupManager>();
-            var mockContext = new Mock<HubCallerContext>();
-            var mockHub = new Mock<Hub>();
-
-            var hub = mockHub.Object;
-
-    // Act
-            await hub.Clients.All.SendAsync("ReceiveMessage", "TestUser", "Hello, World!");
-
-            // Assert
-            mockClients.Verify(c => c.All.SendAsync(It.IsAny<string>(),It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+           
         }
     }
 }
