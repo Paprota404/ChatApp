@@ -521,10 +521,10 @@
           }
         }
       },
-      "Microsoft.AspNetCore.Mvc.Testing/8.0.2": {
+      "Microsoft.AspNetCore.Mvc.Testing/8.0.3": {
         "type": "package",
         "dependencies": {
-          "Microsoft.AspNetCore.TestHost": "8.0.2",
+          "Microsoft.AspNetCore.TestHost": "8.0.3",
           "Microsoft.Extensions.DependencyModel": "8.0.0",
           "Microsoft.Extensions.Hosting": "8.0.0"
         },
@@ -675,7 +675,7 @@
           }
         }
       },
-      "Microsoft.AspNetCore.TestHost/8.0.2": {
+      "Microsoft.AspNetCore.TestHost/8.0.3": {
         "type": "package",
         "dependencies": {
           "System.IO.Pipelines": "8.0.0"
@@ -3672,10 +3672,10 @@
         "microsoft.aspnetcore.identity.entityframeworkcore.nuspec"
       ]
     },
-    "Microsoft.AspNetCore.Mvc.Testing/8.0.2": {
-      "sha512": "v0yzt21Bv3GK5zxlMcgfFmBl+03HMqa7CrTiftZ6I85BA1ob+qrbtBL/QYhhHkhOK2v07jw04pVfuMQLzsDYXw==",
+    "Microsoft.AspNetCore.Mvc.Testing/8.0.3": {
+      "sha512": "g+RQYslZ86OmgcvOa4eZooCZ1IzrEqgKVpQ8SU3qwLSyvlBh8PUJAwMrpN6Lmm53DZ47ZqHSNB1rO5ZnTiAdrg==",
       "type": "package",
-      "path": "microsoft.aspnetcore.mvc.testing/8.0.2",
+      "path": "microsoft.aspnetcore.mvc.testing/8.0.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3685,7 +3685,7 @@
         "buildTransitive/net8.0/Microsoft.AspNetCore.Mvc.Testing.targets",
         "lib/net8.0/Microsoft.AspNetCore.Mvc.Testing.dll",
         "lib/net8.0/Microsoft.AspNetCore.Mvc.Testing.xml",
-        "microsoft.aspnetcore.mvc.testing.8.0.2.nupkg.sha512",
+        "microsoft.aspnetcore.mvc.testing.8.0.3.nupkg.sha512",
         "microsoft.aspnetcore.mvc.testing.nuspec",
         "tasks/netstandard2.0/Microsoft.AspNetCore.Mvc.Testing.Tasks.dll"
       ]
@@ -3787,10 +3787,10 @@
         "microsoft.aspnetcore.signalr.protocols.json.nuspec"
       ]
     },
-    "Microsoft.AspNetCore.TestHost/8.0.2": {
-      "sha512": "4omKCTKqoIQsJH7LgDPjD8itGoili1WcDghr2jxRS8dYBbFEaX3mkV8A02wH+BC0aHFLwpCkEqFdYSHh1LRrUA==",
+    "Microsoft.AspNetCore.TestHost/8.0.3": {
+      "sha512": "1uZ+wmx8cw5L/cdgEL+54/+6H83+joSfZP6j92nP4Hk2MejD25gnVdhlCsm6O4fiIwKqNoU2H3a9s3laQnTj5w==",
       "type": "package",
-      "path": "microsoft.aspnetcore.testhost/8.0.2",
+      "path": "microsoft.aspnetcore.testhost/8.0.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3798,7 +3798,7 @@
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net8.0/Microsoft.AspNetCore.TestHost.dll",
         "lib/net8.0/Microsoft.AspNetCore.TestHost.xml",
-        "microsoft.aspnetcore.testhost.8.0.2.nupkg.sha512",
+        "microsoft.aspnetcore.testhost.8.0.3.nupkg.sha512",
         "microsoft.aspnetcore.testhost.nuspec"
       ]
     },
@@ -8069,7 +8069,7 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "ChatBackend >= 1.0.0",
-      "Microsoft.AspNetCore.Mvc.Testing >= 8.0.2",
+      "Microsoft.AspNetCore.Mvc.Testing >= 8.0.3",
       "Microsoft.AspNetCore.SignalR >= 1.1.0",
       "Microsoft.EntityFrameworkCore.InMemory >= 8.0.2",
       "Microsoft.NET.Test.Sdk >= 17.9.0",
@@ -8127,7 +8127,7 @@
         "dependencies": {
           "Microsoft.AspNetCore.Mvc.Testing": {
             "target": "Package",
-            "version": "[8.0.2, )"
+            "version": "[8.0.3, )"
           },
           "Microsoft.AspNetCore.SignalR": {
             "target": "Package",
