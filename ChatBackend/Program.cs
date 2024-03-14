@@ -15,6 +15,11 @@ using Friends.Services;
 using DirectMe.Authentication;
 using ChatHubNamespace;
 
+public partial class Program{
+
+ public static void Main(string[] args)
+    {
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -90,6 +95,8 @@ builder.Services.AddScoped<IFriendsService, FriendsService>();
 
 var app = builder.Build();
 
+app.UseRouting();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -114,3 +121,5 @@ app.MapControllers();
 
 app.Run();
 
+}
+}

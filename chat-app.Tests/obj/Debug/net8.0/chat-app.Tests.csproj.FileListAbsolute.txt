@@ -14,7 +14,6 @@ H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\appsettings.json
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\ChatBackend.exe
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\testhost.exe
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\MvcTestingAppManifest.json
-H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\xunit.runner.visualstudio.dotnetcore.testadapter.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\xunit.runner.reporters.netcoreapp10.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\xunit.runner.utility.netcoreapp10.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\chat-app.Tests.deps.json
@@ -36,7 +35,6 @@ H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.C
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.Components.Forms.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.Components.Server.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.Components.Web.dll
-H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.Connections.Abstractions.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.CookiePolicy.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.Cors.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.Cryptography.Internal.dll
@@ -54,7 +52,6 @@ H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.H
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.Hosting.Server.Abstractions.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.Html.Abstractions.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.Http.Abstractions.dll
-H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.Http.Connections.Common.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.Http.Connections.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.Http.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.Http.Extensions.dll
@@ -100,10 +97,8 @@ H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.S
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.Server.Kestrel.Transport.Quic.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.Session.dll
-H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.SignalR.Common.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.SignalR.Core.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.SignalR.dll
-H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.StaticFiles.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.WebSockets.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.AspNetCore.WebUtilities.dll
@@ -121,13 +116,11 @@ H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.C
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.Configuration.KeyPerFile.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.Configuration.UserSecrets.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.Configuration.Xml.dll
-H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.DependencyInjection.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.Diagnostics.Abstractions.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.Diagnostics.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.Diagnostics.HealthChecks.dll
-H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.Features.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.FileProviders.Abstractions.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.FileProviders.Composite.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.FileProviders.Embedded.dll
@@ -140,7 +133,6 @@ H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.I
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.Identity.Stores.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.Localization.Abstractions.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.Localization.dll
-H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.Logging.Abstractions.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.Logging.Configuration.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.Logging.Console.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\refs\Microsoft.Extensions.Logging.Debug.dll
@@ -371,7 +363,6 @@ H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\Newtonsoft.Json.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\Npgsql.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
-H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\NuGet.Frameworks.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -482,3 +473,14 @@ H:\Chat App\chat-app\chat-app.Tests\obj\Debug\net8.0\chat-app.Tests.pdb
 H:\Chat App\chat-app\chat-app.Tests\obj\Debug\net8.0\chat-app.Tests.genruntimeconfig.cache
 H:\Chat App\chat-app\chat-app.Tests\obj\Debug\net8.0\ref\chat-app.Tests.dll
 H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.InMemory.dll
+H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\xunit.runner.visualstudio.testadapter.dll
+H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\Microsoft.AspNetCore.Connections.Abstractions.dll
+H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\Microsoft.AspNetCore.Http.Connections.Client.dll
+H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\Microsoft.AspNetCore.Http.Connections.Common.dll
+H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Client.dll
+H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Client.Core.dll
+H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Common.dll
+H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\Microsoft.Extensions.Features.dll
+H:\Chat App\chat-app\chat-app.Tests\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
