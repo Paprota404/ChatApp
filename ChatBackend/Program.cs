@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using Friends.Services;
 using DirectMe.Authentication;
 using ChatHubNamespace;
+using Microsoft.AspNetCore.SignalR;
 
 public partial class Program{
 
@@ -109,9 +110,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseEndpoints(endpoints =>{
-    endpoints.MapHub<ChatHub>("/ChatHub");
-});
+
+app.MapHub<ChatHub>("/ChatHub");
+
 
 app.UseCors("MyCorsPolicy");
 app.UseAuthentication();
