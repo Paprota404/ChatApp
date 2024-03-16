@@ -2,7 +2,7 @@
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import {
   Dialog,
@@ -15,8 +15,12 @@ import {
 const PendingRequests = () => {
   const [errorMessage,setErrorMessage] = useState("");
 
-  let token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjljNTQyYmVkLWVlOGEtNGZmZi05NjAwLTAxYTdjNmNlNTg3ZSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJQYXByb3RhIiwiZXhwIjoxNzA4OTUzMzI1LCJpc3MiOiJEaXJlY3RNZSIsImF1ZCI6IkRpcmVjdGVycyJ9.CvPKpRXE36TrbR2bqs64d8QH0opcKDb2manvP280Y-4";
+  const [token, setToken] = useState<string | null>(null);
+
+ useEffect(() => {
+    const storedToken = localStorage.getItem("jwtToken");
+    setToken(storedToken);
+ }, []);
 
   interface FriendRequestModel {
     id: number;
@@ -32,11 +36,12 @@ const PendingRequests = () => {
     Error
   >("pendingRequests", async () => {
     const response = await fetch(
-      "http://localhost:7161/api/FriendRequest/pending",
+      "http://localhost:5108/api/FriendRequest/pending",
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` 
         },
         credentials: 'include',
       }
