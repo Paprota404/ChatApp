@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "react-query";
-import { Link } from 'react-router-dom';
+import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface Contact {
@@ -54,8 +54,8 @@ const Contacts: React.FC = () => {
       {status === "success" && (
         <div>
           {data.map((contact) => (
-            <Link key={contact.userId} to={`/chat/${contact.username}`}>
-              <div className="border-white   flex justify-start h-32 items-center w-full">
+            <Link key={contact.userId} href={`/chat/${contact.username}`}>
+              <a className="border-white flex justify-start h-32 items-center w-full">
                 <div className="flex relative items-center left-10 gap-4">
                   <div>
                     <Avatar>
@@ -71,11 +71,10 @@ const Contacts: React.FC = () => {
                     <div className="text-gray-400">Tak</div>
                   </div>
                 </div>
-              </div>
-              
+              </a>
+
               <hr className="bg-white w-5/6 mx-auto"></hr>
-             </Link>
-            
+            </Link>
           ))}
         </div>
       )}

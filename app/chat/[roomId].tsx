@@ -1,14 +1,13 @@
 import React from "react";
 import { Textarea } from "@/components/ui/textarea";
-import {useParams, useNavigate} from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {useEffect} from 'react';
+import {useRouter} from 'next/router';
 
 const MessageRoom = () => {
-  const navigate = useNavigate();
-  const { userId } = useParams();
- 
+  const router = useRouter();
+  const {roomId} = router.query;
+  
   
 
   return (
@@ -24,7 +23,7 @@ const MessageRoom = () => {
               <AvatarImage src="OIG2.jpg"></AvatarImage>
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-            {userId}
+            {roomId}
           </h1>
         </div>
         <div className="flex flex-col-reverse relative gap-5 items-center w-5/6 place-self-center h-full">

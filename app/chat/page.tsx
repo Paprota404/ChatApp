@@ -1,24 +1,21 @@
 "use client";
 import React from "react";
-import MessageRoom from "./MessageRoom";
+import MessageRoom from "./[roomId]";
 import AddingContacts from "./AddingContacts";
 import PendingRequests from "./PendingRequests";
 import Contacts from "./Contacts";
 import { QueryClient, QueryClientProvider } from "react-query";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  useLocation,
-} from "react-router-dom";
+import {useRouter} from 'next/navigation';
 import Default from './Default';
 
 const Chat = () => {
   const queryClient = new QueryClient();
- 
+  const router = useRouter();
+  const {roomID} = router.query;
+
   return (
     <QueryClientProvider client={queryClient}>
-       <Router>
+     
       <>
        
           <div className="w-1/4 h-full flex flex-col absolute  border-r-2 bg-black">
@@ -36,16 +33,13 @@ const Chat = () => {
           </div>
 
           
-           
+      
         
 
-          <Routes>
-            <Route path="/chat" element={<Default />} />
-            <Route path="/chat/:userId" element={<MessageRoom />} />
-          </Routes>
+          
        
       </>
-      </Router>
+      
     </QueryClientProvider>
   );
 };
