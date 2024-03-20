@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import MessageRoom from "./[roomId]";
+
 import AddingContacts from "./AddingContacts";
 import PendingRequests from "./PendingRequests";
 import Contacts from "./Contacts";
@@ -11,7 +11,7 @@ import Default from "./Default";
 const Chat = () => {
   const queryClient = new QueryClient();
   const router = useRouter();
-  const { roomID } = router.query || {};
+  
 
   return (
     <QueryClientProvider client={queryClient}>
