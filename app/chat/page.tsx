@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-
 import AddingContacts from "./AddingContacts";
 import PendingRequests from "./PendingRequests";
 import Contacts from "./Contacts";
