@@ -2,11 +2,11 @@ import React from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {useRouter} from 'next/router';
+import {useRouter} from 'next/navigation';
 
 const MessageRoom = () => {
   const router = useRouter();
-  const {roomId} = router.query;
+  //Exploring stuff
   
   
 
