@@ -1,22 +1,17 @@
-import React from 'react'
-import {useLocation} from "react-router-dom";
+import React from "react";
+import Image from "next/image";
 
 const Default = () => {
-    const location = useLocation();
-    const showDiv = location.pathname === '/chat';
   return (
     <>
-    {showDiv && (
       <div
-        className="bg-black w-3/4 flex flex-col h-full"
+        className="bg-black absolute w-3/4 flex flex-col h-full justify-center items-center"
         style={{ marginLeft: "25%" }}
       >
-        {/* Your div content */}
+        <Image src="/OIG2.jpg" height={1000} width={400} alt="Logo"></Image>
       </div>
-    )}
-    {/* Other components or content for the chat list */}
-  </>
-  )
-}
+    </>
+  );
+};
 
-export default Default
+export default Default;
