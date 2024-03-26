@@ -47,14 +47,14 @@ const Contacts: React.FC = () => {
     }
   };
 
-  const { data, status, error } = useQuery<Contact[]>("contacts", getContacts);
+  const { data, status } = useQuery<Contact[]>("contacts", getContacts);
 
   return (
     <>
       {status === "success" && (
         <div>
           {data.map((contact) => (
-            <Link key={contact.userId} href={`/chat/${contact.username}`}>
+            <Link key={contact.userId} href={`/chat/${contact.userId}`}>
               <a className="border-white flex justify-start h-32 items-center w-full">
                 <div className="flex relative items-center left-10 gap-4">
                   <div>

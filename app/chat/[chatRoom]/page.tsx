@@ -4,18 +4,29 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePathname } from "next/navigation";
+import * as signalR from "@microsoft/signalr";
 
 const MessageRoom = () => {
-  interface ParamTypes {
-    sumParams: string;
-  }
-
   const roomId = usePathname();
   // Use the type with useParams
   const user = roomId.split("/")[2];
 
-  //Figuring out
-  //I probably figured out
+  const connection = new signalR.HubConnectionBuilder()
+    .withUrl("/chatHub", {
+      accessTokenFactory: (): string | Promise<string> => {
+        // Retrieve the access token from wherever it's stored (e.g., local storage)
+        const token = localStorage.getItem("jwtToken");
+        return token || ""; // Return an empty string if the token is null
+      },
+    })
+    .build();
+
+  // Function to send a message to a specific user
+  function sendMessageToUser(recipientUserId: string, message: string): void {
+    connection
+      .invoke("SendMessage", recipientUserId, message)
+      .catch((err) => console.error(err));
+  }
 
   return (
     <>

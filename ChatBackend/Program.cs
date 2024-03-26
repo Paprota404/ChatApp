@@ -15,16 +15,17 @@ using Friends.Services;
 using DirectMe.Authentication;
 using ChatHubNamespace;
 using Microsoft.AspNetCore.SignalR;
+using IdProvider;
 
 public partial class Program{
 
  public static void Main(string[] args)
-    {
+{
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext")), ServiceLifetime.Scoped);
+options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext")), ServiceLifetime.Scoped);
 
 // Add services to the container.
 builder.Configuration.AddJsonFile("appsettings.json");
@@ -91,7 +92,7 @@ builder.Services.AddHttpContextAccessor();
    
 builder.Services.AddScoped<IFriendRequestService, FriendRequestService>();
 builder.Services.AddScoped<IFriendsService, FriendsService>();
-
+builder.Services.AddSingleton<IUserIdProvider, UserIdProvider>();
 
 
 var app = builder.Build();
