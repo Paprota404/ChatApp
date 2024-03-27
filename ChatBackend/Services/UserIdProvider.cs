@@ -1,12 +1,15 @@
+using Microsoft.AspNetCore.SignalR;
+using System.Security.Claims;
 
 namespace IdProvider{
 
 public class UserIdProvider : IUserIdProvider
 {
-    public string GetUserId(ClaimsPrincipal principal)
+    public string GetUserId(HubConnectionContext connection)
     {
         // Assuming the user ID is stored in a claim named "sub"
-        return principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var user = connection.User;
+        return user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     }
 }
 }

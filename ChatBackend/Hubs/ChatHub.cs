@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
+using IdProvider;
 
 namespace ChatHubNamespace{
 
@@ -15,13 +16,14 @@ public class ChatHub : Hub{
     }
 
     public override async Task OnConnectedAsync(){
-        var userId = _userIdProvider.GetUserId(Context.User);
+        var userId = _userIdProvider.GetUserId(Context);
         await Groups.AddToGroupAsync(Context.Connectionid,userId);
         await base.OnConnectedAsync();
     }
 
     public override async Task OnDisconnectedAsync(Exception exception){
-        var userId = _userIdProvider.GetUserId(Context.User);
+        var userId = _userIdProvider.GetUserId(Context
+        );
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, userId);
         await base.OnDisconnectedAsync(exception);
     }
