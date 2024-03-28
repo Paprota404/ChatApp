@@ -3,16 +3,16 @@ import React from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import * as signalR from "@microsoft/signalr";
 
 const MessageRoom = () => {
-  const roomId = usePathname();
-  // Use the type with useParams
-  const user = roomId.split("/")[2];
+  const searchParams = useSearchParams()
+  const username = searchParams.get('username')
+
 
   const connection = new signalR.HubConnectionBuilder()
-    .withUrl("/chatHub", {
+    .withUrl("http://localhost:5108/ChatHub", {
       accessTokenFactory: (): string | Promise<string> => {
         // Retrieve the access token from wherever it's stored (e.g., local storage)
         const token = localStorage.getItem("jwtToken");
@@ -43,7 +43,7 @@ const MessageRoom = () => {
               <AvatarImage src="OIG2.jpg"></AvatarImage>
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-            {user}
+            {username}
           </h1>
         </div>
         <div className="flex flex-col-reverse relative gap-5 items-center w-5/6 place-self-center h-full">

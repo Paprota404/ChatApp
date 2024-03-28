@@ -15,8 +15,6 @@ using Friends.Services;
 using DirectMe.Authentication;
 using ChatHubNamespace;
 using Microsoft.AspNetCore.SignalR;
-using IdProvider;
-
 public partial class Program{
 
  public static void Main(string[] args)
@@ -92,7 +90,7 @@ builder.Services.AddHttpContextAccessor();
    
 builder.Services.AddScoped<IFriendRequestService, FriendRequestService>();
 builder.Services.AddScoped<IFriendsService, FriendsService>();
-builder.Services.AddSingleton<IUserIdProvider, UserIdProvider>();
+
 
 
 var app = builder.Build();

@@ -54,7 +54,7 @@ const Contacts: React.FC = () => {
       {status === "success" && (
         <div>
           {data.map((contact) => (
-            <Link key={contact.userId} href={`/chat/${contact.userId}`}>
+            <Link key={contact.userId} href={`/chat/${contact.userId}?username=${encodeURIComponent(contact.username)}`}>
               <a className="border-white flex justify-start h-32 items-center w-full">
                 <div className="flex relative items-center left-10 gap-4">
                   <div>
