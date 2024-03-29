@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -7,26 +7,57 @@ import { useSearchParams } from "next/navigation";
 import * as signalR from "@microsoft/signalr";
 
 const MessageRoom = () => {
-  const searchParams = useSearchParams()
-  const username = searchParams.get('username')
+  const searchParams = useSearchParams();
+  const username = searchParams.get("username");
 
+  const connection = useRef<signalR.HubConnection | null>(null);
 
-  const connection = new signalR.HubConnectionBuilder()
-    .withUrl("http://localhost:5108/ChatHub", {
-      accessTokenFactory: (): string | Promise<string> => {
-        // Retrieve the access token from wherever it's stored (e.g., local storage)
-        const token = localStorage.getItem("jwtToken");
-        return token || ""; // Return an empty string if the token is null
-      },
-    })
-    .build();
+ useEffect(() => {
+    // Assign the new connection to the .current property of the ref
+    connection.current = new signalR.HubConnectionBuilder()
+      .withUrl("http://localhost:5108/ChatHub", {
+        accessTokenFactory: (): string | Promise<string> => {
+          // Retrieve the access token from wherever it's stored (e.g., local storage)
+          const token = localStorage.getItem("jwtToken");
+          return token || ""; // Return an empty string if the token is null
+        },
+      })
+      .build();
 
-  // Function to send a message to a specific user
-  function sendMessageToUser(recipientUserId: string, message: string): void {
-    connection
-      .invoke("SendMessage", recipientUserId, message)
-      .catch((err) => console.error(err));
-  }
+    // Start the connection
+    if (connection.current) {
+      connection.current.start()
+        .then(() => {
+            console.log("Connection started");
+
+            // Set up a message handler after the connection is established
+            if (connection.current) {
+              connection.current.on("ReceiveMessage", (senderId, message) => {
+                 console.log(`Received message from ${senderId}:`, message);
+                 // Handle the message here
+              });
+            }
+        })
+        .catch((err) => console.error("Error while starting connection: " + err));
+    }
+
+    // Cleanup function to stop the connection when the component unmounts
+    return () => {
+      if (connection.current) {
+        connection.current.stop();
+      }
+    };
+ }, []); // Empty dependency array ensures this runs once on mount
+
+ // Function to send a message to a specific user
+ function sendMessageToUser(recipientUserId: string, message: string): void {
+    if(connection.current) {
+      connection.current.invoke("SendMessage", recipientUserId, message)
+        .catch((err) => console.error(err));
+    }
+ }
+
+ sendMessageToUser("2a97463e-1340-4f9d-84ea-14667929de05","Ja cie lubie");
 
   return (
     <>

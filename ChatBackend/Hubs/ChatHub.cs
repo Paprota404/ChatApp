@@ -1,18 +1,29 @@
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 using System.Security.Claims;
+using Chat.Database;
+using Messages.Models;
 
 namespace ChatHubNamespace{
 
 
 public class ChatHub : Hub{
-    public readonly IUserIdProvider _userIdProvider; 
-    public async Task SendMessage(string senderId, string receiverId,string message){
-        await Clients.User(receiverId).SendAsync("ReceiveMessage",senderId,message);
+    private readonly AppDbContext _dbContext;
+
+    public ChatHub(AppDbContext dbContext){
+        _dbContext = dbContext;
     }
 
-    public ChatHub(IUserIdProvider userIdProvider){
-        _userIdProvider = userIdProvider;
+    public async Task SendMessage(string senderId, string receiverId,string message){
+        await Clients.User(receiverId).SendAsync("ReceiveMessage",senderId,message);
+
+         var newMessage = new Message
+    {
+        Sender = senderId,
+        Receiver = receiverId,
+        Content = message,
+        SentAt = DateTime.UtcNow
+    };
     }
 
     public override async Task OnConnectedAsync(){
