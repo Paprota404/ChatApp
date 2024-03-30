@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import "../globals.css";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -40,12 +39,11 @@ export default function ProfileForm() {
       setError("Password field is empty");
       return;
     }
-    const apiEndpoint = "http://localhost:5108/api/login";
 
     setSigning(true);
 
     try {
-      const response = await fetch(apiEndpoint, {
+      const response = await fetch("http://localhost:5108/api/login", {
         mode: "cors",
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -53,32 +51,33 @@ export default function ProfileForm() {
       });
 
       if (response.status === 200) {
-        // Successful request, navigate to the chat page
-        // const data = await response.json();
-        // const token = data.token;
+        // Successful request
+         const data = await response.json();
+         const token = data.token;
         
 
-        // localStorage.setItem("jwtToken",token);
+       localStorage.setItem("jwtToken",token);
         setTimeout(() => {
           router.push("/chat");
         }, 1000);
       } else if (response.status === 400) {
-        // Bad Request, handle accordingly
+        // Bad Request
         let errorData = await response.json();
         throw new Error(errorData.message || "Bad Request");
       } else if (response.status === 401) {
+        //Wrong Password provided
         setTimeout(() => {
           setError("Bad password");
           setSigning(false);
         }, 1000);
       }
         else if (response.status === 404) {
+          //User not found
           setTimeout(() => {
             setError("User doesn't exist");
             setSigning(false);
           }, 1000);
       } else {
-        // Other status codes, handle accordingly
         setSigning(false);
         throw new Error(`Request failed with status ${response.status}`);
       }

@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
@@ -15,12 +14,8 @@ import {
 const PendingRequests = () => {
   const [errorMessage,setErrorMessage] = useState("");
 
-  const [token, setToken] = useState<string | null>(null);
 
- useEffect(() => {
-    const storedToken = localStorage.getItem("jwtToken");
-    setToken(storedToken);
- }, []);
+
 
   interface FriendRequestModel {
     id: number;
@@ -35,15 +30,17 @@ const PendingRequests = () => {
     FriendRequestModel[],
     Error
   >("pendingRequests", async () => {
+
+    const jwtToken = localStorage.getItem("jwtToken");
     const response = await fetch(
       "http://localhost:5108/api/FriendRequest/pending",
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}` 
+          "Authorization": `Bearer ${jwtToken}` 
         },
-        credentials: 'include',
+      
       }
     );
     if (!response.ok) {

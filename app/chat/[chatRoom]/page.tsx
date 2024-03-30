@@ -1,18 +1,21 @@
 "use client";
-import React, {useEffect, useRef} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useParams } from "next/navigation";
 import * as signalR from "@microsoft/signalr";
 
 const MessageRoom = () => {
   const searchParams = useSearchParams();
   const username = searchParams.get("username");
+  const params = useParams();
+  const chatId = params.chatRoom;
+  console.log(chatId);
 
   const connection = useRef<signalR.HubConnection | null>(null);
 
- useEffect(() => {
+  useEffect(() => {
     // Assign the new connection to the .current property of the ref
     connection.current = new signalR.HubConnectionBuilder()
       .withUrl("http://localhost:5108/ChatHub", {
@@ -26,19 +29,22 @@ const MessageRoom = () => {
 
     // Start the connection
     if (connection.current) {
-      connection.current.start()
+      connection.current
+        .start()
         .then(() => {
-            console.log("Connection started");
+          console.log("Connection started");
 
-            // Set up a message handler after the connection is established
-            if (connection.current) {
-              connection.current.on("ReceiveMessage", (senderId, message) => {
-                 console.log(`Received message from ${senderId}:`, message);
-                 // Handle the message here
-              });
-            }
+          // Set up a message handler after the connection is established
+          if (connection.current) {
+            connection.current.on("ReceiveMessage", (senderId, message) => {
+              console.log(`Received message from ${senderId}:`, message);
+              // Handle the message here
+            });
+          }
         })
-        .catch((err) => console.error("Error while starting connection: " + err));
+        .catch((err) =>
+          console.error("Error while starting connection: " + err)
+        );
     }
 
     // Cleanup function to stop the connection when the component unmounts
@@ -47,17 +53,32 @@ const MessageRoom = () => {
         connection.current.stop();
       }
     };
- }, []); // Empty dependency array ensures this runs once on mount
+  }, []); // Empty dependency array ensures this runs once on mount
 
- // Function to send a message to a specific user
- function sendMessageToUser(recipientUserId: string, message: string): void {
-    if(connection.current) {
-      connection.current.invoke("SendMessage", recipientUserId, message)
+  // Function to send a message to a specific user
+  function sendMessageToUser(recipientUserId: string, message: string): void {
+    if (connection.current) {
+      connection.current
+        .invoke("SendMessage", recipientUserId, message)
         .catch((err) => console.error(err));
     }
- }
+  }
 
- sendMessageToUser("2a97463e-1340-4f9d-84ea-14667929de05","Ja cie lubie");
+  const [message, setMessage] = useState("");
+
+  const handleTextareaChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setMessage(event.target.value);
+  };
+
+  const handleSubmit = () => {
+    const chatIdString = Array.isArray(chatId) ? chatId.join('') : chatId;
+    console.log(chatIdString,message);
+    sendMessageToUser(chatIdString,message);
+  };
+
+  
 
   return (
     <>
@@ -80,10 +101,16 @@ const MessageRoom = () => {
         <div className="flex flex-col-reverse relative gap-5 items-center w-5/6 place-self-center h-full">
           <div className=" w-full flex gap-5  items-center mb-5">
             <Textarea
+              onChange={handleTextareaChange}
               className="bg-black text-white rounded-lg"
               placeholder="Write your message"
             ></Textarea>
-            <Button className="h-20 text-white border-2 w-20">Send</Button>
+            <Button
+              onClick={handleSubmit}
+              className="h-20 text-white border-2 w-20"
+            >
+              Send
+            </Button>
           </div>
 
           <div

@@ -58,7 +58,7 @@ namespace Login.Controllers
             var token = new JwtSecurityTokenHandler().WriteToken(SecToken);
 
             Response.Headers.Add("Authorization", $"Bearer {token}");
-            return Ok();
+            return Ok(new {token = token});
         }
 
     }
