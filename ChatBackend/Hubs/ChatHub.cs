@@ -4,6 +4,7 @@ using System.Security.Claims;
 using Chat.Database;
 using Messages.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace ChatHubNamespace{
 
@@ -11,67 +12,84 @@ namespace ChatHubNamespace{
 public class ChatHub : Hub{
     private readonly AppDbContext _dbContext;
     private readonly UserManager<IdentityUser> _userManager;
+    private readonly ILogger<ChatHub> _logger;
 
 
-    public ChatHub(AppDbContext dbContext,UserManager<IdentityUser> userManager){
+    public ChatHub(AppDbContext dbContext,UserManager<IdentityUser> userManager,  ILogger<ChatHub> logger){
         _dbContext = dbContext;
         _userManager = userManager;
+        _logger = logger;
     }
 
-    public async Task SendMessage(string senderId, string receiverId,string message){
+   
+
+    // public async Task SendMessage(string receiverId,string message){
+    // var senderId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    // if (string.IsNullOrEmpty(senderId))
+    // {
+    //     // Handle the case where the sender's ID is not found in the claims
+    //     _logger.LogWarning("Sender's Id not found");
+    //     return;
+    // }
+    // _logger.LogInformation("Method invoked");
+
+    // // Retrieve the sender and receiver users
+    // var sender = await _userManager.FindByIdAsync(senderId);
+    // var receiver = await _userManager.FindByIdAsync(receiverId);
+
+    // if (sender == null || receiver == null)
+    // {
+    //     // Handle the case where the sender or receiver is not found
+    //     _logger.LogInformation("No sender or receiver in database");
+    //     return;
+    // }
+
+    // // Send the message to the receiver
+    // await Clients.User(receiverId).SendAsync("ReceiveMessage", senderId, message);
+
+    // // Create a new message object
+    // var newMessage = new Message
+    // {
+    //     Sender = sender,
+    //     Receiver = receiver,
+    //     Content = message,
+    //     SentAt = DateTime.UtcNow
+    // };
+
+    // // Add the message to the database
+    // _dbContext.messages.Add(newMessage);
+    // await _dbContext.SaveChangesAsync();
+    // }
+
+    string GenerateGroupName(string userId1, string userId2){
+        var sortedUserIds = new List<string> { userId1, userId2 }.OrderBy(id => id).ToList();
+        return string.Join("_", sortedUserIds);
+    }
+
+   public async Task StartOneToOneSession(string otherUserId)
+{
     var currentUserId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-    // Check if the sender's ID matches the current user's ID
-    if (senderId != currentUserId)
+    if (currentUserId == null)
     {
-        // If the IDs do not match, return early to prevent unauthorized message sending
-        return;
-    }
-    
-    var sender = await _userManager.FindByIdAsync(senderId);
-    var receiver = await _userManager.FindByIdAsync(receiverId);
-
-    if (sender == null || receiver == null)
-    {
-        // Handle the case where the sender or receiver is not found
+        // Handle the case where the current user's ID is not found
         return;
     }
 
-    await Clients.User(receiverId).SendAsync("ReceiveMessage", senderId, message);
+    var groupName = GenerateGroupName(currentUserId, otherUserId);
+    await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+}
 
-    // Create a new message object
-    var newMessage = new Message
+    public async Task EndOneToOneSession(string otherUserId)
     {
-        Sender = sender,
-        Receiver = receiver,
-        Content = message,
-        SentAt = DateTime.UtcNow
-    };
-
-    // Add the message to the database
-    _dbContext.messages.Add(newMessage);
-    await _dbContext.SaveChangesAsync();
+    var currentUserId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (currentUserId == null)
+    {
+        // Handle the case where the current user's ID is not found
+        return;
     }
 
-    public override async Task OnConnectedAsync(){
-         var userId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (userId != null)
-            {
-                // Assuming you want to add the user to a group named after their user ID
-                await Groups.AddToGroupAsync(Context.ConnectionId, userId);
-            }
-        await base.OnConnectedAsync();
-    }
-
-    public override async Task OnDisconnectedAsync(Exception exception){
-        var userId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-        if (userId != null)
-        {    
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, userId);
-        }
-        await base.OnDisconnectedAsync(exception);
+    var groupName = GenerateGroupName(currentUserId, otherUserId);
+    await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
     }
 }
 }

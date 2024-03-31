@@ -91,6 +91,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IFriendRequestService, FriendRequestService>();
 builder.Services.AddScoped<IFriendsService, FriendsService>();
 
+builder.Logging.AddConsole();
+builder.Logging.AddDebug(); 
 
 
 var app = builder.Build();

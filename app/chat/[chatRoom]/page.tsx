@@ -16,45 +16,47 @@ const MessageRoom = () => {
   const connection = useRef<signalR.HubConnection | null>(null);
 
   useEffect(() => {
-    // Assign the new connection to the .current property of the ref
-    connection.current = new signalR.HubConnectionBuilder()
-      .withUrl("http://localhost:5108/ChatHub", {
-        accessTokenFactory: (): string | Promise<string> => {
-          // Retrieve the access token from wherever it's stored (e.g., local storage)
-          const token = localStorage.getItem("jwtToken");
-          return token || ""; // Return an empty string if the token is null
-        },
-      })
-      .build();
+    const startConnection = async () => {
+        // Assign the new connection to the .current property of the ref
+        connection.current = new signalR.HubConnectionBuilder()
+            .withUrl("http://localhost:5108/ChatHub", {
+                accessTokenFactory: (): string | Promise<string> => {
+                    // Retrieve the access token from wherever it's stored (e.g., local storage)
+                    const token = localStorage.getItem("jwtToken");
+                    return token || ""; // Return an empty string if the token is null
+                },
+            })
+            .build();
 
-    // Start the connection
-    if (connection.current) {
-      connection.current
-        .start()
-        .then(() => {
-          console.log("Connection started");
+        try {
+            // Start the connection
+            await connection.current.start();
+            console.log("Connection started");
 
-          // Set up a message handler after the connection is established
-          if (connection.current) {
-            connection.current.on("ReceiveMessage", (senderId, message) => {
-              console.log(`Received message from ${senderId}:`, message);
-              // Handle the message here
-            });
-          }
-        })
-        .catch((err) =>
-          console.error("Error while starting connection: " + err)
-        );
-    }
+            if (connection.current) {
+                // Invoke the StartOneToOneSession method
+                await connection.current.invoke("StartOneToOneSession", chatId);
+
+                // Set up a message handler after the connection is established
+                connection.current.on("ReceiveMessage", (senderId, message) => {
+                    console.log(`Received message from ${senderId}:`, message);
+                    // Handle the message here
+                });
+            }
+        } catch (err) {
+            console.error("Error while starting connection or invoking method: " + err);
+        }
+    };
+
+    startConnection();
 
     // Cleanup function to stop the connection when the component unmounts
     return () => {
-      if (connection.current) {
-        connection.current.stop();
-      }
+        if (connection.current) {
+            connection.current.stop();
+        }
     };
-  }, []); // Empty dependency array ensures this runs once on mount
-
+}, []);
   // Function to send a message to a specific user
   function sendMessageToUser(recipientUserId: string, message: string): void {
     if (connection.current) {
