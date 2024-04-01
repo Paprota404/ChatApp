@@ -25,7 +25,7 @@ const MessageRoom = () => {
                     const token = localStorage.getItem("jwtToken");
                     return token || ""; // Return an empty string if the token is null
                 },
-            })
+            }).configureLogging("information")
             .build();
 
         try {
