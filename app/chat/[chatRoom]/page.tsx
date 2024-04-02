@@ -23,7 +23,8 @@ const MessageRoom = () => {
                 accessTokenFactory: (): string | Promise<string> => {
                     // Retrieve the access token from wherever it's stored (e.g., local storage)
                     const token = localStorage.getItem("jwtToken");
-                    return token || ""; // Return an empty string if the token is null
+                    console.log(token, "token");
+                    return (`Bearer ${token}`) || ""; // Return an empty string if the token is null
                 },
             }).configureLogging("information")
             .build();
