@@ -24,7 +24,7 @@ const MessageRoom = () => {
                     // Retrieve the access token from wherever it's stored (e.g., local storage)
                     const token = localStorage.getItem("jwtToken");
                     console.log(token, "token");
-                    return (`Bearer ${token}`) || ""; // Return an empty string if the token is null
+                    return token || ""; // Return an empty string if the token is null
                 },
             }).configureLogging("information")
             .build();

@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ChatHubNamespace
 {
 
-
+    [Authorize]
     public class ChatHub : Hub
     {
         private readonly AppDbContext _dbContext;
@@ -78,13 +79,6 @@ namespace ChatHubNamespace
             string jwt = GetJwtTokenFromContext();
             _logger.LogInformation(jwt);
 
-            if (!Context.User.Identity.IsAuthenticated)
-            {
-                _logger.LogWarning("User is not authenticated.");
-
-                return;
-            }
-
             _logger.LogInformation("A client connected to the hub.");
 
             var currentUserId = ExtractNameIdentifierFromJwt(jwt);
@@ -92,11 +86,11 @@ namespace ChatHubNamespace
 
             if (currentUserId == null)
             {
-                // Handle the case where the current user's ID is not found
                 return;
             }
 
             var groupName = GenerateGroupName(currentUserId, otherUserId);
+            _logger.LogInformation(groupName);
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
         }
 
@@ -129,28 +123,18 @@ namespace ChatHubNamespace
             var httpContext = Context.GetHttpContext();
             if (httpContext != null)
             {
-                var headers = httpContext.Request.Headers;
-                _logger.LogInformation("Request Headers:");
-                foreach (var header in headers)
+                // Attempt to retrieve the access_token query parameter
+                if (httpContext.Request.Query.TryGetValue("access_token", out var tokenValues))
                 {
-                    _logger.LogInformation($"{header.Key}: {header.Value}");
-                }
-            }
-            // Check if the Authorization header is present
-            if (Context.GetHttpContext().Request.Headers.TryGetValue("Authorization", out var authorizationHeaderValues))
-            {
-                // The Authorization header value should be in the format "Bearer {token}"
-                var authorizationHeaderValue = authorizationHeaderValues.FirstOrDefault();
-                if (authorizationHeaderValue != null && authorizationHeaderValue.StartsWith("Bearer "))
-                {
-                    // Extract the token from the Authorization header
-                    var token = authorizationHeaderValue.Substring("Bearer ".Length).Trim();
-                    _logger.LogInformation(token, "token from header");
-                    return token;
+                    var token = tokenValues.FirstOrDefault();
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        _logger.LogInformation($"Token from query string: {token}");
+                        return token;
+                    }
                 }
             }
 
-            // Return null if the token is not found
             return null;
         }
     }
