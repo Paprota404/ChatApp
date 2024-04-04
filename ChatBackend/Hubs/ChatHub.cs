@@ -8,36 +8,36 @@ using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
+using Messages.Services;
 
 namespace ChatHubNamespace
 {
 
-    [Authorize]
+
     public class ChatHub : Hub
     {
         private readonly AppDbContext _dbContext;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<ChatHub> _logger;
+        private readonly MessageService _messageService;
 
 
-        public ChatHub(AppDbContext dbContext, UserManager<IdentityUser> userManager, ILogger<ChatHub> logger)
+        public ChatHub(AppDbContext dbContext, UserManager<IdentityUser> userManager, ILogger<ChatHub> logger, MessageService messageService)
         {
             _dbContext = dbContext;
             _userManager = userManager;
             _logger = logger;
+            _messageService = messageService;
         }
 
 
 
         public async Task SendMessage(string receiverId, string message)
         {
-            var senderId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(senderId))
-            {
-                // Handle the case where the sender's ID is not found in the claims
-                _logger.LogWarning("Sender's Id not found");
-                return;
-            }
+            string jwt = GetJwtTokenFromContext();
+            _logger.LogInformation(jwt);
+
+            var senderId = ExtractNameIdentifierFromJwt(jwt);
             _logger.LogInformation("Method invoked");
 
             // Retrieve the sender and receiver users
@@ -51,8 +51,11 @@ namespace ChatHubNamespace
                 return;
             }
 
-            // Send the message to the receiver
-            await Clients.User(receiverId).SendAsync("ReceiveMessage", senderId, message);
+
+            var groupName = GenerateGroupName(senderId, receiverId);
+
+
+            await Clients.Group(groupName).SendAsync("ReceiveMessage", senderId, message);
 
             // Create a new message object
             var newMessage = new Message
@@ -66,6 +69,17 @@ namespace ChatHubNamespace
             // Add the message to the database
             _dbContext.messages.Add(newMessage);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task GetLatestMessages(string receiverId)
+        {
+            string jwt = GetJwtTokenFromContext();
+
+            var senderId = ExtractNameIdentifierFromJwt(jwt);
+
+            var messages = await _messageService.GetMessagesBetweenUsersAsync(senderId, receiverId);
+
+            await Clients.Caller.SendAsync("ReceiveMessages", messages);
         }
 
         string GenerateGroupName(string userId1, string userId2)
@@ -96,7 +110,14 @@ namespace ChatHubNamespace
 
         public async Task EndOneToOneSession(string otherUserId)
         {
-            var currentUserId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            string jwt = GetJwtTokenFromContext();
+            _logger.LogInformation(jwt);
+
+            _logger.LogInformation("A client disconnected from the hub.");
+
+            var currentUserId = ExtractNameIdentifierFromJwt(jwt);
+            _logger.LogInformation(currentUserId);
+
             if (currentUserId == null)
             {
                 // Handle the case where the current user's ID is not found

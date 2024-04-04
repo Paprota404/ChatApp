@@ -17,47 +17,59 @@ const MessageRoom = () => {
 
   useEffect(() => {
     const startConnection = async () => {
-        // Assign the new connection to the .current property of the ref
-        connection.current = new signalR.HubConnectionBuilder()
-            .withUrl("http://localhost:5108/ChatHub", {
-                accessTokenFactory: (): string | Promise<string> => {
-                    // Retrieve the access token from wherever it's stored (e.g., local storage)
-                    const token = localStorage.getItem("jwtToken");
-                    console.log(token, "token");
-                    return token || ""; // Return an empty string if the token is null
-                },
-            }).configureLogging("information")
-            .build();
+      // Assign the new connection to the .current property of the ref
+      connection.current = new signalR.HubConnectionBuilder()
+        .withUrl("http://localhost:5108/ChatHub", {
+          accessTokenFactory: (): string | Promise<string> => {
+            // Retrieve the access token from wherever it's stored (e.g., local storage)
+            const token = localStorage.getItem("jwtToken");
+            console.log(token, "token");
+            return token || ""; // Return an empty string if the token is null
+          },
+        })
+        .configureLogging("information")
+        .build();
 
-        try {
-            // Start the connection
-            await connection.current.start();
-            console.log("Connection started");
+      try {
+        // Start the connection
+        await connection.current.start();
+        console.log("Connection started");
 
-            if (connection.current) {
-                // Invoke the StartOneToOneSession method
-                await connection.current.invoke("StartOneToOneSession", chatId);
+        if (connection.current) {
+          // Invoke the StartOneToOneSession method
+          await connection.current.invoke("StartOneToOneSession", chatId);
 
-                // Set up a message handler after the connection is established
-                connection.current.on("ReceiveMessage", (senderId, message) => {
-                    console.log(`Received message from ${senderId}:`, message);
-                    // Handle the message here
-                });
-            }
-        } catch (err) {
-            console.error("Error while starting connection or invoking method: " + err);
+          // Set up a message handler after the connection is established
+          connection.current.on("ReceiveMessage", (senderId, message) => {
+            console.log(`Received message from ${senderId}:`, message);
+            // Handle the message here
+          });
+
+          connection.current.on("ReceiveMessages", (messages) => {
+            console.log("Received all messages:", messages);
+            // Handle the messages here
+          });
+
+          connection.current
+            .invoke("GetLatestMessages", chatId)
+            .catch((err) => console.log(err));
         }
+      } catch (err) {
+        console.error(
+          "Error while starting connection or invoking method: " + err
+        );
+      }
     };
 
     startConnection();
 
     // Cleanup function to stop the connection when the component unmounts
     return () => {
-        if (connection.current) {
-            connection.current.stop();
-        }
+      if (connection.current) {
+        connection.current.stop();
+      }
     };
-}, []);
+  }, []);
   // Function to send a message to a specific user
   function sendMessageToUser(recipientUserId: string, message: string): void {
     if (connection.current) {
@@ -76,12 +88,10 @@ const MessageRoom = () => {
   };
 
   const handleSubmit = () => {
-    const chatIdString = Array.isArray(chatId) ? chatId.join('') : chatId;
-    console.log(chatIdString,message);
-    sendMessageToUser(chatIdString,message);
+    const chatIdString = Array.isArray(chatId) ? chatId.join("") : chatId;
+    console.log(chatIdString, message);
+    sendMessageToUser(chatIdString, message);
   };
-
-  
 
   return (
     <>
