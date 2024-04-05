@@ -55,9 +55,6 @@ namespace ChatHubNamespace
             var groupName = GenerateGroupName(senderId, receiverId);
 
 
-            await Clients.Group(groupName).SendAsync("ReceiveMessage", senderId, message);
-
-            // Create a new message object
             var newMessage = new Message
             {
                 Sender = sender,
@@ -65,6 +62,19 @@ namespace ChatHubNamespace
                 Content = message,
                 SentAt = DateTime.UtcNow
             };
+
+            var newMessageDTO = new MessageDTOs
+            {
+                SenderId = senderId, // Assuming senderId is a string, adjust as necessary
+                ReceiverId = receiverId,
+                Content = message,
+                SentAt = DateTime.UtcNow
+            };
+
+            await Clients.Group(groupName).SendAsync("ReceiveMessage", newMessageDTO);
+
+            // Create a new message object
+
 
             // Add the message to the database
             _dbContext.messages.Add(newMessage);

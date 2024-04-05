@@ -11,7 +11,14 @@ const MessageRoom = () => {
   const username = searchParams.get("username");
   const params = useParams();
   const chatId = params.chatRoom;
-  console.log(chatId);
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  interface Message {
+    content: string;
+    senderId: string;
+    sentAt: Date;
+    id: number;
+  }
 
   const connection = useRef<signalR.HubConnection | null>(null);
 
@@ -40,14 +47,15 @@ const MessageRoom = () => {
           await connection.current.invoke("StartOneToOneSession", chatId);
 
           // Set up a message handler after the connection is established
-          connection.current.on("ReceiveMessage", (senderId, message) => {
-            console.log(`Received message from ${senderId}:`, message);
+          connection.current.on("ReceiveMessage", ( message) => {
+            console.log(message);
             // Handle the message here
+            setMessages(prevMessages => [...prevMessages, message]);
           });
 
-          connection.current.on("ReceiveMessages", (messages) => {
+          connection.current.on("ReceiveMessages", (messages: Message[]) => {
             console.log("Received all messages:", messages);
-            // Handle the messages here
+            setMessages(messages);
           });
 
           connection.current
@@ -70,6 +78,7 @@ const MessageRoom = () => {
       }
     };
   }, []);
+
   // Function to send a message to a specific user
   function sendMessageToUser(recipientUserId: string, message: string): void {
     if (connection.current) {
@@ -111,8 +120,8 @@ const MessageRoom = () => {
             {username}
           </h1>
         </div>
-        <div className="flex flex-col-reverse relative gap-5 items-center w-5/6 place-self-center h-full">
-          <div className=" w-full flex gap-5  items-center mb-5">
+        <div className="flex flex-col-reverse relative gap-2 items-center w-full place-self-center h-full overflow-y-scroll">
+          <div className=" w-5/6 flex gap-5  items-center mb-5">
             <Textarea
               onChange={handleTextareaChange}
               className="bg-black text-white rounded-lg"
@@ -125,22 +134,40 @@ const MessageRoom = () => {
               Send
             </Button>
           </div>
+          
 
-          <div
-            className="place-self-start"
-            style={{ maxWidth: "25ch", wordWrap: "break-word" }}
-          >
-            Ziomal
-            <div className="border-2 px-10 text-white py-2">Git</div>
-          </div>
+          {messages.slice().reverse().map((message, index) => {
+            // Parse the ISO 8601 string into a Date object
+            const sentAtDate = new Date(message.sentAt);
 
-          <div
-            className="place-self-end mr-24"
-            style={{ maxWidth: "25ch", wordWrap: "break-word" }}
-          >
-            Ja
-            <div className="border-2 text-white px-10 py-2">Ok</div>
-          </div>
+            // Extract the hours and minutes
+            const day = sentAtDate.getDate().toString().padStart(2, '0');
+            const month = (sentAtDate.getMonth() + 1).toString().padStart(2, '0');
+            const hours = sentAtDate.getHours().toString().padStart(2, "0");
+            const minutes = sentAtDate.getMinutes().toString().padStart(2, "0");
+
+            return (
+              <div
+                key={index}
+                style={{ maxWidth: "25ch", wordWrap: "break-word" }}
+                className={`${
+                  message.senderId === chatId
+                    ? "place-self-start ml-28"
+                    : "place-self-end px-2 mr-48"
+                }`}
+              >
+                <div className="border-2 px-10 text-white py-2 my-2">
+                  {message.content}
+                 
+                </div>
+                <div className="text-xs text-gray-500 text-right">
+                    {`${day}/${month} ${hours}:${minutes}`}
+                  </div>
+              </div>
+            );
+          })}
+
+         
         </div>
       </div>
     </>
