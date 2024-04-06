@@ -47,10 +47,10 @@ const MessageRoom = () => {
           await connection.current.invoke("StartOneToOneSession", chatId);
 
           // Set up a message handler after the connection is established
-          connection.current.on("ReceiveMessage", ( message) => {
+          connection.current.on("ReceiveMessage", (message) => {
             console.log(message);
             // Handle the message here
-            setMessages(prevMessages => [...prevMessages, message]);
+            setMessages((prevMessages) => [...prevMessages, message]);
           });
 
           connection.current.on("ReceiveMessages", (messages: Message[]) => {
@@ -99,7 +99,9 @@ const MessageRoom = () => {
   const handleSubmit = () => {
     const chatIdString = Array.isArray(chatId) ? chatId.join("") : chatId;
     console.log(chatIdString, message);
+    
     sendMessageToUser(chatIdString, message);
+    setMessage("");
   };
 
   return (
@@ -123,6 +125,7 @@ const MessageRoom = () => {
         <div className="flex flex-col-reverse relative gap-2 items-center w-full place-self-center h-full overflow-y-scroll">
           <div className=" w-5/6 flex gap-5  items-center mb-5">
             <Textarea
+              value={message}
               onChange={handleTextareaChange}
               className="bg-black text-white rounded-lg"
               placeholder="Write your message"
@@ -134,40 +137,46 @@ const MessageRoom = () => {
               Send
             </Button>
           </div>
-          
 
-          {messages.slice().reverse().map((message, index) => {
-            // Parse the ISO 8601 string into a Date object
-            const sentAtDate = new Date(message.sentAt);
+          <div className="w-5/6 flex-col">
+            {messages
+              .slice()
+              
+              .map((message, index) => {
+                // Parse the ISO 8601 string into a Date object
+                const sentAtDate = new Date(message.sentAt);
 
-            // Extract the hours and minutes
-            const day = sentAtDate.getDate().toString().padStart(2, '0');
-            const month = (sentAtDate.getMonth() + 1).toString().padStart(2, '0');
-            const hours = sentAtDate.getHours().toString().padStart(2, "0");
-            const minutes = sentAtDate.getMinutes().toString().padStart(2, "0");
+                // Extract the hours and minutes
+                const day = sentAtDate.getDate().toString().padStart(2, "0");
+                const month = (sentAtDate.getMonth() + 1)
+                  .toString()
+                  .padStart(2, "0");
+                const hours = sentAtDate.getHours().toString().padStart(2, "0");
+                const minutes = sentAtDate
+                  .getMinutes()
+                  .toString()
+                  .padStart(2, "0");
 
-            return (
-              <div
-                key={index}
-                style={{ maxWidth: "25ch", wordWrap: "break-word" }}
-                className={`${
-                  message.senderId === chatId
-                    ? "place-self-start ml-28"
-                    : "place-self-end px-2 mr-48"
-                }`}
-              >
-                <div className="border-2 px-10 text-white py-2 my-2">
-                  {message.content}
-                 
-                </div>
-                <div className="text-xs text-gray-500 text-right">
-                    {`${day}/${month} ${hours}:${minutes}`}
+                return (
+                  <div
+                    key={index}
+                    style={{ maxWidth: "20ch", wordWrap: "break-word" }}
+                    className={`${
+                      message.senderId === chatId
+                        ? ""
+                        : "ml-auto"
+                    }`}
+                  >
+                    <div className="border-2 px-10 text-white py-2 my-2">
+                      {message.content}
+                    </div>
+                    <div className="text-xs text-gray-500 text-right">
+                      {`${day}/${month} ${hours}:${minutes}`}
+                    </div>
                   </div>
-              </div>
-            );
-          })}
-
-         
+                );
+              })}
+          </div>
         </div>
       </div>
     </>

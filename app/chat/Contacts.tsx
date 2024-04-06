@@ -68,7 +68,7 @@ const Contacts: React.FC = () => {
                     <div className="text-white text-2xl">
                       {contact.username}
                     </div>
-                    <div className="text-gray-400">Tak</div>
+                    
                   </div>
                 </div>
               </a>

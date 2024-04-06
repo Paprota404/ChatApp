@@ -13,10 +13,11 @@ const layout = ({ children }: { children: React.ReactNode }) => {
     <QueryClientProvider client={queryClient}>
       <>
       <div className="w-1/4 h-full flex flex-col absolute  border-r-2 bg-black">
-        <div className="border-white   flex justify-center h-32 items-center w-full">
-          <h1 className="text-white text-5xl tracking-widest">DirectMe</h1>
+        <div className="  flex flex-col justify-center h-32 items-center w-full">
+          <h1 className="text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl tracking-widest">DirectMe</h1>
+        
         </div>
-        <hr style={{ height: "2px" }} className="bg-white w-full  mx-auto"></hr>
+       
 
         <Contacts />
         <AddingContacts />
