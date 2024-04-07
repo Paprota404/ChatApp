@@ -6,5 +6,44 @@ html,
 body,
 #root {
   height: 100%;
-  color:white;
+  color: white;
+}
+
+.sidebar {
+  width: 25%; 
+  transition: width 0.5s;
+}
+
+.dynamic-page {
+  margin-left: 25%; /* Default margin to accommodate the sidebar */
+  transition: margin-left 0.5s;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%; /* Full width on mobile */
+  }
+
+  .dynamic-page {
+    margin-left: 0; /* No margin on mobile */
+  }
+  .dynamic-page.active{
+    width:100%;
+  }
+}
+
+@media (min-width:768px){
+  .dynamic-page.active{
+    width:75%;
+  }
+}
+
+.dynamic-page.active {
+
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50; 
 }

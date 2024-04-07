@@ -12,10 +12,7 @@ import {
 } from "@/components/ui/dialog";
 
 const PendingRequests = () => {
-  const [errorMessage,setErrorMessage] = useState("");
-
-
-
+  const [errorMessage, setErrorMessage] = useState("");
 
   interface FriendRequestModel {
     id: number;
@@ -30,7 +27,6 @@ const PendingRequests = () => {
     FriendRequestModel[],
     Error
   >("pendingRequests", async () => {
-
     const jwtToken = localStorage.getItem("jwtToken");
     const response = await fetch(
       "http://localhost:5108/api/FriendRequest/pending",
@@ -38,9 +34,8 @@ const PendingRequests = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${jwtToken}` 
+          Authorization: `Bearer ${jwtToken}`,
         },
-      
       }
     );
     if (!response.ok) {
@@ -51,24 +46,37 @@ const PendingRequests = () => {
 
   const queryClient = useQueryClient();
 
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    // This code will only run on the client side
+    const token = localStorage.getItem("jwtToken");
+    setToken(token || "");
+  }, []);
+
   const acceptFriendRequestMutation = useMutation(
     async (id: number) => {
-      const response = await fetch(`http://localhost:5108/api/FriendRequest/accept/${id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+      const response = await fetch(
+        `http://localhost:5108/api/FriendRequest/accept/${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
+      );
       const responseBody = await response.json();
       if (!response.ok) {
-        setErrorMessage(responseBody.error || "Unable to accept friend request");
+        setErrorMessage(
+          responseBody.error || "Unable to accept friend request"
+        );
       }
     },
     {
-      onSuccess: () =>{
+      onSuccess: () => {
         queryClient.invalidateQueries("pendingRequests");
-      }
+      },
     }
   );
 
@@ -95,7 +103,10 @@ const PendingRequests = () => {
               pendingRequests.map((request) => (
                 <li className="text-xl justify-between flex" key={request.id}>
                   <div>Request From: {request.sender_username}</div>
-                  <Button onClick={() =>handleAcceptFriendRequest(request.id)} className="bg-white h-8 text-black font-semibold">
+                  <Button
+                    onClick={() => handleAcceptFriendRequest(request.id)}
+                    className="bg-white h-8 text-black font-semibold"
+                  >
                     Accept
                   </Button>
                 </li>

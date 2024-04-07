@@ -104,11 +104,19 @@ const MessageRoom = () => {
     setMessage("");
   };
 
+  useEffect(() => {
+    document.body.classList.add('dynamic-page-active');
+
+    return () => {
+      document.body.classList.remove('dynamic-page-active');
+    };
+ }, []);
+
   return (
     <>
       <div
-        className="bg-black w-3/4 flex flex-col h-full"
-        style={{ marginLeft: "25%" }}
+        className="bg-black w-3/4 flex flex-col h-full dynamic-page active"
+        
       >
         <div
           style={{ height: "9.5rem" }}

@@ -1,10 +1,11 @@
-"use client";
-import React from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { useRouter } from "next/navigation";
+'use client'
+import React from 'react';
+import Sidebar from "./Sidebar";
 
-const Chat = () => {
-  return <></>;
-};
+const page = () => {
+  return (
+    <div><Sidebar></Sidebar></div>
+  )
+}
 
-export default Chat;
+export default page
