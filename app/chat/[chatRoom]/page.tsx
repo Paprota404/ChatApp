@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSearchParams, useParams } from "next/navigation";
 import * as signalR from "@microsoft/signalr";
+import {useRouter} from "next/navigation"
 
 const MessageRoom = () => {
   const searchParams = useSearchParams();
@@ -12,6 +13,7 @@ const MessageRoom = () => {
   const params = useParams();
   const chatId = params.chatRoom;
   const [messages, setMessages] = useState<Message[]>([]);
+  const router = useRouter();
 
   interface Message {
     content: string;
@@ -23,12 +25,15 @@ const MessageRoom = () => {
   const connection = useRef<signalR.HubConnection | null>(null);
 
   useEffect(() => {
+
+    
+
     const startConnection = async () => {
       // Assign the new connection to the .current property of the ref
       connection.current = new signalR.HubConnectionBuilder()
         .withUrl("http://localhost:5108/ChatHub", {
           accessTokenFactory: (): string | Promise<string> => {
-            // Retrieve the access token from wherever it's stored (e.g., local storage)
+           
             const token = localStorage.getItem("jwtToken");
             console.log(token, "token");
             return token || ""; // Return an empty string if the token is null

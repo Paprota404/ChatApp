@@ -62,20 +62,21 @@ const PendingRequests = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            "Authorization": `Bearer ${token}`,
           },
         }
       );
-      const responseBody = await response.json();
+      
       if (!response.ok) {
         setErrorMessage(
-          responseBody.error || "Unable to accept friend request"
+          "Unable to accept friend request"
         );
       }
     },
     {
       onSuccess: () => {
         queryClient.invalidateQueries("pendingRequests");
+        queryClient.invalidateQueries("contacts");
       },
     }
   );
@@ -101,7 +102,7 @@ const PendingRequests = () => {
           <ul>
             {pendingRequests ? (
               pendingRequests.map((request) => (
-                <li className="text-xl justify-between flex" key={request.id}>
+                <li className="text-xl justify-between flex my-4" key={request.id}>
                   <div>Request From: {request.sender_username}</div>
                   <Button
                     onClick={() => handleAcceptFriendRequest(request.id)}

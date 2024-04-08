@@ -13,7 +13,7 @@ import {
 
 const AddingContacts = () => {
   const [username, setUsername] = useState("");
-  const [errorMessage, setErrorMessage] = useState('');
+  const [Message, setMessage] = useState('');
 
   const [token, setToken] = useState("");
 
@@ -43,14 +43,16 @@ const AddingContacts = () => {
 
       if (!response.ok) {
         const errorMessage = await response.text();
-        setErrorMessage(errorMessage)
+        setMessage(errorMessage)
        
+      }else{
+        setMessage("Friend request sent successfully!");
       }
 
       
     } catch (error) {
       console.error('Error sending friend request:', (error as Error).message);
-      setErrorMessage((error as Error).message);
+      setMessage((error as Error).message);
     }
   }
 
@@ -68,7 +70,7 @@ const AddingContacts = () => {
             onChange={(e) => setUsername(e.target.value)}
           ></Input>
           <Button onClick={sendRequest} className="bg-white text-black">Send request</Button>
-          {errorMessage != "" && <h1 className="text-white">{errorMessage}</h1> }
+          {Message != "" && <h1 className="text-white">{Message}</h1> }
         </DialogHeader>
       </DialogContent>
     </Dialog>

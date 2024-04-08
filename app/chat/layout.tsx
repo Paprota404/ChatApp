@@ -1,12 +1,48 @@
 "use client";
-import React from "react";
 import Default from "./Default";
 import Sidebar from "./Sidebar";
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 import { QueryClient, QueryClientProvider } from "react-query";
 
-const layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient();
+
+  const router = useRouter();
+
+ useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem("jwtToken");
+
+      try {
+        const response = await fetch('http://localhost:5108/api/isAuthenticated/check', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        console.log(data);
+
+        if (!data.isAuthenticated) {
+          router.push("/login");
+        }
+      } catch (error) {
+        console.error('There has been a problem with your fetch operation:', error);
+        // Optionally, redirect to login if there's an error or if the user is not authenticated
+        router.push("/login");
+      }
+    };
+
+    checkAuth();
+ }, [router]);
   return (
     <QueryClientProvider client={queryClient}>
       <>
@@ -18,4 +54,4 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default layout;
+export default Layout;
