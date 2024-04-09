@@ -10,38 +10,43 @@ namespace SignUp.Controllers
 {
     [Route("api/signup")]
     [ApiController]
-    public class SignUpController : ControllerBase{
-        
+    public class SignUpController : ControllerBase
+    {
+
         private readonly UserManager<IdentityUser> _userManager;
 
-        public SignUpController(UserManager<IdentityUser> userManager){
+        public SignUpController(UserManager<IdentityUser> userManager)
+        {
             _userManager = userManager;
         }
-        
-        [HttpPost]
-        public async Task<IActionResult> SignUp([FromBody] AuthDto model){
 
-            if(!ModelState.IsValid){
+        [HttpPost]
+        public async Task<IActionResult> SignUp([FromBody] AuthDto model)
+        {
+
+            if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
             }
-            
+
             var existingUser = await _userManager.FindByNameAsync(model.UserName);
 
-            if(existingUser != null){
-                return Conflict(new {Message="A user with this email already exists."});
+            if (existingUser != null)
+            {
+                return Conflict(new { Message = "A user with this username already exists." });
             }
 
-            var user = new IdentityUser {UserName = model.UserName};
-            var result = await _userManager.CreateAsync(user,model.Password);
+            var user = new IdentityUser { UserName = model.UserName };
+            var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
-        {
-            // User creation succeeded
-            return Ok();
-        }
+            {
+                // User creation succeeded
+                return Ok();
+            }
             else
             {
-                // User creation failed, return the errors
+                
                 return BadRequest(result.Errors);
             }
         }

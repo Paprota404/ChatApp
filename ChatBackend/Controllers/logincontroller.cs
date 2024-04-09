@@ -11,33 +11,37 @@ using System.Text;
 
 namespace Login.Controllers
 {
-   
+
     [Route("api/login")]
-   
-    public class LoginController : ControllerBase{
-        
+
+    public class LoginController : ControllerBase
+    {
+
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IConfiguration _configuration; 
-        public LoginController(UserManager<IdentityUser> userManager, IConfiguration configuration){
+        private readonly IConfiguration _configuration;
+        public LoginController(UserManager<IdentityUser> userManager, IConfiguration configuration)
+        {
             _userManager = userManager;
             _configuration = configuration;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] AuthDto model){
-            
+        public async Task<IActionResult> Login([FromBody] AuthDto model)
+        {
 
-            //Check if user exits if exist check if password is correct
+
             var user = await _userManager.FindByNameAsync(model.UserName);
 
-            if(user==null){
-                return NotFound(new {Message="A user doesn't exist."});
+            if (user == null)
+            {
+                return NotFound(new { Message = "A user doesn't exist." });
             }
 
-            var CorrectPassword = await _userManager.CheckPasswordAsync(user,model.Password);
+            var CorrectPassword = await _userManager.CheckPasswordAsync(user, model.Password);
 
-            if(!CorrectPassword){
-                return Unauthorized(new {Message="Invalid password"});
+            if (!CorrectPassword)
+            {
+                return Unauthorized(new { Message = "Invalid password" });
             }
 
             var claims = new List<Claim>{
@@ -51,17 +55,25 @@ namespace Login.Controllers
                 issuer: _configuration["JWT:Issuer"],
                 audience: _configuration["JWT:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(30), // Token expiration
+                expires: DateTime.Now.AddMinutes(120),
                 signingCredentials: credentials);
-            
+
 
             var token = new JwtSecurityTokenHandler().WriteToken(SecToken);
 
-            Response.Headers.Add("Authorization", $"Bearer {token}");
-            return Ok(new {token = token});
+            Response.Cookies.Append("access_token", token, new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.Now.AddMinutes(120), // Set the cookie expiration to match the token
+                Secure = true, // Set to true if your site is served over HTTPS
+                SameSite = SameSiteMode.None // Adjust according to your security requirements
+            });
+
+            
+            return Ok(new { Message = "Login successful" });
         }
 
     }
 
-    
+
 }

@@ -16,6 +16,7 @@ using DirectMe.Authentication;
 using ChatHubNamespace;
 using Microsoft.AspNetCore.SignalR;
 using Messages.Services;
+using JwtFromCookie;
 public partial class Program{
 
  public static void Main(string[] args)
@@ -78,7 +79,7 @@ builder.Services.AddAuthentication(options =>
         (Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidateLifetime = false,
+        ValidateLifetime = true,
         ValidateIssuerSigningKey = true
     };
 });
@@ -98,6 +99,8 @@ builder.Logging.AddDebug();
 
 
 var app = builder.Build();
+
+app.UseMiddleware<JwtCookieToHeaderMiddleware>();
 
 app.UseRouting();
 
