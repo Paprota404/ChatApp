@@ -6,15 +6,18 @@ using System.Security.Claims;
 using Microsoft.Extensions.Logging;
 
 
-namespace Friends.Controllers{
+namespace Friends.Controllers
+{
     //Get users contacts
     //Look in friends table and retrieve second user id then go to users table and get user data
 
-    [Authorize]
+    
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
 
-    public class FriendsController : ControllerBase{
+    public class FriendsController : ControllerBase
+    {
 
         private readonly IFriendsService _friendService;
 
@@ -22,7 +25,8 @@ namespace Friends.Controllers{
 
         private readonly ILogger<FriendsController> _logger;
 
-        public FriendsController(IFriendsService friendService, IHttpContextAccessor httpContextAccessor,ILogger<FriendsController> logger){
+        public FriendsController(IFriendsService friendService, IHttpContextAccessor httpContextAccessor, ILogger<FriendsController> logger)
+        {
             _friendService = friendService;
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
@@ -44,7 +48,7 @@ namespace Friends.Controllers{
                 return StatusCode(500, ex.Message);
             }
         }
-  
+
         // Retrieves the authenticated user's ID from the HttpContext. Returns the user's ID as a string.
         private string GetAuthenticatedUserId()
         {
@@ -52,6 +56,6 @@ namespace Friends.Controllers{
             var nameIdentifier = context?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             return nameIdentifier;
+        }
     }
-}
 }

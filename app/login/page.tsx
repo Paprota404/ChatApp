@@ -51,7 +51,7 @@ export default function ProfileForm() {
       });
 
       if (response.status === 200) {
-        // Successful request
+       
          const data = await response.json();
          const token = data.token;
         
@@ -61,7 +61,7 @@ export default function ProfileForm() {
           router.push("/chat");
         }, 1000);
       } else if (response.status === 400) {
-        // Bad Request
+        
         let errorData = await response.json();
         throw new Error(errorData.message || "Bad Request");
       } else if (response.status === 401) {
@@ -72,7 +72,7 @@ export default function ProfileForm() {
         }, 1000);
       }
         else if (response.status === 404) {
-          //User not found
+          
           setTimeout(() => {
             setError("User doesn't exist");
             setSigning(false);

@@ -16,7 +16,8 @@ using DirectMe.Authentication;
 using ChatHubNamespace;
 using Microsoft.AspNetCore.SignalR;
 using Messages.Services;
-using JwtFromCookie;
+
+
 public partial class Program{
 
  public static void Main(string[] args)
@@ -100,7 +101,15 @@ builder.Logging.AddDebug();
 
 var app = builder.Build();
 
-app.UseMiddleware<JwtCookieToHeaderMiddleware>();
+app.Use(async (context, next) =>
+{
+    if (context.Request.Cookies.TryGetValue("access_token", out var jwtToken))
+    {
+        context.Request.Headers.Append("Authorization", $"Bearer {jwtToken}");
+    }
+
+    await next.Invoke();
+});
 
 app.UseRouting();
 
