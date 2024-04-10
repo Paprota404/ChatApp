@@ -26,8 +26,6 @@ const MessageRoom = () => {
 
   useEffect(() => {
 
-    
-
     const startConnection = async () => {
       // Assign the new connection to the .current property of the ref
       connection.current = new signalR.HubConnectionBuilder()

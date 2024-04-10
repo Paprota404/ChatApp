@@ -12,23 +12,17 @@ interface Contact {
 const Contacts: React.FC = () => {
   const getContacts = async (): Promise<Contact[]> => {
     try {
-      // Retrieve JWT token from local storage
-      const jwtToken = localStorage.getItem("jwtToken");
-
-      console.log(jwtToken);
-
-      // Set up headers with Authorization header containing the token
       const headers = {
-        Authorization: `Bearer ${jwtToken}`,
-        "Content-Type": "application/json", // Adjust content type as needed
+        "Content-Type": "application/json", 
       };
 
-      // Make the fetch request with the headers
+     
       const response = await fetch(
         "http://localhost:5108/api/Friends/GetFriends",
         {
           method: "GET",
           headers: headers,
+          credentials: 'include'
         }
       );
 

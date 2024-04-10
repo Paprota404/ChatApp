@@ -15,18 +15,10 @@ const AddingContacts = () => {
   const [username, setUsername] = useState("");
   const [Message, setMessage] = useState('');
 
-  const [token, setToken] = useState("");
-
-  useEffect(() => {
-    // This code will only run on the client side
-    const token = localStorage.getItem("jwtToken");
-    setToken(token || "");
-  }, []);
 
   async function sendRequest() {
    
     try {
-
 
       const response = await fetch(
         "http://localhost:5108/api/FriendRequest/send",
@@ -34,7 +26,6 @@ const AddingContacts = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
           },
           credentials:'include',
           body: JSON.stringify(username),

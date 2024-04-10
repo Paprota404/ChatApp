@@ -27,15 +27,15 @@ const PendingRequests = () => {
     FriendRequestModel[],
     Error
   >("pendingRequests", async () => {
-    const jwtToken = localStorage.getItem("jwtToken");
+    
     const response = await fetch(
       "http://localhost:5108/api/FriendRequest/pending",
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${jwtToken}`,
         },
+        credentials: 'include',
       }
     );
     if (!response.ok) {
@@ -46,13 +46,7 @@ const PendingRequests = () => {
 
   const queryClient = useQueryClient();
 
-  const [token, setToken] = useState("");
 
-  useEffect(() => {
-    // This code will only run on the client side
-    const token = localStorage.getItem("jwtToken");
-    setToken(token || "");
-  }, []);
 
   const acceptFriendRequestMutation = useMutation(
     async (id: number) => {
@@ -62,8 +56,8 @@ const PendingRequests = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
           },
+          credentials: 'include'
         }
       );
       

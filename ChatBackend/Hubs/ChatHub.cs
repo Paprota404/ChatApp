@@ -13,7 +13,7 @@ using Messages.Services;
 namespace ChatHubNamespace
 {
 
-
+    [Authorize]
     public class ChatHub : Hub
     {
         private readonly AppDbContext _dbContext;
@@ -34,19 +34,16 @@ namespace ChatHubNamespace
 
         public async Task SendMessage(string receiverId, string message)
         {
-            string jwt = GetJwtTokenFromContext();
-            _logger.LogInformation(jwt);
-
-            var senderId = ExtractNameIdentifierFromJwt(jwt);
+            var senderId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             _logger.LogInformation("Method invoked");
 
-            // Retrieve the sender and receiver users
+
             var sender = await _userManager.FindByIdAsync(senderId);
             var receiver = await _userManager.FindByIdAsync(receiverId);
 
             if (sender == null || receiver == null)
             {
-                // Handle the case where the sender or receiver is not found
+
                 _logger.LogInformation("No sender or receiver in database");
                 return;
             }
@@ -65,7 +62,7 @@ namespace ChatHubNamespace
 
             var newMessageDTO = new MessageDTOs
             {
-                SenderId = senderId, // Assuming senderId is a string, adjust as necessary
+                SenderId = senderId,
                 ReceiverId = receiverId,
                 Content = message,
                 SentAt = DateTime.UtcNow
@@ -73,19 +70,19 @@ namespace ChatHubNamespace
 
             await Clients.Group(groupName).SendAsync("ReceiveMessage", newMessageDTO);
 
-            // Create a new message object
 
-
-            // Add the message to the database
             _dbContext.messages.Add(newMessage);
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task GetLatestMessages(string receiverId)
         {
-            string jwt = GetJwtTokenFromContext();
-
-            var senderId = ExtractNameIdentifierFromJwt(jwt);
+            var senderId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (senderId == null)
+            {
+                _logger.LogInformation("No sender ID found in the context.");
+                return;
+            }
 
             var messages = await _messageService.GetMessagesBetweenUsersAsync(senderId, receiverId);
 
@@ -100,13 +97,7 @@ namespace ChatHubNamespace
 
         public async Task StartOneToOneSession(string otherUserId)
         {
-            string jwt = GetJwtTokenFromContext();
-            _logger.LogInformation(jwt);
-
-            _logger.LogInformation("A client connected to the hub.");
-
-            var currentUserId = ExtractNameIdentifierFromJwt(jwt);
-            _logger.LogInformation(currentUserId);
+            var currentUserId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (currentUserId == null)
             {
@@ -120,53 +111,17 @@ namespace ChatHubNamespace
 
         public async Task EndOneToOneSession(string otherUserId)
         {
-            string jwt = GetJwtTokenFromContext();
-            _logger.LogInformation(jwt);
 
-            _logger.LogInformation("A client disconnected from the hub.");
-
-            var currentUserId = ExtractNameIdentifierFromJwt(jwt);
-            _logger.LogInformation(currentUserId);
+            var currentUserId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (currentUserId == null)
             {
-                // Handle the case where the current user's ID is not found
+                _logger.LogInformation("No current user ID found in the context.");
                 return;
             }
 
             var groupName = GenerateGroupName(currentUserId, otherUserId);
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
-        }
-
-        private string ExtractNameIdentifierFromJwt(string jwtToken)
-        {
-            var handler = new JwtSecurityTokenHandler();
-            var jwtTokenSansSignature = handler.ReadJwtToken(jwtToken);
-
-            var nameIdentifierClaim = jwtTokenSansSignature.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
-
-            return nameIdentifierClaim?.Value;
-        }
-
-        private string GetJwtTokenFromContext()
-        {
-            _logger.LogInformation("called");
-            var httpContext = Context.GetHttpContext();
-            if (httpContext != null)
-            {
-                // Attempt to retrieve the access_token query parameter
-                if (httpContext.Request.Query.TryGetValue("access_token", out var tokenValues))
-                {
-                    var token = tokenValues.FirstOrDefault();
-                    if (!string.IsNullOrEmpty(token))
-                    {
-                        _logger.LogInformation($"Token from query string: {token}");
-                        return token;
-                    }
-                }
-            }
-
-            return null;
         }
     }
 }

@@ -15,18 +15,18 @@ body,
 }
 
 .dynamic-page {
-  margin-left: 25%; /* Default margin to accommodate the sidebar */
+  margin-left: 25%; 
   transition: margin-left 0.5s;
 }
 
-/* Mobile styles */
+
 @media (max-width: 768px) {
   .sidebar {
-    width: 100%; /* Full width on mobile */
+    width: 100%; 
   }
 
   .dynamic-page {
-    margin-left: 0; /* No margin on mobile */
+    margin-left: 0; 
   }
   .dynamic-page.active{
     width:100%;
@@ -40,7 +40,6 @@ body,
 }
 
 .dynamic-page.active {
-
   height: 100vh;
   position: fixed;
   top: 0;

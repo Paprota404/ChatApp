@@ -49,7 +49,6 @@ namespace Friends.Controllers
             }
         }
 
-        // Retrieves the authenticated user's ID from the HttpContext. Returns the user's ID as a string.
         private string GetAuthenticatedUserId()
         {
             var context = _httpContextAccessor.HttpContext;
