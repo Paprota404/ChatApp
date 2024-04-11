@@ -32,7 +32,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ./ChatBackend/publish
 
   deploy:
     runs-on: windows-latest
@@ -54,4 +54,4 @@ jobs:
           app-name: 'DirectMe'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_779ABDC1ABA14A5CA19E296B070BD76A }}
-          package: /ChatBackend
+          package: ./ChatBackend/publish
