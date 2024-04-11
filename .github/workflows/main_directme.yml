@@ -54,4 +54,4 @@ jobs:
           app-name: 'DirectMe'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_779ABDC1ABA14A5CA19E296B070BD76A }}
-          package: .
+          package: /ChatBackend
