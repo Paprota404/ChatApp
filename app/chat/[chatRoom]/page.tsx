@@ -80,7 +80,7 @@ const MessageRoom = () => {
         connection.current.stop();
       }
     };
-  }, []);
+  }, [chatId]);
 
   // Function to send a message to a specific user
   function sendMessageToUser(recipientUserId: string, message: string): void {
