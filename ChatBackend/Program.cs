@@ -16,7 +16,7 @@ using DirectMe.Authentication;
 using ChatHubNamespace;
 using Microsoft.AspNetCore.SignalR;
 using Messages.Services;
-
+using System.Data.SqlClient;
 
 public partial class Program{
 
@@ -25,11 +25,12 @@ public partial class Program{
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddJsonFile("appsettings.json");
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext")), ServiceLifetime.Scoped);
+options.UseNpgsql(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")), ServiceLifetime.Scoped);
 
 // Add services to the container.
-builder.Configuration.AddJsonFile("appsettings.json");
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -40,7 +41,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("MyCorsPolicy", builder =>
     {
-        builder.WithOrigins("http://localhost:3000")
+        builder.WithOrigins("https://directme-eta.vercel.app/")
                .AllowAnyHeader()
                .AllowAnyMethod()
                .AllowCredentials();
