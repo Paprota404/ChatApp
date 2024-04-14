@@ -30,7 +30,7 @@ builder.Configuration.AddJsonFile("appsettings.json");
 builder.Services.AddDbContext<AppDbContext>(options =>
 options.UseNpgsql(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")), ServiceLifetime.Scoped);
 
-// Add services to the container.
+// Add services to the container
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
