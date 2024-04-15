@@ -28,7 +28,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.json");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-options.UseNpgsql(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")), ServiceLifetime.Scoped);
+            options.UseSqlServer(
+                builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING"),
+                sqlServerOptionsAction: sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5, // Maximum number of retries
+                        maxRetryDelay: TimeSpan.FromSeconds(30), // Maximum delay between retries
+                        errorNumbersToAdd: null); // Additional error numbers to retry on, if any
+                }));
 
 // Add services to the container
 
