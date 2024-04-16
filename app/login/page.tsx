@@ -43,10 +43,12 @@ export default function ProfileForm() {
     setSigning(true);
 
     try {
-      const response = await fetch("http://localhost:5108/api/login", {
+      const response = await fetch("https://directme.azurewebsites.net/api/login", {
         mode: "cors",
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+          'credentials':'include'
+         },
         body: JSON.stringify({ UserName: values.username, Password: values.password }),
       });
 

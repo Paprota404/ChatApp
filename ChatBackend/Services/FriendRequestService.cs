@@ -52,7 +52,6 @@ public class FriendRequestService : IFriendRequestService{
             request_sender_id = senderId,
             request_receiver_id = receiver.Id,
             status = FriendRequestStatus.Pending,
-            created_at = DateTime.UtcNow,
             sender_username = sender.UserName
         };
 

@@ -19,7 +19,7 @@ public class FriendRequestModel{
 
     public FriendRequestStatus status {get;set;} = FriendRequestStatus.Pending;
 
-    public DateTime created_at {get; set;} = DateTime.UtcNow;
+    
 }
 
 public enum FriendRequestStatus{

@@ -18,11 +18,11 @@ const Contacts: React.FC = () => {
 
      
       const response = await fetch(
-        "http://localhost:5108/api/Friends/GetFriends",
+        "https://directme.azurewebsites.net/api/Friends/GetFriends",
         {
           method: "GET",
           headers: headers,
-          credentials: 'include'
+          credentials: 'include',
         }
       );
 

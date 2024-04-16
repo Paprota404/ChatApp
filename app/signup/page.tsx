@@ -46,7 +46,7 @@ export default function ProfileForm() {
   const [isSigning,setSigning] = useState(false);
 
   async function OnSubmit(values: z.infer<typeof formSchema>) {
-    const apiEndpoint = 'http://localhost:5108/api/signup';
+    const apiEndpoint = 'https://directme.azurewebsites.net/api/signup';
 
     setSigning(true);
   
@@ -54,7 +54,9 @@ export default function ProfileForm() {
       const response = await fetch(apiEndpoint, {
         mode: "cors",
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json',
+          "credentials":"include"
+         },
         body: JSON.stringify({ UserName: values.username, Password: values.password }), 
       });
   

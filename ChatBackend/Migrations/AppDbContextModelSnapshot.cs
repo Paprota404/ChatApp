@@ -281,9 +281,6 @@ namespace ChatBackend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<DateTime>("created_at")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("request_receiver_id")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -309,13 +306,13 @@ namespace ChatBackend.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Receiver")
                         .WithMany()
                         .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Sender")
                         .WithMany()
                         .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Receiver");

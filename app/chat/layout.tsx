@@ -13,14 +13,14 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
  useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem("jwtToken");
+      
 
       try {
-        const response = await fetch('http://localhost:5108/api/isAuthenticated/check', {
+        const response = await fetch('https://directme.azurewebsites.net/api/isAuthenticated/check', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            "Authorization": `Bearer ${token}`,
+            'credentials':'include',
           },
         });
 
