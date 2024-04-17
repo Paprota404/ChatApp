@@ -55,7 +55,7 @@ export default function ProfileForm() {
         mode: "cors",
         method: 'POST',
         headers: { 'Content-Type': 'application/json',
-          "credentials":"include"
+          
          },
         body: JSON.stringify({ UserName: values.username, Password: values.password }), 
       });

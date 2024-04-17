@@ -20,10 +20,12 @@ using System.Data.SqlClient;
 
 public partial class Program{
 
- public static void Main(string[] args)
+public static void Main(string[] args)
 {
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddEnvironmentVariables();
 
 builder.Configuration.AddJsonFile("appsettings.json");
 
