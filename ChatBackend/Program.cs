@@ -112,6 +112,8 @@ builder.Logging.AddDebug();
 
 var app = builder.Build();
 
+
+
 app.Use(async (context, next) =>
 {
     if (context.Request.Cookies.TryGetValue("access_token", out var jwtToken))
@@ -121,6 +123,10 @@ app.Use(async (context, next) =>
 
     await next.Invoke();
 });
+app.UseDefaultFiles();
+app.UseStaticFiles(); 
+
+app.UseHttpsRedirection();
 
 app.UseRouting();
 

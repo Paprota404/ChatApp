@@ -47,8 +47,6 @@ H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
 H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Mono.TextTemplating.dll
 H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Newtonsoft.Json.dll
 H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
-H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Npgsql.dll
-H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -163,3 +161,4 @@ H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\zh-Hant\Microsoft.Data.SqlClie
 H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\runtimes\unix\lib\net8.0\Microsoft.Data.SqlClient.dll
 H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\runtimes\win\lib\net8.0\Microsoft.Data.SqlClient.dll
 H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Runtime.Caching.dll
+H:\Chat App\chat-app\ChatBackend\bin\Debug\net8.0\ChatBackend.staticwebassets.runtime.json
