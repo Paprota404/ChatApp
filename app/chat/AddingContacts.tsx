@@ -21,7 +21,7 @@ const AddingContacts = () => {
     try {
 
       const response = await fetch(
-        "https://directme.azurewebsites.net/api/FriendRequest/send",
+        "https://directmechat.azurewebsites.net/api/FriendRequest/send",
         {
           method: "POST",
           headers: {

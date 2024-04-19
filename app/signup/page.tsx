@@ -46,7 +46,7 @@ export default function ProfileForm() {
   const [isSigning,setSigning] = useState(false);
 
   async function OnSubmit(values: z.infer<typeof formSchema>) {
-    const apiEndpoint = 'https://directme.azurewebsites.net/api/signup';
+    const apiEndpoint = 'https://directmechat.azurewebsites.net/api/signup';
 
     setSigning(true);
   

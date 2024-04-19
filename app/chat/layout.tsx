@@ -16,7 +16,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       
 
       try {
-        const response = await fetch('https://directme.azurewebsites.net/api/isAuthenticated/check', {
+        const response = await fetch('https://directmechat.azurewebsites.net/api/isAuthenticated/check', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

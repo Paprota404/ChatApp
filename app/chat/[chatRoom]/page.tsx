@@ -28,7 +28,7 @@ const MessageRoom = () => {
     const startConnection = async () => {
       // Assign the new connection to the .current property of the ref
       connection.current = new signalR.HubConnectionBuilder()
-        .withUrl("https://directme.azurewebsites.net/ChatHub")
+        .withUrl("https://directmechat.azurewebsites.net/ChatHub")
         .configureLogging("information")
         .build();
 
