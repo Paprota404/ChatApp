@@ -126,7 +126,7 @@ app.Use(async (context, next) =>
 app.UseDefaultFiles();
 app.UseStaticFiles(); 
 
-app.UseHttpsRedirection();
+
 
 app.UseRouting();
 
@@ -140,6 +140,7 @@ if (app.Environment.IsDevelopment())
 if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
+    app.UseHttpsRedirection();
 }
 
 
