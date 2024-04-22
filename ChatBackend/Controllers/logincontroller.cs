@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 
+
 namespace Login.Controllers
 {
 
@@ -16,7 +17,6 @@ namespace Login.Controllers
 
     public class LoginController : ControllerBase
     {
-
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IConfiguration _configuration;
         public LoginController(UserManager<IdentityUser> userManager, IConfiguration configuration)
@@ -48,6 +48,9 @@ namespace Login.Controllers
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
             };
 
+  
+
+
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
@@ -66,7 +69,7 @@ namespace Login.Controllers
                 HttpOnly = true,
                 Expires = DateTime.Now.AddMinutes(120), // Set the cookie expiration to match the token
                 Secure = true, // Set to true if your site is served over HTTPS
-                SameSite = SameSiteMode.None // Adjust according to your security requirements
+                SameSite = SameSiteMode.Lax // Adjust according to your security requirements
             });
 
             

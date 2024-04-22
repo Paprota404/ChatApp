@@ -17,6 +17,9 @@ using ChatHubNamespace;
 using Microsoft.AspNetCore.SignalR;
 using Messages.Services;
 using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Design;
+using  Microsoft.EntityFrameworkCore.SqlServer;
 
 public partial class Program{
 
@@ -27,18 +30,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddEnvironmentVariables();
 
-builder.Configuration.AddJsonFile("appsettings.json");
+var connection = String.Empty;
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddEnvironmentVariables().AddJsonFile("appsettings.Development.json");
+    connection = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
+}
+else
+{
+    connection = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");
+}
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(
-                builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING"),
-                sqlServerOptionsAction: sqlOptions =>
-                {
-                    sqlOptions.EnableRetryOnFailure(
-                        maxRetryCount: 5, // Maximum number of retries
-                        maxRetryDelay: TimeSpan.FromSeconds(30), // Maximum delay between retries
-                        errorNumbersToAdd: null); // Additional error numbers to retry on, if any
-                }));
+            options.UseSqlServer(connection));
 
 // Add services to the container
 
