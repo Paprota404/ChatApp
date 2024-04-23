@@ -23,7 +23,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             'credentials':'include',
           },
         });
-
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -36,7 +35,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         }
       } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
-        // Optionally, redirect to login if there's an error or if the user is not authenticated
+        
         router.push("/login");
       }
     };

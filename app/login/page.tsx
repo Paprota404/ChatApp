@@ -54,11 +54,7 @@ export default function ProfileForm() {
 
       if (response.status === 200) {
        
-         const data = await response.json();
-         const token = data.token;
         
-
-       localStorage.setItem("jwtToken",token);
         setTimeout(() => {
           router.push("/chat");
         }, 1000);
