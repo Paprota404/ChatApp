@@ -67,7 +67,7 @@ namespace Login.Controllers
             Response.Cookies.Append("access_token", token, new CookieOptions
             {
                 HttpOnly = true,
-                Expires = DateTime.Now.AddMinutes(120), // Set the cookie expiration to match the token
+                Expires = DateTime.Now.AddMinutes(300), // Set the cookie expiration to match the token
                 Secure = true, // Set to true if your site is served over HTTPS
                 SameSite = SameSiteMode.Lax // Adjust according to your security requirements
             });
