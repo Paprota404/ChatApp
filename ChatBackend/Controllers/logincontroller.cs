@@ -58,7 +58,7 @@ namespace Login.Controllers
                 issuer: _configuration["JWT:Issuer"],
                 audience: _configuration["JWT:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(120),
+                expires: DateTime.Now.AddMinutes(300),
                 signingCredentials: credentials);
 
 
@@ -69,7 +69,7 @@ namespace Login.Controllers
                 HttpOnly = true,
                 Expires = DateTime.Now.AddMinutes(300), // Set the cookie expiration to match the token
                 Secure = true, // Set to true if your site is served over HTTPS
-                SameSite = SameSiteMode.Lax // Adjust according to your security requirements
+                SameSite = SameSiteMode.None
             });
 
             

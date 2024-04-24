@@ -99,6 +99,18 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true
     };
+
+    o.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = ctx => 
+        {
+            ctx.Request.Cookies.TryGetValue("access_token",out var access_token);
+            if(!string.IsNullOrEmpty(access_token)){
+                ctx.Token = access_token;
+            }
+            return Task.CompletedTask;
+        }
+    };
 });
 
 
@@ -119,15 +131,6 @@ var app = builder.Build();
 
 
 
-app.Use(async (context, next) =>
-{
-    if (context.Request.Cookies.TryGetValue("access_token", out var jwtToken))
-    {
-        context.Request.Headers.Append("Authorization", $"Bearer {jwtToken}");
-    }
-
-    await next.Invoke();
-});
 app.UseDefaultFiles();
 app.UseStaticFiles(); 
 
