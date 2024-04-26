@@ -1,8 +1,6 @@
 ## DirectMe - Real-time messaging app hosted on Azure
 
-## Description
-
-This is DirectMe, a real-time messaging app I made to expand my skills and show off to my friends and my girlfriend.
+DirectMe, a real-time messaging app I made to expand my skills and show off to my friends and my girlfriend.
 
 ## Quick Start
 1. Go to [DirectMe Website](https://directme-eta.vercel.app/) and click Sign Up to create account.
