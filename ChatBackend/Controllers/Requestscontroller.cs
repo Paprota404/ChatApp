@@ -76,7 +76,7 @@ namespace Requests.Controllers{
         {
             try
             {
-                // Get the currently authenticated user's ID (assuming it's stored in the claims)
+               
                 string userId = GetAuthenticatedUserId();
 
                 List<FriendRequestModel> pendingRequests = _friendRequestService.GetFriendRequests(userId);
@@ -89,7 +89,7 @@ namespace Requests.Controllers{
             }
         }
 
-        // Helper method to get the currently authenticated user's ID 
+     
         private string GetAuthenticatedUserId(){
             var httpContext = _httpContextAccessor.HttpContext;
             var userIdClaim = httpContext?.User.FindFirst(ClaimTypes.NameIdentifier);
