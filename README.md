@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## DirectMe - Real-time messaging app hosted on Azure
 
-## Getting Started
+DirectMe, a real-time messaging app I made to expand my skills and show off to my friends and my girlfriend.
 
-First, run the development server:
+## Quick Start
+1. Go to [DirectMe Website](https://directme-eta.vercel.app/) and click Sign Up to create account.
+2. You only need to provide a username and password. There's no need to confirm any emails since this is not a commercial project and doesn't require an additional layer of security.
+3. If you sign in, you will be redirected to login page here just type provided before username and password and you are in.
+4. After logging in, you will have one default friend who is me. He has sent you a Welcome message to show that everything is working.
+5. You can add additional friends or accept incoming friend requests.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
+- Real-time messaging
+- Private chats
+- Cross-platform compatibility with minimalistic interface
+## Features I'm planning to add
+- Group chats and emojis
+- In-chat chess
+- File sharing
+- Caching with Redis
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies
+- Frontend: Next.js, React Querry, shadcn 
+- Backend: .NET, EF Core
+- Real-Time Communication: SignalR
+- Database: Azure SQL
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Showcase
+![direct](https://github.com/Paprota404/DirectMe/assets/153768290/3adbc60c-d4b9-4fa1-8e1f-fcb46fe01eba)
