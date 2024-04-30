@@ -14,10 +14,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {useRouter} from 'next/navigation';
-import {useState} from "react";
-
-
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const formSchema = z.object({
   username: z.string(),
@@ -25,7 +23,6 @@ const formSchema = z.object({
     message: "Password need to be at least 8 characters long",
   }),
 });
-
 
 //Defining schema
 export default function ProfileForm() {
@@ -38,63 +35,61 @@ export default function ProfileForm() {
     },
   });
 
-
- 
-
-  
-  const [errorMessage,setError] = useState("");
-  const [isSigning,setSigning] = useState(false);
+  const [errorMessage, setError] = useState("");
+  const [isSigning, setSigning] = useState(false);
 
   async function OnSubmit(values: z.infer<typeof formSchema>) {
-    const apiEndpoint = 'https://directmechat.azurewebsites.net/api/signup';
+    const apiEndpoint = "https://directmechat.azurewebsites.net/api/signup";
 
     setSigning(true);
-  
+
     try {
       const response = await fetch(apiEndpoint, {
         mode: "cors",
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json',
-          
-         },
-        body: JSON.stringify({ UserName: values.username, Password: values.password }), 
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          UserName: values.username,
+          Password: values.password,
+        }),
       });
-  
-      if (response.status ===  200) {
+
+      if (response.status === 200) {
         // Successful request, navigate to the chat page
-        
-        setTimeout(()=>{
+
+        setTimeout(() => {
           router.push("/login");
-        },1000);
-        
-      } else if (response.status ===  400) {
+        }, 1000);
+      } else if (response.status === 400) {
         // Bad Request, handle accordingly
         let errorData = await response.json();
-        throw new Error(errorData.message || 'Bad Request');
-      } else if(response.status === 409){
+        throw new Error(errorData.message || "Bad Request");
+      } else if (response.status === 500) {
+        setError("Please try again");
+      } else if (response.status === 409) {
         setError("User with this usernam already exists");
         setSigning(false);
-      }
-      else {
+      } else {
         // Other status codes, handle accordingly
-        setSigning(false)
+        setSigning(false);
         throw new Error(`Request failed with status ${response.status}`);
-        
       }
     } catch (error) {
-      setSigning(false)
+      setSigning(false);
       setError("An unexpected error occurred:" + (error as Error).message);
     }
   }
-  
+
   return (
     <div
       className="flex justify-center items-center"
       style={{ backgroundColor: "black", height: "100vh" }}
     >
       <Card className="w-96 p-5">
-        <CardTitle className="text-white flex justify-between mb-4">Sign Up
-        {isSigning && <div>Signing up...</div> }</CardTitle>
+        <CardTitle className="text-white flex justify-between mb-4">
+          Sign Up
+          {isSigning && <div>Signing up...</div>}
+        </CardTitle>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(OnSubmit)} className="space-y-8">
             <FormField
@@ -102,7 +97,9 @@ export default function ProfileForm() {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-white">Enter your username</FormLabel>
+                  <FormLabel className="text-white">
+                    Enter your username
+                  </FormLabel>
                   <FormControl className="text-white">
                     <Input type="username" placeholder="Username" {...field} />
                   </FormControl>
@@ -127,7 +124,10 @@ export default function ProfileForm() {
             />
 
             <div className="flex justify-between">
-              <Button className="bg-white text-black hover:bg-gray-500" type="submit">
+              <Button
+                className="bg-white text-black hover:bg-gray-500"
+                type="submit"
+              >
                 Sign Up
               </Button>
               <a
@@ -137,9 +137,10 @@ export default function ProfileForm() {
               >
                 I already have an account
               </a>
-              
             </div>
-            {errorMessage != "" && <h1 className="text-white">{errorMessage}</h1> }
+            {errorMessage != "" && (
+              <h1 className="text-white">{errorMessage}</h1>
+            )}
           </form>
         </Form>
       </Card>

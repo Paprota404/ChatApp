@@ -92,6 +92,9 @@ const MessageRoom = () => {
   };
 
   const handleSubmit = () => {
+    if(message.length==0){
+      return;
+    }
     const chatIdString = Array.isArray(chatId) ? chatId.join("") : chatId;
     console.log(chatIdString, message);
     
@@ -117,7 +120,7 @@ const MessageRoom = () => {
           style={{ height: "9.5rem" }}
           className="border-white z-50  border-b-2 flex justify-start  items-center"
         >
-          <h1 className="text-white text-5xl tracking-widest items-center gap-5 flex ml-10">
+          <h1 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-widest items-center gap-5 flex ml-10">
             <Avatar>
               <AvatarImage src="OIG2.jpg"></AvatarImage>
               <AvatarFallback>CN</AvatarFallback>
@@ -126,7 +129,7 @@ const MessageRoom = () => {
           </h1>
         </div>
         <div className="flex flex-col-reverse relative gap-2 items-center w-full place-self-center h-full overflow-y-scroll">
-          <div className=" w-5/6 flex gap-5  items-center mb-5">
+          <div className=" w-5/6 flex gap-5 items-center mb-12 lg:mb-5">
             <Textarea
               value={message}
               onChange={handleTextareaChange}

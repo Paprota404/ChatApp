@@ -63,7 +63,10 @@ export default function ProfileForm() {
         
         let errorData = await response.json();
         throw new Error(errorData.message || "Bad Request");
-      } else if (response.status === 401) {
+      } else if(response.status === 500){
+        setError("Please try again");
+      }
+      else if (response.status === 401) {
         //Wrong Password provided
         setTimeout(() => {
           setError("Bad password");
