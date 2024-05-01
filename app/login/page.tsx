@@ -60,14 +60,14 @@ export default function ProfileForm() {
           router.push("/chat");
         }, 1000);
       } else if (response.status === 400) {
-        
+       
         let errorData = await response.json();
         throw new Error(errorData.message || "Bad Request");
       } else if(response.status === 500){
         setError("Please try again");
       }
       else if (response.status === 401) {
-        //Wrong Password provided
+       
         setTimeout(() => {
           setError("Bad password");
           setSigning(false);
@@ -95,9 +95,12 @@ export default function ProfileForm() {
       style={{ backgroundColor: "black", height: "100vh" }}
     >
       <Card className="w-96 p-5 ">
-        <CardTitle className="text-white flex justify-between mb-4">
-          Log In
-          {isSigning && <div>Logging in...</div>}
+        <CardTitle className="text-white flex-col justify-between mb-4">
+        <div className="flex justify-between">
+          Log In 
+          {isSigning && <div>Logging In...</div>}
+          </div>
+          
         </CardTitle>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -141,6 +144,7 @@ export default function ProfileForm() {
               </a>
             </div>
             {errorMessage != "" && <h1 className="text-white">{errorMessage}</h1>}
+            <div className="text-lg font-light">Please note that your first login might experience a delay due to Azure&apos;s cold start.</div>
           </form>
         </Form>
       </Card>

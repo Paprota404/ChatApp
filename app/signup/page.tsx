@@ -55,13 +55,13 @@ export default function ProfileForm() {
       });
 
       if (response.status === 200) {
-        // Successful request, navigate to the chat page
+      
 
         setTimeout(() => {
           router.push("/login");
         }, 1000);
       } else if (response.status === 400) {
-        // Bad Request, handle accordingly
+       
         let errorData = await response.json();
         throw new Error(errorData.message || "Bad Request");
       } else if (response.status === 500) {
@@ -70,7 +70,7 @@ export default function ProfileForm() {
         setError("User with this usernam already exists");
         setSigning(false);
       } else {
-        // Other status codes, handle accordingly
+        
         setSigning(false);
         throw new Error(`Request failed with status ${response.status}`);
       }
@@ -86,9 +86,12 @@ export default function ProfileForm() {
       style={{ backgroundColor: "black", height: "100vh" }}
     >
       <Card className="w-96 p-5">
-        <CardTitle className="text-white flex justify-between mb-4">
-          Sign Up
+        <CardTitle className="text-white flex-col justify-between mb-4">
+          <div className="flex justify-between">
+          Sign Up 
           {isSigning && <div>Signing up...</div>}
+          </div>
+          
         </CardTitle>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(OnSubmit)} className="space-y-8">
@@ -141,7 +144,9 @@ export default function ProfileForm() {
             {errorMessage != "" && (
               <h1 className="text-white">{errorMessage}</h1>
             )}
+            <div className="text-lg font-light">Please note that your first signup might experience a delay due to Azure&apos;s cold start.</div>
           </form>
+
         </Form>
       </Card>
     </div>
