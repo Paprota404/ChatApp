@@ -11,6 +11,7 @@ DirectMe, a real-time messaging app I made to expand my skills and show off to m
 
 ## Features
 - Real-time messaging
+- JWT Authentication
 - Private chats
 - Sending and accepting friend requests
 - Cross-platform compatibility with minimalistic interface
