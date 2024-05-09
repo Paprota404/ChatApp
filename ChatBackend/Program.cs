@@ -19,7 +19,7 @@ using Messages.Services;
 using System.Data.SqlClient;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Design;
-using  Microsoft.EntityFrameworkCore.SqlServer;
+using Microsoft.EntityFrameworkCore.SqlServer;
 
 public partial class Program{
 
@@ -35,7 +35,7 @@ var connection = String.Empty;
 if (builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddEnvironmentVariables().AddJsonFile("appsettings.Development.json");
-    connection = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
+    connection = builder.Configuration.GetConnectionString("DefaultConnection");
 }
 else
 {
@@ -43,7 +43,7 @@ else
 }
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(connection));
+            options.UseNpgsql(connection));
 
 // Add services to the container
 
@@ -56,7 +56,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("MyCorsPolicy", builder =>
     {
-        builder.WithOrigins("https://directme-eta.vercel.app/")
+        builder.WithOrigins("http://localhost:3000")
                .AllowAnyHeader()
                .AllowAnyMethod()
                .AllowCredentials();

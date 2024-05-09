@@ -89,7 +89,7 @@ namespace Requests.Controllers{
             }
         }
 
-     
+    
         private string GetAuthenticatedUserId(){
             var httpContext = _httpContextAccessor.HttpContext;
             var userIdClaim = httpContext?.User.FindFirst(ClaimTypes.NameIdentifier);

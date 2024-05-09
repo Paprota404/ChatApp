@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+
 interface Contact {
   userId: string;
   username: string;
@@ -18,7 +19,7 @@ const Contacts: React.FC = () => {
 
      
       const response = await fetch(
-        "https://directmechat.azurewebsites.net/api/Friends/GetFriends",
+        "http://localhost:5108/api/Friends/GetFriends",
         {
           method: "GET",
           headers: headers,
@@ -49,8 +50,8 @@ const Contacts: React.FC = () => {
         <div>
           {data.map((contact) => (
             <Link key={contact.userId} href={`/chat/${contact.userId}?username=${encodeURIComponent(contact.username)}`}>
-              <a className="border-white flex justify-start h-32 items-center w-full">
-                <div className="flex relative items-center left-10 gap-4">
+              <a className="border-white flex justify-center h-32 items-center w-full">
+                <div className="flex relative items-center gap-4">
                   <div>
                     <Avatar>
                       <AvatarImage src="OIG2.jpg"></AvatarImage>
@@ -59,7 +60,7 @@ const Contacts: React.FC = () => {
                   </div>
 
                   <div>
-                    <div className="text-white text-2xl">
+                    <div className="text-white text-2xl lg:text-4xl">
                       {contact.username}
                     </div>
                     
