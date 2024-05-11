@@ -73,7 +73,7 @@ namespace Login.Controllers
             });
 
             
-            return Ok(new { Message = "Login successful" });
+            return Ok(new { Message = "Login successful"});
         }
 
     }

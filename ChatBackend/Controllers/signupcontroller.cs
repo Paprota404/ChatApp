@@ -42,7 +42,8 @@ namespace SignUp.Controllers
             var user = new IdentityUser { UserName = model.UserName };
             var result = await _userManager.CreateAsync(user, model.Password);
 
-            await AddDefaultFriendAndMessage(user.Id);
+            //await AddDefaultFriendAndMessage(user.Id);
+            //For development its off
 
         
             if (result.Succeeded)

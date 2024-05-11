@@ -2,6 +2,7 @@ import React from "react";
 import { useQuery } from "react-query";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
 
 interface Contact {
   userId: string;
@@ -10,19 +11,20 @@ interface Contact {
 }
 
 const Contacts: React.FC = () => {
+  const [searchTerm, setSearchTerm] = React.useState("");
+
   const getContacts = async (): Promise<Contact[]> => {
     try {
       const headers = {
-        "Content-Type": "application/json", 
+        "Content-Type": "application/json",
       };
 
-     
       const response = await fetch(
-        "https://directmechat.azurewebsites.net/api/Friends/GetFriends",
+        "http://localhost:5108/api/Friends/GetFriends",
         {
           method: "GET",
           headers: headers,
-          credentials: 'include',
+          credentials: "include",
         }
       );
 
@@ -45,31 +47,47 @@ const Contacts: React.FC = () => {
 
   return (
     <>
+      <div className="w-5/6 self-center">
+        <Input
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search contacts"
+          className="border-white rounded-3xl mt-5"
+        />
+      </div>
       {status === "success" && (
         <div>
-          {data.map((contact) => (
-            <Link key={contact.userId} href={`/chat/${contact.userId}?username=${encodeURIComponent(contact.username)}`}>
-              <a className="border-white flex justify-start h-32 items-center w-full">
-                <div className="flex relative items-center left-10 gap-4">
-                  <div>
-                    <Avatar>
-                      <AvatarImage src="OIG2.jpg"></AvatarImage>
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                  </div>
-
-                  <div>
-                    <div className="text-white text-2xl">
-                      {contact.username}
+          {data
+            .filter((contact) =>
+              contact.username.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .map((contact) => (
+              <Link
+                key={contact.userId}
+                href={`/chat/${contact.userId}?username=${encodeURIComponent(
+                  contact.username
+                )}`}
+              >
+                <a className="border-white flex justify-center h-32 items-center w-full">
+                  <div className="flex relative items-center gap-4">
+                    <div>
+                      <Avatar>
+                        <AvatarImage src="OIG2.jpg"></AvatarImage>
+                        <AvatarFallback>CN</AvatarFallback>
+                      </Avatar>
                     </div>
-                    
-                  </div>
-                </div>
-              </a>
 
-              <hr className="bg-white w-5/6 mx-auto"></hr>
-            </Link>
-          ))}
+                    <div>
+                      <div className="text-white text-2xl lg:text-4xl">
+                        {contact.username}
+                      </div>
+                    </div>
+                  </div>
+                </a>
+
+                <hr className="bg-white w-5/6 mx-auto"></hr>
+              </Link>
+            ))}
         </div>
       )}
     </>
