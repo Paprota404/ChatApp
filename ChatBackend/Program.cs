@@ -148,7 +148,7 @@ if (app.Environment.IsDevelopment())
 
 app.MapHub<ChatHub>("/ChatHub");
 
-
+//Changes
 app.UseCors("MyCorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
