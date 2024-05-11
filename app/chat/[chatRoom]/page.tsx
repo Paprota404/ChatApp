@@ -87,10 +87,7 @@ const MessageRoom = () => {
     setMessage(event.target.value);
   };
 
-  const handleEmojiSelect = (emoji) => {
-    // Append the emoji to the current message text
-    setMessage(message + emoji.colons);
-  };
+
 
   const handleSubmit = () => {
     if (message.length == 0) {
@@ -201,7 +198,7 @@ const MessageRoom = () => {
                       message.senderId === chatId ? "" : "ml-auto"
                     }`}
                   >
-                    <div className="border-2 px-10 rounded-xl text-white py-2 my-2">
+                    <div className="border-2 px-10 rounded-3xl text-white py-2 my-2">
                       {message.content}
                     </div>
                     <div className="text-xs text-gray-500 text-right">
