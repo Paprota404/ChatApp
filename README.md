@@ -16,7 +16,8 @@ DirectMe, a real-time messaging app I made to expand my skills and show off to m
 - Sending and accepting friend requests
 - Cross-platform compatibility with minimalistic interface
 ## Features I'm planning to add
-- Group chats and emojis
+- Group chats
+- Voice messages
 - In-chat chess
 - File sharing
 - Caching with Redis
