@@ -27,7 +27,6 @@ const PendingRequests = () => {
     FriendRequestModel[],
     Error
   >("pendingRequests", async () => {
-    
     const response = await fetch(
       "https://directmechat.azurewebsites.net/api/FriendRequest/pending",
       {
@@ -35,7 +34,7 @@ const PendingRequests = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
       }
     );
     if (!response.ok) {
@@ -46,8 +45,6 @@ const PendingRequests = () => {
 
   const queryClient = useQueryClient();
 
-
-
   const acceptFriendRequestMutation = useMutation(
     async (id: number) => {
       const response = await fetch(
@@ -57,14 +54,12 @@ const PendingRequests = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          credentials: 'include'
+          credentials: "include",
         }
       );
-      
+
       if (!response.ok) {
-        setErrorMessage(
-          "Unable to accept friend request"
-        );
+        setErrorMessage("Unable to accept friend request");
       }
     },
     {
@@ -85,8 +80,8 @@ const PendingRequests = () => {
 
   return (
     <Dialog>
-      <DialogTrigger className="border-2 w-5/6 self-center mt-5">
-        Pending requests: {pendingRequests?.length || 0}
+      <DialogTrigger className="border-2 w-5/6 rounded-xl self-center mt-5">
+        Pending friend requests: {pendingRequests?.length || 0}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -96,7 +91,10 @@ const PendingRequests = () => {
           <ul>
             {pendingRequests ? (
               pendingRequests.map((request) => (
-                <li className="text-xl justify-between flex my-4" key={request.id}>
+                <li
+                  className="text-xl justify-between flex my-4"
+                  key={request.id}
+                >
                   <div>Request From: {request.sender_username}</div>
                   <Button
                     onClick={() => handleAcceptFriendRequest(request.id)}
