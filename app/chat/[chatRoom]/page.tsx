@@ -1,10 +1,12 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { Textarea } from "@/components/ui/textarea";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSearchParams, useParams } from "next/navigation";
 import * as signalR from "@microsoft/signalr";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
 const MessageRoom = () => {
   const searchParams = useSearchParams();
@@ -12,7 +14,7 @@ const MessageRoom = () => {
   const params = useParams();
   const chatId = params.chatRoom;
   const [messages, setMessages] = useState<Message[]>([]);
-  
+  const [isEmojiVisible, setEmojiVisible] = useState(false);
 
   interface Message {
     content: string;
@@ -24,27 +26,23 @@ const MessageRoom = () => {
   const connection = useRef<signalR.HubConnection | null>(null);
 
   useEffect(() => {
-
     const startConnection = async () => {
       // Assign the new connection to the .current property of the ref
       connection.current = new signalR.HubConnectionBuilder()
-        .withUrl("https://directmechat.azurewebsites.net/ChatHub")
+        .withUrl("https://directmechat.azurewebsites.net/FriendRequest/ChatHub")
         .configureLogging("information")
         .build();
 
       try {
-        // Start the connection
         await connection.current.start();
         console.log("Connection started");
 
         if (connection.current) {
-          // Invoke the StartOneToOneSession method
           await connection.current.invoke("StartOneToOneSession", chatId);
 
-          // Set up a message handler after the connection is established
           connection.current.on("ReceiveMessage", (message) => {
             console.log(message);
-            // Handle the message here
+
             setMessages((prevMessages) => [...prevMessages, message]);
           });
 
@@ -85,37 +83,38 @@ const MessageRoom = () => {
 
   const [message, setMessage] = useState("");
 
-  const handleTextareaChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  const handleTextareaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
   };
 
+
+
   const handleSubmit = () => {
-    if(message.length==0){
+    if (message.length == 0) {
       return;
     }
     const chatIdString = Array.isArray(chatId) ? chatId.join("") : chatId;
     console.log(chatIdString, message);
-    
+
+    if(isEmojiVisible==true){
+      setEmojiVisible(false);
+    }
+
     sendMessageToUser(chatIdString, message);
     setMessage("");
   };
 
   useEffect(() => {
-    document.body.classList.add('dynamic-page-active');
+    document.body.classList.add("dynamic-page-active");
 
     return () => {
-      document.body.classList.remove('dynamic-page-active');
+      document.body.classList.remove("dynamic-page-active");
     };
- }, []);
+  }, []);
 
   return (
     <>
-      <div
-        className="bg-black w-3/4 flex flex-col h-full dynamic-page active"
-        
-      >
+      <div className="bg-black w-3/4 flex flex-col h-full dynamic-page active">
         <div
           style={{ height: "9.5rem" }}
           className="border-white z-50  border-b-2 flex justify-start  items-center"
@@ -129,16 +128,44 @@ const MessageRoom = () => {
           </h1>
         </div>
         <div className="flex flex-col-reverse relative gap-2 items-center w-full place-self-center h-full overflow-y-scroll">
-          <div className=" w-5/6 flex gap-5 items-center mb-12 lg:mb-5">
-            <Textarea
-              value={message}
-              onChange={handleTextareaChange}
-              className="bg-black text-white rounded-lg"
-              placeholder="Write your message"
-            ></Textarea>
+          <div className=" w-5/6 flex gap-5 items-center mb-5">
+            <div className="relative w-full">
+              <input
+                type="text"
+                value={message}
+                onChange={handleTextareaChange}
+                placeholder="Type your message..."
+                className="w-full p-5  border border-white bg-black h-12 focus:outline-none rounded-3xl"
+              />
+              <button
+                className="absolute right-2 top-1 text-white py-2 px-4 rounded-md"
+                onClick={() => setEmojiVisible(!isEmojiVisible)}
+              >
+                <Image
+                  src="/emoji-smile-svgrepo-com.svg"
+                  width={100}
+                  height={100}
+                  alt="Send"
+                  className="w-6  h-6"
+                />
+              </button>
+
+              {isEmojiVisible && (
+                <div className="absolute right-11 bottom-9">
+                  <Picker
+                    data={data}
+                    onClickOutside={() => !isEmojiVisible}
+                    onEmojiSelect={(emoji: object) => {
+                      setMessage(message +  (emoji as any).native);
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+
             <Button
               onClick={handleSubmit}
-              className="h-20 text-white border-2 w-20"
+              className="h-12 text-white border-2 rounded-full"
             >
               Send
             </Button>
@@ -147,7 +174,7 @@ const MessageRoom = () => {
           <div className="w-5/6 flex-col">
             {messages
               .slice()
-              
+
               .map((message, index) => {
                 // Parse the ISO 8601 string into a Date object
                 const sentAtDate = new Date(message.sentAt);
@@ -166,14 +193,12 @@ const MessageRoom = () => {
                 return (
                   <div
                     key={index}
-                    style={{ maxWidth: "20ch", wordWrap: "break-word" }}
+                    style={{ maxWidth: "17ch", wordWrap: "break-word" }}
                     className={`${
-                      message.senderId === chatId
-                        ? ""
-                        : "ml-auto"
+                      message.senderId === chatId ? "" : "ml-auto"
                     }`}
                   >
-                    <div className="border-2 px-10 text-white py-2 my-2">
+                    <div className="border-2 px-10 rounded-3xl text-white py-2 my-2">
                       {message.content}
                     </div>
                     <div className="text-xs text-gray-500 text-right">

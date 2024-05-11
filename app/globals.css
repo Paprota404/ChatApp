@@ -9,6 +9,23 @@ body,
   color: white;
 }
 
+::-webkit-scrollbar {
+  width: 2px; /* Adjust the width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the tracking area */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scroll thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the scroll thumb on hover */
+}
+
+
 .sidebar {
   width: 25%; 
   transition: width 0.5s;

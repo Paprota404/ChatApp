@@ -132,7 +132,7 @@ export default function ProfileForm() {
             />
 
             <div className="flex justify-between">
-              <Button className="bg-white text-black hover:bg-gray-500" type="submit">
+              <Button className="bg-white text-black hover:bg-gray-500 rounded-xl" type="submit">
                 Log In
               </Button>
               <a

@@ -128,7 +128,7 @@ export default function ProfileForm() {
 
             <div className="flex justify-between">
               <Button
-                className="bg-white text-black hover:bg-gray-500"
+                className="bg-white text-black rounded-xl hover:bg-gray-500"
                 type="submit"
               >
                 Sign Up
