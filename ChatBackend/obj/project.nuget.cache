@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "cWeNsPN4DP7JYziyljominguP40FFzQXzYH5nZVKtLBdsb4KIEkaRShjCkDlc+dAsr8daunCDHcOjAzJrEEEMw==",
+  "dgSpecHash": "8KSSh9uphX5GRuAp1ube2R2Pc4YZ14cok6l8FCF9l2ooEiOwna9kpaTaeDeMI1S6q758Hy0RUK5G5BV2OXtoVQ==",
   "success": true,
   "projectFilePath": "H:\\Chat App\\chat-app\\ChatBackend\\ChatBackend.csproj",
   "expectedPackageFiles": [
@@ -90,8 +90,6 @@
     "C:\\Users\\Admin\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
-    "C:\\Users\\Admin\\.nuget\\packages\\npgsql\\8.0.2\\npgsql.8.0.2.nupkg.sha512",
-    "C:\\Users\\Admin\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\8.0.2\\npgsql.entityframeworkcore.postgresql.8.0.2.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\runtime.native.system.data.sqlclient.sni\\4.7.0\\runtime.native.system.data.sqlclient.sni.4.7.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\runtime.win-x64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",

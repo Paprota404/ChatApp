@@ -1,18 +1,15 @@
 "use client";
 import React from "react";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-
+} from "@/components/ui/dialog";
 
 const AddingContacts = () => {
   const [username, setUsername] = useState("");
@@ -24,7 +21,7 @@ const AddingContacts = () => {
     try {
 
       const response = await fetch(
-        "http://localhost:5108/api/FriendRequest/send",
+        "https://directmechat.azurewebsites.net/api/FriendRequest/send",
         {
           method: "POST",
           headers: {
@@ -51,31 +48,23 @@ const AddingContacts = () => {
   }
 
   return (
-    
     <Dialog>
-      
-      <DialogTrigger className="border-2 w-5/6 rounded-xl self-center mt-5">
-        Add new friends
+      <DialogTrigger className="border-2 w-5/6 self-center mt-5">
+        Add new contacts
       </DialogTrigger>
-      
-      <DialogContent >
-     
-        <DialogHeader >
-          
-          <DialogTitle className="mb-4 text-2xl">Add new friends</DialogTitle>
-          <Input className="rounded-xl"
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="mb-4">Add new contact</DialogTitle>
+          <Input
             placeholder="Enter username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           ></Input>
-          <Button onClick={sendRequest} className="bg-white text-black rounded-xl">Send request</Button>
+          <Button onClick={sendRequest} className="bg-white text-black">Send request</Button>
           {Message != "" && <h1 className="text-white">{Message}</h1> }
         </DialogHeader>
-       
       </DialogContent>
-     
     </Dialog>
-    
   );
 };
 

@@ -15,7 +15,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     const checkAuth = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5108/api/isAuthenticated/check",
+          "https://directmechat.azurewebsites.net/api/isAuthenticated/check",
           {
             method: "GET",
             credentials: "include",

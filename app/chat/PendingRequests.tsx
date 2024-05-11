@@ -29,7 +29,7 @@ const PendingRequests = () => {
   >("pendingRequests", async () => {
     
     const response = await fetch(
-      "http://localhost:5108/api/FriendRequest/pending",
+      "https://directmechat.azurewebsites.net/api/FriendRequest/pending",
       {
         method: "GET",
         headers: {
@@ -51,13 +51,13 @@ const PendingRequests = () => {
   const acceptFriendRequestMutation = useMutation(
     async (id: number) => {
       const response = await fetch(
-        `http://localhost:5108/api/FriendRequest/accept/${id}`,
+        `https://directmechat.azurewebsites.net/FriendRequest/accept/${id}`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          credentials: 'include',
+          credentials: 'include'
         }
       );
       
@@ -85,8 +85,8 @@ const PendingRequests = () => {
 
   return (
     <Dialog>
-      <DialogTrigger className="border-2 w-5/6 rounded-xl self-center mt-5">
-        Pending friend requests: {pendingRequests?.length || 0}
+      <DialogTrigger className="border-2 w-5/6 self-center mt-5">
+        Pending requests: {pendingRequests?.length || 0}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
