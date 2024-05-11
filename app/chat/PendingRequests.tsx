@@ -51,7 +51,7 @@ const PendingRequests = () => {
   const acceptFriendRequestMutation = useMutation(
     async (id: number) => {
       const response = await fetch(
-        `https://directmechat.azurewebsites.net/FriendRequest/accept/${id}`,
+        `https://directmechat.azurewebsites.net/api/FriendRequest/accept/${id}`,
         {
           method: "POST",
           headers: {

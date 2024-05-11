@@ -20,7 +20,7 @@ const Contacts: React.FC = () => {
       };
 
       const response = await fetch(
-        "https://directmechat.azurewebsites.net/FriendRequest/Friends/GetFriends",
+        "https://directmechat.azurewebsites.net/api/Friends/GetFriends",
         {
           method: "GET",
           headers: headers,
