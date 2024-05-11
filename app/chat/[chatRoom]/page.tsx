@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { Textarea } from "@/components/ui/textarea";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSearchParams, useParams } from "next/navigation";
@@ -14,6 +14,7 @@ const MessageRoom = () => {
   const params = useParams();
   const chatId = params.chatRoom;
   const [messages, setMessages] = useState<Message[]>([]);
+  const [isEmojiVisible, setEmojiVisible] = useState(false);
 
   interface Message {
     content: string;
@@ -82,9 +83,7 @@ const MessageRoom = () => {
 
   const [message, setMessage] = useState("");
 
-  const handleTextareaChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleTextareaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
   };
 
@@ -99,6 +98,10 @@ const MessageRoom = () => {
     }
     const chatIdString = Array.isArray(chatId) ? chatId.join("") : chatId;
     console.log(chatIdString, message);
+
+    if(isEmojiVisible==true){
+      setEmojiVisible(false);
+    }
 
     sendMessageToUser(chatIdString, message);
     setMessage("");
@@ -128,9 +131,7 @@ const MessageRoom = () => {
           </h1>
         </div>
         <div className="flex flex-col-reverse relative gap-2 items-center w-full place-self-center h-full overflow-y-scroll">
-          {/* <Picker  data={data} onEmojiSelect={console.log} /> */}
           <div className=" w-5/6 flex gap-5 items-center mb-5">
-           
             <div className="relative w-full">
               <input
                 type="text"
@@ -139,9 +140,30 @@ const MessageRoom = () => {
                 placeholder="Type your message..."
                 className="w-full p-5  border border-white bg-black h-12 focus:outline-none rounded-3xl"
               />
-              <button className="absolute right-2 top-1 bg-blue-500 text-white py-2 px-4 rounded-md">
-                Send
+              <button
+                className="absolute right-2 top-1 text-white py-2 px-4 rounded-md"
+                onClick={() => setEmojiVisible(!isEmojiVisible)}
+              >
+                <Image
+                  src="/emoji-smile-svgrepo-com.svg"
+                  width={100}
+                  height={100}
+                  alt="Send"
+                  className="w-6  h-6"
+                />
               </button>
+
+              {isEmojiVisible && (
+                <div className="absolute right-11 bottom-9">
+                  <Picker
+                    data={data}
+                    onClickOutside={() => !isEmojiVisible}
+                    onEmojiSelect={(emoji: object) => {
+                      setMessage(message +  (emoji as any).native);
+                    }}
+                  />
+                </div>
+              )}
             </div>
 
             <Button
