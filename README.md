@@ -29,4 +29,4 @@ DirectMe, a real-time messaging app I made to expand my skills and show off to m
 - Database: Azure SQL
 
 ## Showcase
-![direct](https://github.com/Paprota404/DirectMe/assets/153768290/3adbc60c-d4b9-4fa1-8e1f-fcb46fe01eba)
+![Directe](https://github.com/Paprota404/DirectMe-Real-time-messaging-app/assets/153768290/e3e7158d-1e17-44fd-b94c-b5b9f9e8cdd1)
