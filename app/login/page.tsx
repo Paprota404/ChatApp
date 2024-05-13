@@ -111,7 +111,7 @@ export default function ProfileForm() {
                 <FormItem>
                   <FormLabel className="text-white">Enter your username</FormLabel>
                   <FormControl className="text-white">
-                    <Input type="username" placeholder="Username" {...field} />
+                    <Input type="username"  className="rounded-xl"  placeholder="Username" {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -125,7 +125,7 @@ export default function ProfileForm() {
                     Enter your password
                   </FormLabel>
                   <FormControl className="text-white">
-                    <Input type="password" placeholder="Password" {...field} />
+                    <Input type="password"  className="rounded-xl"  placeholder="Password" {...field} />
                   </FormControl>
                 </FormItem>
               )}

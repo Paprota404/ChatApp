@@ -128,6 +128,17 @@ const MessageRoom = () => {
           </h1>
         </div>
         <div className="flex flex-col-reverse relative gap-2 items-center w-full place-self-center h-full overflow-y-scroll">
+        {isEmojiVisible && (
+                <div className=" right-11 bottom-9 2sm:hidden">
+                  <Picker
+                    data={data}
+                    onClickOutside={() => !isEmojiVisible}
+                    onEmojiSelect={(emoji: object) => {
+                      setMessage(message +  (emoji as any).native);
+                    }}
+                  />
+                </div>
+              )}
           <div className=" w-5/6 flex gap-5 items-center mb-5">
             <div className="relative w-full">
               <input
@@ -151,7 +162,7 @@ const MessageRoom = () => {
               </button>
 
               {isEmojiVisible && (
-                <div className="absolute right-11 bottom-9">
+                <div className="absolute right-11 bottom-9 invisible 2sm:visible">
                   <Picker
                     data={data}
                     onClickOutside={() => !isEmojiVisible}
