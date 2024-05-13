@@ -85,7 +85,7 @@ const PendingRequests = () => {
 
   return (
     <Dialog>
-      <DialogTrigger className="border-2 w-5/6 rounded-xl self-center mt-5">
+      <DialogTrigger className="border-2 w-5/6 rounded-xl self-center mt-5 mb-5">
         Pending friend requests: {pendingRequests?.length || 0}
       </DialogTrigger>
       <DialogContent>

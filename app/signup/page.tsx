@@ -18,10 +18,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const formSchema = z.object({
-  username: z.string(),
-  password: z.string().min(8, {
-    message: "Password need to be at least 8 characters long",
-  }),
+  username: z.string().min(1, { message: "Username must be at least 1 character long" }).max(20, { message: "Username must be at most 20 characters long" }),
+  password: z.string().min(8, { message: "Password need to be at least 8 characters long" }),
 });
 
 //Defining schema
@@ -104,21 +102,24 @@ export default function ProfileForm() {
                     Enter your username
                   </FormLabel>
                   <FormControl className="text-white">
-                    <Input type="username" placeholder="Username" {...field} />
+                    <Input type="username"  className="rounded-xl"  placeholder="Username" {...field} />
                   </FormControl>
+
+                  <FormMessage className="text-white" />
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
+              
               name="password"
               render={({ field }) => (
-                <FormItem>
+                <FormItem >
                   <FormLabel className="text-white">
                     Enter your password
                   </FormLabel>
                   <FormControl className="text-white">
-                    <Input type="password" placeholder="Password" {...field} />
+                    <Input type="password" className="rounded-xl" placeholder="Password" {...field} />
                   </FormControl>
 
                   <FormMessage className="text-white" />

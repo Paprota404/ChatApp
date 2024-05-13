@@ -52,11 +52,12 @@ const Contacts: React.FC = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search contacts"
-          className="border-white rounded-3xl mt-5"
+          className="border-white rounded-3xl mt-5 items-center justify-center flex flex-col"
         />
       </div>
+
       {status === "success" && (
-        <div>
+        <div className="w-5/6 self-center">
           {data
             .filter((contact) =>
               contact.username.toLowerCase().includes(searchTerm.toLowerCase())
@@ -68,24 +69,19 @@ const Contacts: React.FC = () => {
                   contact.username
                 )}`}
               >
-                <a className="border-white flex justify-center h-32 items-center w-full">
-                  <div className="flex relative items-center gap-4">
-                    <div>
-                      <Avatar>
-                        <AvatarImage src="OIG2.jpg"></AvatarImage>
-                        <AvatarFallback>CN</AvatarFallback>
-                      </Avatar>
-                    </div>
+                <a className="border-white flex justify-start h-32 relative gap-4 items-center w-full">
+                  <div>
+                    <Avatar>
+                      <AvatarImage src="OIG2.jpg"></AvatarImage>
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                  </div>
 
-                    <div>
-                      <div className="text-white text-2xl lg:text-4xl">
-                        {contact.username}
-                      </div>
-                    </div>
+                  <div className="text-white text-2xl truncate  lg:text-4xl">
+                    {contact.username}
                   </div>
                 </a>
-
-                <hr className="bg-white w-5/6 mx-auto"></hr>
+                <hr className="bg-white w-full mx-auto"></hr>
               </Link>
             ))}
         </div>
