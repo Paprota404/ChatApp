@@ -7,6 +7,17 @@ import { useSearchParams, useParams } from "next/navigation";
 import * as signalR from "@microsoft/signalr";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
+import ChessGame from "./Chess";
+import { Chess } from "chess.js";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const MessageRoom = () => {
   const searchParams = useSearchParams();
@@ -87,8 +98,6 @@ const MessageRoom = () => {
     setMessage(event.target.value);
   };
 
-
-
   const handleSubmit = () => {
     if (message.length == 0) {
       return;
@@ -96,7 +105,7 @@ const MessageRoom = () => {
     const chatIdString = Array.isArray(chatId) ? chatId.join("") : chatId;
     console.log(chatIdString, message);
 
-    if(isEmojiVisible==true){
+    if (isEmojiVisible == true) {
       setEmojiVisible(false);
     }
 
@@ -117,7 +126,7 @@ const MessageRoom = () => {
       <div className="bg-black w-3/4 flex flex-col h-full dynamic-page active">
         <div
           style={{ height: "9.5rem" }}
-          className="border-white z-50  border-b-2 flex justify-start  items-center"
+          className="border-white z-50  border-b-2 flex justify-between  items-center"
         >
           <h1 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-widest items-center gap-5 flex ml-10">
             <Avatar>
@@ -126,19 +135,34 @@ const MessageRoom = () => {
             </Avatar>
             {username}
           </h1>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <button className="mr-10">
+                <Image
+                  src="/chess-icon.svg"
+                  width={100}
+                  height={100}
+                  alt="Send"
+                  className="w-10 h-10"
+                />
+              </button>
+            </DialogTrigger>
+            <DialogContent className="w-96 justify-center"></DialogContent>
+          </Dialog>
         </div>
         <div className="flex flex-col-reverse relative gap-2 items-center w-full place-self-center h-full overflow-y-scroll">
-        {isEmojiVisible && (
-                <div className=" right-11 bottom-9 2sm:hidden">
-                  <Picker
-                    data={data}
-                    onClickOutside={() => !isEmojiVisible}
-                    onEmojiSelect={(emoji: object) => {
-                      setMessage(message +  (emoji as any).native);
-                    }}
-                  />
-                </div>
-              )}
+          {isEmojiVisible && (
+            <div className=" right-11 bottom-9 2sm:hidden">
+              <Picker
+                data={data}
+                onClickOutside={() => !isEmojiVisible}
+                onEmojiSelect={(emoji: object) => {
+                  setMessage(message + (emoji as any).native);
+                }}
+              />
+            </div>
+          )}
           <div className=" w-5/6 flex gap-5 items-center mb-5">
             <div className="relative w-full">
               <input
@@ -167,7 +191,7 @@ const MessageRoom = () => {
                     data={data}
                     onClickOutside={() => !isEmojiVisible}
                     onEmojiSelect={(emoji: object) => {
-                      setMessage(message +  (emoji as any).native);
+                      setMessage(message + (emoji as any).native);
                     }}
                   />
                 </div>
@@ -218,6 +242,8 @@ const MessageRoom = () => {
                   </div>
                 );
               })}
+
+            <ChessGame />
           </div>
         </div>
       </div>
