@@ -8,16 +8,6 @@ import * as signalR from "@microsoft/signalr";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import ChessGame from "./Chess";
-import { Chess } from "chess.js";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 
 const MessageRoom = () => {
   const searchParams = useSearchParams();
@@ -136,20 +126,15 @@ const MessageRoom = () => {
             {username}
           </h1>
 
-          <Dialog>
-            <DialogTrigger asChild>
-              <button className="mr-10">
-                <Image
-                  src="/chess-icon.svg"
-                  width={100}
-                  height={100}
-                  alt="Send"
-                  className="w-10 h-10"
-                />
-              </button>
-            </DialogTrigger>
-            <DialogContent className="w-96 justify-center"></DialogContent>
-          </Dialog>
+          <button className="mr-10">
+            <Image
+              src="/chess-icon.svg"
+              width={100}
+              height={100}
+              alt="Send"
+              className="w-10 h-10"
+            />
+          </button>
         </div>
         <div className="flex flex-col-reverse relative gap-2 items-center w-full place-self-center h-full overflow-y-scroll">
           {isEmojiVisible && (
@@ -242,8 +227,9 @@ const MessageRoom = () => {
                   </div>
                 );
               })}
-
-            <ChessGame />
+            <div className="flex justify-center items-center">
+              <ChessGame />
+            </div>
           </div>
         </div>
       </div>
