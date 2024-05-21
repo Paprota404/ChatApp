@@ -9,6 +9,20 @@ body,
   color: white;
 }
 
+.possible-move::after {
+  content: '';
+  width: 20%;
+  height: 20%;
+  background-color: black;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* Ensure the dot doesn't interfere with clicking */
+}
+
+
 ::-webkit-scrollbar {
   width: 2px; /* Adjust the width of the scrollbar */
 }
