@@ -228,7 +228,7 @@ const MessageRoom = () => {
                 );
               })}
             <div className="flex justify-center items-center">
-              <ChessGame />
+              {/* <ChessGame /> */}
             </div>
           </div>
         </div>
