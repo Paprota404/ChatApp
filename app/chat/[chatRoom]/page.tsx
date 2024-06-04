@@ -15,6 +15,8 @@ const MessageRoom = () => {
   const chatId = params.chatRoom;
   const [messages, setMessages] = useState<Message[]>([]);
   const [isEmojiVisible, setEmojiVisible] = useState(false);
+  const [isInputVisible, setInputVisible] = useState(true);
+  const divRef = useRef<HTMLDivElement>(null);
 
   interface Message {
     content: string;
@@ -22,6 +24,28 @@ const MessageRoom = () => {
     sentAt: Date;
     id: number;
   }
+
+  const checkWidth = () => {
+    console.log("resize");
+    if (divRef.current) {
+      const width = divRef.current.offsetWidth;
+      // Toggle visibility based on width
+      setInputVisible(width >= 140); // Adjust the threshold as needed
+    }
+  };
+
+  useEffect(() => {
+    
+    // Perform the initial check
+    checkWidth();
+
+    // Set up an event listener for window resizing
+    const handleResize = () => checkWidth();
+    window.addEventListener("resize", handleResize);
+
+    // Return a cleanup function to remove the event listener
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const connection = useRef<signalR.HubConnection | null>(null);
 
@@ -72,7 +96,6 @@ const MessageRoom = () => {
     };
   }, [chatId]);
 
-  // Function to send a message to a specific user
   function sendMessageToUser(recipientUserId: string, message: string): void {
     if (connection.current) {
       connection.current
@@ -126,28 +149,34 @@ const MessageRoom = () => {
               />
             </div>
           )}
-          <div className=" w-5/6 flex gap-5 items-center  mb-5">
-            <AudioRecorder
-              // onRecordingComplete={addAudioElement}
-              audioTrackConstraints={{
-                noiseSuppression: true,
-                echoCancellation: true,
-              }}
-              onNotAllowedOrFound={(err) => console.table(err)}
-              downloadOnSavePress={false}
-              mediaRecorderOptions={{
-                audioBitsPerSecond: 128000,
-              }}
-              showVisualizer={true}
-            />
+          <div className=" w-5/6 flex  gap-5 items-center  mb-5">
+            <div onClick={checkWidth}>
+              <AudioRecorder
+                // onRecordingComplete={addAudioElement}
+                audioTrackConstraints={{
+                  noiseSuppression: true,
+                  echoCancellation: true,
+                }}
+                onNotAllowedOrFound={(err) => console.table(err)}
+                downloadOnSavePress={false}
+                mediaRecorderOptions={{
+                  audioBitsPerSecond: 128000,
+                }}
+                showVisualizer={true}
+              />
+            </div>
 
-            <div className="relative w-full">
+            {isInputVisible && (<div
+              ref={divRef}
+              className={`relative w-full`}
+            >
               <input
+               
                 type="text"
                 value={message}
                 onChange={handleTextareaChange}
-                placeholder="Type your message..."
-                className="w-full p-5  border border-white bg-black h-12 focus:outline-none rounded-3xl"
+                placeholder="Message"
+                className="w-full p-5 border border-white bg-black h-12 focus:outline-none rounded-3xl"
               />
               <button
                 className="absolute right-2 top-1 text-white py-2 px-4 rounded-md"
@@ -157,8 +186,8 @@ const MessageRoom = () => {
                   src="/emoji-smile-svgrepo-com.svg"
                   width={100}
                   height={100}
-                  alt="Send"
-                  className="w-6  h-6"
+                  alt="Emoji"
+                  className="w-6 h-6"
                 />
               </button>
 
@@ -166,18 +195,19 @@ const MessageRoom = () => {
                 <div className="absolute right-11 bottom-9 invisible 2sm:visible">
                   <Picker
                     data={data}
-                    onClickOutside={() => !isEmojiVisible}
+                    onClickOutside={() => isEmojiVisible}
                     onEmojiSelect={(emoji: object) => {
                       setMessage(message + (emoji as any).native);
                     }}
                   />
                 </div>
               )}
-            </div>
+            </div>)}
+            
 
             <Button
               onClick={handleSubmit}
-              className="h-12 text-white border-2 rounded-full"
+              className="h-12 text-white border-2 rounded-full flex-grow"
             >
               Send
             </Button>
