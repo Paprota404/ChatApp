@@ -25,27 +25,7 @@ const MessageRoom = () => {
     id: number;
   }
 
-  const checkWidth = () => {
-    console.log("resize");
-    if (divRef.current) {
-      const width = divRef.current.offsetWidth;
-      // Toggle visibility based on width
-      setInputVisible(width >= 140); // Adjust the threshold as needed
-    }
-  };
-
-  useEffect(() => {
-    
-    // Perform the initial check
-    checkWidth();
-
-    // Set up an event listener for window resizing
-    const handleResize = () => checkWidth();
-    window.addEventListener("resize", handleResize);
-
-    // Return a cleanup function to remove the event listener
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  
 
   const connection = useRef<signalR.HubConnection | null>(null);
 
@@ -150,7 +130,7 @@ const MessageRoom = () => {
             </div>
           )}
           <div className=" w-5/6 flex  gap-5 items-center  mb-5">
-            <div onClick={checkWidth}>
+            <div onClick={()=>setInputVisible(!isInputVisible)}>
               <AudioRecorder
                 // onRecordingComplete={addAudioElement}
                 audioTrackConstraints={{
@@ -207,7 +187,7 @@ const MessageRoom = () => {
 
             <Button
               onClick={handleSubmit}
-              className="h-12 text-white border-2 rounded-full flex-grow"
+              className="h-12 text-white border-2 rounded-full flex-grow transition-all duration-1000 ease-in-out transform hover:scale-105"
             >
               Send
             </Button>
