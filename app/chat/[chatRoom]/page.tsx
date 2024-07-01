@@ -25,8 +25,6 @@ const MessageRoom = () => {
     id: number;
   }
 
-  
-
   const connection = useRef<signalR.HubConnection | null>(null);
 
   useEffect(() => {
@@ -64,9 +62,9 @@ const MessageRoom = () => {
           "Error while starting connection or invoking method: " + err
         );
       }
-    };
+    }; 
 
-    startConnection();
+    startConnection(); 
 
     // Cleanup function to stop the connection when the component unmounts
     return () => {
@@ -80,7 +78,7 @@ const MessageRoom = () => {
     if (connection.current) {
       connection.current
         .invoke("SendMessage", recipientUserId, message)
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err)); 
     }
   }
 
@@ -88,11 +86,11 @@ const MessageRoom = () => {
 
   const handleTextareaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
-  };
+  }; 
 
   const handleSubmit = () => {
     if (message.length == 0) {
-      return;
+      return ;
     }
     const chatIdString = Array.isArray(chatId) ? chatId.join("") : chatId;
     console.log(chatIdString, message);
@@ -103,99 +101,96 @@ const MessageRoom = () => {
 
     sendMessageToUser(chatIdString, message);
     setMessage("");
-  };
+  }; 
 
   useEffect(() => {
     document.body.classList.add("dynamic-page-active");
-
+  
     return () => {
       document.body.classList.remove("dynamic-page-active");
-    };
+    }; 
   }, []);
 
   return (
     <>
-      <div className="bg-black w-3/4 flex flex-col h-full dynamic-page active">
+      <div c lassName="bg-black w-3/4 flex flex-col h-full dynamic-page active">
         <ChatHeader />
-        <div className="flex flex-col-reverse relative gap-4 items-center w-full place-self-center h-full overflow-y-scroll">
+        <div className="flex flex-col-reverse relative gap-4 items-center w-full place-self-center h-ful l overflow-y-scroll">
           {isEmojiVisible && (
             <div className=" right-11 bottom-9 2sm:hidden">
-              <Picker
-                data={data}
-                onClickOutside={() => !isEmojiVisible}
-                onEmojiSelect={(emoji: object) => {
+             <Picker
+               data={data}
+               onClickOutside={() => !isEmojiVisible}
+               onEmojiSelect={(emoji: object) => {
                   setMessage(message + (emoji as any).native);
-                }}
+               }} 
               />
-            </div>
+            </div> 
           )}
           <div className=" w-5/6 flex  gap-5 items-center  mb-5">
-            <div onClick={()=>setInputVisible(!isInputVisible)}>
-              <AudioRecorder
-                // onRecordingComplete={addAudioElement}
+            <div onClick={() => setInputVisible(!isInputVisible)}>
+             <AudioRecorder
+               // onRecordingComplete={addAudioElement}
                 audioTrackConstraints={{
-                  noiseSuppression: true,
-                  echoCancellation: true,
+                 noiseSuppression: true,
+                 echoCancellation: true,
                 }}
-                onNotAllowedOrFound={(err) => console.table(err)}
-                downloadOnSavePress={false}
-                mediaRecorderOptions={{
-                  audioBitsPerSecond: 128000,
-                }}
+               onNotAllowedOrFound={(err) => console.table(err)}
+               downloadOnSavePress={false}
+               mediaRecorderOptions={{
+                 audioBitsPerSecond: 128000,
+               }}
                 showVisualizer={true}
-              />
-            </div>
-
-            {isInputVisible && (<div
-              ref={divRef}
-              className={`relative w-full`}
-            >
-              <input
-               
-                type="text"
-                value={message}
-                onChange={handleTextareaChange}
-                placeholder="Message"
-                className="w-full p-5 border border-white bg-black h-12 focus:outline-none rounded-3xl"
-              />
-              <button
-                className="absolute right-2 top-1 text-white py-2 px-4 rounded-md"
-                onClick={() => setEmojiVisible(!isEmojiVisible)}
-              >
-                <Image
-                  src="/emoji-smile-svgrepo-com.svg"
-                  width={100}
-                  height={100}
-                  alt="Emoji"
-                  className="w-6 h-6"
+              /> 
+            </div> 
+              
+            {isInputVisible && (
+             <div ref={divRef} className={`relative w-full`}>
+               <input
+                 type="text"
+                  value={message}
+                 onChange={handleTextareaChange}
+                 placeholder="Message"
+                  className="w-full p-5 border border-white bg-black h-12 focus:outline-none rounded-3xl"
                 />
-              </button>
-
-              {isEmojiVisible && (
-                <div className="absolute right-11 bottom-9 invisible 2sm:visible">
-                  <Picker
-                    data={data}
-                    onClickOutside={() => isEmojiVisible}
-                    onEmojiSelect={(emoji: object) => {
-                      setMessage(message + (emoji as any).native);
-                    }}
+               <button
+                 className="absolute right-2 top-1 text-white py-2 px-4 rounded-md" 
+                  onClick={() => setEmojiVisible(!isEmojiVisible)}
+               >
+                 <Image
+                    src="/emoji-smile-svgrepo-com.svg" 
+                    width={100}
+                   height={100}
+                   alt="Emoji"
+                   className="w-6 h-6"
                   />
-                </div>
-              )}
-            </div>)}
+               </button>
             
+                {isEmojiVisible && (
+                 <div className="absolute right-11 bottom-9 invisible 2sm:visible">
+                   <Picker
+                     data={data}
+                      onClickOutside={() => isEmojiVisible}
+                      onEmojiSelect={(emoji: object) => {
+                       setMessage(message + (emoji as any).native);
+                     }}
+                   />
+                 </div>
+               )}
+              </div>
+            )} 
 
             <Button
-              onClick={handleSubmit}
-              className="h-12 text-white border-2 rounded-full flex-grow transition-all duration-1000 ease-in-out transform hover:scale-105"
+             onClick={handleSubmit}
+             className="h-12 text-white border-2 rounded-full flex-grow "
             >
-              Send
+             Send
             </Button>
-          </div>
+          </div> 
 
           <div className="w-5/6 flex-col">
             {messages
-              .slice()
+             .slice() 
 
               .map((message, index) => {
                 // Parse the ISO 8601 string into a Date object
